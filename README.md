@@ -167,7 +167,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Random Forest + SVM ensemble classifier via `smartcore` with 5-fold cross-validation
 - 30-dimensional HTTP response feature vectors: entropy, timing, content structure, security headers, character distribution, SHA256 content hashing
 - Neural perceptron layer: sigmoid activation + gradient descent for anomaly classification 
-> (Soon will be Implemented) 
+> (Soon will be Implemented) Neutral Perception 
 - Online learning: `add_normal_pattern()` for adaptive baseline profiling
 - `ExploitAnalyzer`: AI-driven response pattern learning, next-payload recommendation, WAF-specific bypass generation
 - `PayloadMutator`: 8 AI mutation strategies (case variation, encoding, obfuscation, comment injection, whitespace, character substitution, concatenation, null byte)
