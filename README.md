@@ -31,7 +31,7 @@ OXIDE is a weapon-grade security tool. In the wrong hands, its capabilities caus
  
 ---
 
-[![Final Release](https://img.shields.io/badge/FINAL-RELEASE-FFB11B?style=for-the-badge&labelColor=1A1A1A)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
+[NOT![Final Release](https://img.shields.io/badge/FINAL-RELEASE-FFB11B?style=for-the-badge&labelColor=1A1A1A)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
 
 > v8.7.2 — Hardened production release. Burp Suite integration, module isolation, embedded TLS cert, zero dead code, zero silent errors, async-safe mutexes, full --silent-mode, full --duration, and 50+ fixes across the codebase.
 
