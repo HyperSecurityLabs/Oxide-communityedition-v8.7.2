@@ -105,8 +105,6 @@ Auto-exploit: SQLi · XSS · LFI · CMDi · SSTI · WAF Bypass (12 vendors)
 
 [![GUI Frontend](https://img.shields.io/badge/_GUI_Frontend-Desktop_App-C46B5A?style=for-the-badge&logo=electron&logoColor=000&labelColor=FFF0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
 
-<img width="1440" height="900" alt="Screenshot_2026-07-01_12_38_59" src="https://github.com/user-attachments/assets/4f386be4-a663-4654-93ab-c32e29fc0864" />
-
 Native desktop GUI built with **WRY** (WebView2/WebKit) + **TAO** (windowing). Frameless window, scan presets, config panel, module toggles, live terminal console, status badge, About modal. Keyboard shortcuts: `Ctrl+Enter` start, `Escape` stop, `F12` DevTools.
 
 ```bash
@@ -177,7 +175,6 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - **`--exploitation-level` default set to 75** — balanced aggression
 - **Session hijack timeout detection** — `check_session_timeout()` returns findings when cookie lacks Max-Age/Expires
 - **TCP fingerprinting fixed** — TTL from actual SYN-ACK, source IP via local interface
-- **Version bumped to 8.7.2** across all files (Cargo.toml, args.rs, lib.rs, main.rs, db.rs, config.rs, html.rs, json.rs)
 
 ## Core Performance
 - Async/await concurrent architecture: tokio-based agent pool with `join_all` parallel dispatch for high-speed multi-target scanning
@@ -200,10 +197,8 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - 12-vendor WAF fingerprinting: CloudFlare, AWS WAF, ModSecurity, F5 BIG-IP ASM, Imperva, Akamai, Sucuri, Radware, Palo Alto, Fortinet, Barracuda, Citrix
 
 ## AI/ML Zero-Day Engine
-- Random Forest + SVM ensemble classifier via `smartcore` with 5-fold cross-validation
+- Random Forest classifier via `smartcore` with 5-fold cross-validation
 - 30-dimensional HTTP response feature vectors: entropy, timing, content structure, security headers, character distribution, SHA256 content hashing
-- Neural perceptron layer: sigmoid activation + gradient descent for anomaly classification 
-> (Soon will be Implemented) Neutral Perception 
 - Online learning: `add_normal_pattern()` for adaptive baseline profiling
 - `ExploitAnalyzer`: AI-driven response pattern learning, next-payload recommendation, WAF-specific bypass generation
 - `PayloadMutator`: 8 AI mutation strategies (case variation, encoding, obfuscation, comment injection, whitespace, character substitution, concatenation, null byte)
@@ -219,7 +214,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Adaptive Bayesian rate-limit evasion with EMA confidence smoothing
 - PatternLearner: exponential moving average Bayesian-style confidence tracking
 
-## Levenshtein Resilient Analysis (NEW)
+## Levenshtein Resilient Analysis (ADVANCED) 
 - `normalized_levenshtein` via `strsim` for URL deduplication with adaptive threshold (85%–97% based on exploitation level)
 - `response_similarity()`: Levenshtein distance between baseline and response for diff scoring
 - `response_diff_score()`: 1.0 − similarity for injection detection
@@ -227,7 +222,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Fuzzing dedup count display: real-time Levenshtein-filtered unique payload analysis
 - Exploitation level system (1–100) maps to dedup threshold, payload count, and error tolerance
 
-## Japanese Washoku Visual Theme (NEW)
+## Japanese Washoku Visual Theme 
 - CLI palette: SHU (朱 #E83929), SAKURA (桜 #FEDFE1), HISUI (翡翠 #38B48B), WAKABA (若葉 #8BB85C), TSUYUKUSA (露草 #2EA9DF), FUJI (藤 #8B81C3), GIN (銀 #91989F), SHIKKOKU (漆黒 #1A1A1A)
 - GUI "CyberPunk2077-Interface": CSS custom properties with `--jpn-` prefixed color tokens
 - Japanese code annotations throughout: `電脳走査`, `和色パレット`, `ゼロデイ電脳検出`
@@ -239,6 +234,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - WebSocket fuzzing: handshake injection, frame manipulation, auth bypass, 6 vulnerability types
 - HPP (HTTP Parameter Pollution) detector with 8+ test payload types
 - Distributed cluster scanning: master/agent TCP architecture with JSON messaging
+- INSTAGRAM MODULE REMOVED
 
 ## Fuzzing Engine (IMPROVED)
 - 8 payload categories: SQLi (error/union/time/boolean/stacked/WAF/noSQL/destructive), XSS, SSTI (Jinja2/Freemarker/Velocity/Smarty), LFI (path traversal/PHP wrappers), CMDi (basic/OOB/time-based/reverse shell/Windows), NoSQL, destructive SQL
@@ -282,7 +278,6 @@ Targeting official Kali Linux repository: `sudo apt update && sudo apt install o
 
 <div align="center">
 
-[![Star](https://img.shields.io/badge/_Star_on_GitHub-Support-2EA9DF?style=for-the-badge&logo=github&logoColor=000&labelColor=E8F4FD)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
 [![Website](https://img.shields.io/badge/_Website-HyperSec-2E8B7A?style=for-the-badge&logo=google-chrome&logoColor=000&labelColor=E8F5E8)](https://hypersecurityoffseclabs.great-site.net/)
 [![Telegram](https://img.shields.io/badge/_Telegram-Community-2EA9DF?style=for-the-badge&logo=telegram&logoColor=000&labelColor=E8F4FD)](https://t.me/hypersecurity_offsec)
 
@@ -295,7 +290,7 @@ OXIDE was put through a hardened battle test against a custom target with **5 de
 | Test | Result |
 |------|--------|
 | Header-based CMDi (`X-Debug-Host`) | ✓ Detected |
-| NoSQLi via JSON body (`$ne`/`$gt`/`$regex`) | ✓ Detected |
+| NoSQLi via JSON body (`$ne`/etected |
 | Blind SQLi (timing-only, no error reflection) | ✓ Detected |
 | Sourcemap internal URL leak (JS → `.map` → creds) | ✓ Detected |
 | Hidden debug environment leak (`/api/debug/env`) | ✓ Detected |
