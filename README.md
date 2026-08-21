@@ -283,14 +283,10 @@ oxide-ce-debian/ DEB packaging · arch-pkg/  Arch packaging
 
 OXIDE was put through a hardened battle test against a custom target with **5 deeply buried vulnerabilities** — no links, probe filtering, header-only CMDi, JSON-gated NoSQLi, blind timing-based SQLi, sourcemap credential leaks, and hidden debug endpoints. **OXIDE detected every single one.*
 
-**Tools it beats:** sqlmap (SQLi-only), Burp (no header fuzzing), ZAP (no sourcemap parsing), Nuclei (no ML) — none cover all classes in a single concurrent scan like OXIDE.
-
-**AI advantage:** `--train` mode learns 50+ response features, trains Random Forest + SVM, catches zero-days no signature can match. `--zeroday` detects behavioral anomalies sqlmap/Burp/ZAP will never see.
-> But in later it requires to be more improve time by time Now it is resiliant,Hypersecurity promise you already know.
-
 > OXIDE isn't just another scanner — it's the only one that combines SQLi + XSS + CMDi + NoSQLi + CORS + TLS + session + creds + ML zero-day in a single concurrent engine. Star it, share it, make it sharper.
 
 [![Kali Linux](https://img.shields.io/badge/_Kali_Linux-Repository-7B68AE?style=for-the-badge&logo=kalilinux&logoColor=000&labelColor=EDEAF8)](https://www.kali.org/)
+
 Targeting official Kali Linux repository: `sudo apt update && sudo apt install oxide`
 
 </div>
