@@ -5,6 +5,7 @@ HyperSecurity Offensive Labs
 Levershin FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Distributed Cluster · 和色 Palette
 > Soon Oxide-communityedition-v8.7 Will release in Dec. 
 > STAR IT AGGRESSIVELY SEND IT GLOBALLY ☠️⚠️ 
+
 <img width="1440" height="900" alt="Screenshot_2026-07-02_08_45_13" src="https://github.com/user-attachments/assets/0185128b-7093-4654-929b-fb6037890932" />
 
 [![GUI](https://img.shields.io/badge/_GUI-Launch_OXIDE-E83929?style=for-the-badge&logo=electron&logoColor=000&labelColor=FFE8E0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.6.9/releases)
@@ -16,7 +17,6 @@ Levershin FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless
 [![Downloads](https://img.shields.io/badge/_Downloads-v8.6.9-91989F?style=for-the-badge&logo=github&logoColor=000&labelColor=F0F0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.6.9/releases)
 [![Kali](https://img.shields.io/badge/_Kali_Linux-Ready-165E83?style=for-the-badge&logo=kalilinux&logoColor=000&labelColor=E8F0F8)](https://www.kali.org/)
 [![Warning](https://img.shields.io/badge/‼_Warning-Authorized-D7003A?style=for-the-badge&logo=bugatti&logoColor=000&labelColor=FFF0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.6.9/issues)
-
 
 </div>
 
