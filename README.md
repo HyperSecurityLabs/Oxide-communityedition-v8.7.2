@@ -12,6 +12,7 @@ FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Di
 [![License](https://img.shields.io/badge/_License-GPL--3.0--only-8B81C3?style=for-the-badge&logo=libreoffice&logoColor=000&labelColor=7B68AE)](../LICENSE)
 [![Downloads](https://img.shields.io/badge/_Downloads-v8.7.2-91989F?style=for-the-badge&logo=github&logoColor=000&labelColor=F0F0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Kali](https://img.shields.io/badge/_Kali_Linux-Ready-1E3A5F?style=for-the-badge&logo=kalilinux&logoColor=000&labelColor=E8F0F8)](https://www.kali.org/)
+[![Android](https://img.shields.io/badge/_Android-arm64_·_armv7_·_x86_64-3DDC84?style=for-the-badge&logo=android&logoColor=000&labelColor=E8F8EE)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 
 </div>
 
