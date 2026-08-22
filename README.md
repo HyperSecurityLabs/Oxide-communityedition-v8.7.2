@@ -3,6 +3,7 @@
 HyperSecurity Offensive Labs   
 FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Distributed Cluster · Burp Suite Integration · Unified Fuzz Engine · Live Progress Board
 
+<img width="1600" height="887" alt="oxide8" src="https://github.com/user-attachments/assets/e1561163-acca-4bf4-9166-931f4db2a137" />
 
 [![GUI](https://img.shields.io/badge/_GUI-Launch_OXIDE-C0392B?style=for-the-badge&logo=electron&logoColor=000&labelColor=FFE8E0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Termux](https://img.shields.io/badge/_Termux-Ready-000000?style=for-the-badge&logo=android&logoColor=FFF&labelColor=2E2E2E)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
