@@ -1,10 +1,8 @@
-
 # oxide-communityedition-v8.7.2
 **Precision-forged Rust vulnerability scanner**  
 HyperSecurity Offensive Labs   
 FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Distributed Cluster · Burp Suite Integration · Unified Fuzz Engine · Live Progress Board
 
-> STAR IT AGGRESSIVELY SEND IT GLOBALLY ☠️⚠️ 
 
 [![GUI](https://img.shields.io/badge/_GUI-Launch_OXIDE-C0392B?style=for-the-badge&logo=electron&logoColor=000&labelColor=FFE8E0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Forums](https://img.shields.io/badge/_Forums-Community-2E8B7A?style=for-the-badge&logo=discourse&logoColor=000&labelColor=EDF5E0)](https://hypersecurityoffseclabs.great-site.net/forums/index.php)
@@ -14,7 +12,6 @@ FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Di
 [![License](https://img.shields.io/badge/_License-GPL--3.0--only-8B81C3?style=for-the-badge&logo=libreoffice&logoColor=000&labelColor=7B68AE)](../LICENSE)
 [![Downloads](https://img.shields.io/badge/_Downloads-v8.7.2-91989F?style=for-the-badge&logo=github&logoColor=000&labelColor=F0F0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Kali](https://img.shields.io/badge/_Kali_Linux-Ready-1E3A5F?style=for-the-badge&logo=kalilinux&logoColor=000&labelColor=E8F0F8)](https://www.kali.org/)
-[![Warning](https://img.shields.io/badge/‼_Warning-Authorized-C46B5A?style=for-the-badge&logo=bugatti&logoColor=000&labelColor=FFF0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/issues)
 
 </div>
 
@@ -31,7 +28,7 @@ OXIDE is a weapon-grade security tool. In the wrong hands, its capabilities caus
  
 ---
 
-[![Final Release](https://img.shields.io/badge/FINAL-RELEASE-FFB11B?style=for-the-badge&labelColor=1A1A1A)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
+[![Final Release](https://img.shields.io/badge/8.7.2-RELEASE-FFB11B?style=for-the-badge&labelColor=1A1A1A)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
 
 > v8.7.2 — Hardened production release. Burp Suite integration, module isolation, embedded TLS cert, zero dead code, zero silent errors, async-safe mutexes, full --silent-mode, full --duration, and 50+ fixes across the codebase.
 
@@ -69,7 +66,7 @@ sudo cp target/release/oxide /usr/local/bin/
 | **TLS** | Certs, protocols, ciphers | **Common App** | Nikto-style path probing |
 | **Default Creds** | Known admin creds | **DB Fingerprint** | MySQL, PG, MSSQL, Oracle, SQLite |
 | **Content Filter** | Keys, tokens, secrets | **Agent** | Deep AI-driven anomaly scan |
-| **Fuzz** ⭐ | 6000+ payload injection | **SSTI** ⭐ | Template injection (Jinja2/Freemarker/Velocity) |
+| **Fuzz** ⭐ | 6000+ payload injection | **SSTI** ⭐ | Template injection (Jinja2/Freemarker/Velocity) | ***still In Development**|
 
 ⭐ = Default modules (runs without `--modules` flag)
 
@@ -121,9 +118,7 @@ Auto-exploit: SQLi · XSS · LFI · CMDi · SSTI · WAF Bypass (12 vendors)
 
 [![GUI Frontend](https://img.shields.io/badge/_GUI_Frontend-Desktop_App-C46B5A?style=for-the-badge&logo=electron&logoColor=000&labelColor=FFF0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
 
-<img width="1440" height="900" alt="Screenshot_2026-07-01_12_38_59" src="https://github.com/user-attachments/assets/4f386be4-a663-4654-93ab-c32e29fc0864" />
-
-Native desktop GUI built with **WRY** (WebView2/WebKit) + **TAO** (windowing). Frameless window, scan presets, config panel, module toggles, live terminal console, status badge, About modal. Keyboard shortcuts: `Ctrl+Enter` start, `Escape` stop, `F12` DevTools.
+A Frameless Native desktop GUI built with **WRY** (WebView2/WebKit) + **TAO** (windowing). Frameless window, scan presets, config panel, module toggles, live terminal console, status badge, About modal. Keyboard shortcuts: `Ctrl+Enter` start, `Escape` stop, `F12` DevTools.
 
 ```bash
 cd gui && cargo build --release && sudo cp target/release/oxide-gui /usr/local/bin/ && oxide-gui
@@ -196,7 +191,6 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - `--modules all` runs all 14 modules (full scan)
 - `--modules sqli,xss` runs specific modules only
 - `--list-modules` shows DEFAULT/FULL tags with usage examples
-- Reports include `modules_used` and `module_count` in scan metadata
 
 ### Production Hardening (50+ fixes)
 - **Zero `unwrap()` in production code** — 18 critical unwraps replaced with safe error handling
@@ -235,10 +229,8 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - 12-vendor WAF fingerprinting: CloudFlare, AWS WAF, ModSecurity, F5 BIG-IP ASM, Imperva, Akamai, Sucuri, Radware, Palo Alto, Fortinet, Barracuda, Citrix
 
 ## AI/ML Zero-Day Engine
-- Random Forest + SVM ensemble classifier via `smartcore` with 5-fold cross-validation
+- Random Forest + SVM ensemble classifier via `smartcore` with 5-fold cross-validation ***Already Proved***
 - 30-dimensional HTTP response feature vectors: entropy, timing, content structure, security headers, character distribution, SHA256 content hashing
-- Neural perceptron layer: sigmoid activation + gradient descent for anomaly classification 
-> (Soon will be Implemented) Neutral Perception 
 - Online learning: `add_normal_pattern()` for adaptive baseline profiling
 - `ExploitAnalyzer`: AI-driven response pattern learning, next-payload recommendation, WAF-specific bypass generation
 - `PayloadMutator`: 8 AI mutation strategies (case variation, encoding, obfuscation, comment injection, whitespace, character substitution, concatenation, null byte)
@@ -246,7 +238,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Auto-exploitation on >55% ML confidence with targeted payload delivery
 - Model persistence via bincode serialization with export/import validation
 
-## Bayesian Confidence Scoring
+## Bayesian Confidence Scoring ***Advanced***
 - `bayesian_confidence()`: sequential Bayesian update across all detection modules
 - Posterior probability from evidence signals: P(V|E) = P(E|V)×P(V) / (P(E|V)×P(V) + P(E|~V)×P(~V))
 - Naive Bayes multiplicative confidence in VulnerabilityClassifier: posterior odds = prior × LR_i
@@ -254,7 +246,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Adaptive Bayesian rate-limit evasion with EMA confidence smoothing
 - PatternLearner: exponential moving average Bayesian-style confidence tracking
 
-## Levenshtein Resilient Analysis (NEW)
+## Levenshtein Resilient Analysis 
 - `normalized_levenshtein` via `strsim` for URL deduplication with adaptive threshold (85%–97% based on exploitation level)
 - `response_similarity()`: Levenshtein distance between baseline and response for diff scoring
 - `response_diff_score()`: 1.0 − similarity for injection detection
@@ -269,13 +261,14 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Live parameter tags: `>>>> ‹aid› https://target/products/?aid=...` — see exactly which parameter is under test
 - Per-scanner payload estimation banner: `SQLi×8 SQLi-D×2 XSS×8 LFI×6 · 61 URLs × params → 4,218 requests`
 
-## Parameter Mining (NEW)
+## Parameter Mining (NEW) ***CodeByKhaninKali***
 - Parameterless URLs are seeded with a curated **high-yield modern param set** (30 entries across 4 tiers)
 - Tier 1 SQLi gold: `id, pid, uid, user_id, product_id, post_id, order, sort, orderby, dir, limit, offset, start`
 - Tier 2 LFI/RCE sinks: `file, path, page, template, view, include, lang, doc, load, cmd, exec, run`
 - Tier 3 redirect/SSRF: `redirect, next, url, return, target, continue`
 - Tier 4 modern bypass: `callback, jsonp, format, debug, admin, id[]` (array syntax slips past naive WAF regex)
 - Param count scales with `--exploitation-level`: <40 → 10 params, <60 → 18, 60+ → 24
+> May God Help the Website What it can break But Instead God don't help Illegal Websites Make it easier For Exploitations 
 
 ## Scanning Modules
 - 14 detection modules: SQLi, Blind SQLi, XSS, LFI, Path Traversal, CMD Injection, CORS, TLS, DB Fingerprinter, Default Creds, Cloudflare/WAF, Precision, Common App, Hypersecurity CF
@@ -285,11 +278,12 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - Distributed cluster scanning: master/agent TCP architecture with JSON messaging
 
 [![Unified Fuzzing](https://img.shields.io/badge/_Fuzzing_Engine-UNIFIED_CONCURRENT-FFB11B?style=for-the-badge&labelColor=1A1A1A)]()
+
 - Single concurrent chunk-based engine drives ALL module selections — SQLi, SQLi-D, XSS, LFI, CMDi, SSTI, NoSQL
 - Adaptive depth: `--modules sqli` runs only SQLi payloads; extras (CMDi/SSTI/NoSQL) activate on `fuzz`/`all`
 - Destructive SQLi-D payloads gated behind `--exploitation-level 60+` (safe by default)
 - 8 payload categories: SQLi (error/union/time/boolean/stacked/WAF/noSQL/destructive), XSS, SSTI (Jinja2/Freemarker/Velocity/Smarty), LFI (path traversal/PHP wrappers), CMDi (basic/OOB/time-based/reverse shell/Windows), NoSQL, destructive SQL
-- 6000+ tech-aware paths and injection templates
+- 6000+ tech-aware paths and injection templates 
 - Encoder: URL/Base64/Hex/Unicode/HTML entity with mixed encoding modes
 - API fuzzer: REST + GraphQL injection templates
 
@@ -299,7 +293,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 [![Windows](https://img.shields.io/badge/_Windows-x86__64_MSVC-0078D4?style=for-the-badge&logo=windows&logoColor=FFF&labelColor=E3F1FC)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Termux](https://img.shields.io/badge/_Termux-Ready-000000?style=for-the-badge&logo=android&logoColor=FFF&labelColor=2E2E2E)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 
-## Multi-Platform Builds
+## Multi-Platform Builds (Oxide 
 
 OXIDE ships native binaries for every offensive workstation — desktop to pocket.
 
