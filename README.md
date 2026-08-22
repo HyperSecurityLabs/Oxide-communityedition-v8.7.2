@@ -120,6 +120,7 @@ Auto-exploit: SQLi · XSS · LFI · CMDi · SSTI · WAF Bypass (12 vendors)
 
 [![GUI Frontend](https://img.shields.io/badge/_GUI_Frontend-Desktop_App-C46B5A?style=for-the-badge&logo=electron&logoColor=000&labelColor=FFF0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
 
+<img width="1597" height="873" alt="gui3" src="https://github.com/user-attachments/assets/d40da638-5974-4d47-999a-aec2da40e284" />
 A Frameless Native desktop GUI built with **WRY** (WebView2/WebKit) + **TAO** (windowing). Frameless window, scan presets, config panel, module toggles, live terminal console, status badge, About modal. Keyboard shortcuts: `Ctrl+Enter` start, `Escape` stop, `F12` DevTools.
 
 ```bash
