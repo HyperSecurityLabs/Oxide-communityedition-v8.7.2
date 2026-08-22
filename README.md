@@ -1,4 +1,4 @@
-# oxide-communityedition-v8.7.2
+# Oxide-communityedition-v8.7.2
 **Precision-forged Rust vulnerability scanner**  
 HyperSecurity Offensive Labs   
 FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Distributed Cluster · Burp Suite Integration · Unified Fuzz Engine · Live Progress Board
@@ -296,7 +296,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 [![Windows](https://img.shields.io/badge/_Windows-x86__64_MSVC-0078D4?style=for-the-badge&logo=windows&logoColor=FFF&labelColor=E3F1FC)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Termux](https://img.shields.io/badge/_Termux-Ready-000000?style=for-the-badge&logo=android&logoColor=FFF&labelColor=2E2E2E)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 
-## Multi-Platform Builds (Oxide 
+## Multi-Platform Builds ***Precision-forged**
 
 OXIDE ships native binaries for every offensive workstation — desktop to pocket.
 
