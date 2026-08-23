@@ -163,7 +163,8 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 
 ## v8.7.2 — Unified Engine Update
 
-### Unified Concurrent Fuzz Engine
+[![Unified Fuzzing](https://img.shields.io/badge/_Fuzzing_Engine-UNIFIED_CONCURRENT-FFB11B?style=for-the-badge&labelColor=1A1A1A)]()
+
 - ALL module selections (`--modules sqli` included) now flow through one chunk-based concurrent engine with the same live display
 - Adaptive module chain: shows only selected scanners, extras (CMDi/SSTI/NoSQL) on `fuzz`/`all`
 - **SSTI wired in** — template math-reflection detection ({{7*7}}→49) with baseline FP guard
@@ -274,7 +275,7 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 > May God Help the Website What it can break But Instead God don't help Illegal Websites Make it easier For Exploitations 
 
 ## Scanning Modules
-- 14 detection modules: SQLi, Blind SQLi, XSS, LFI, Path Traversal, CMD Injection, CORS, TLS, DB Fingerprinter, Default Creds, Cloudflare/WAF, Precision, Common App, Hypersecurity CF
+- 15 detection modules: SQLi, Blind SQLi, XSS, LFI, Path Traversal, CMD Injection, CORS, TLS, DB Fingerprinter, Default Creds, Cloudflare/WAF, Precision, Common App, Hypersecurity CF
 - 10 advanced modules: API Fuzzer, Cache, Cluster (distributed), JS Crawler, Evasion, ML Detector, Plugin (FFI), Rate Limiter, Session, WebSocket
 - WebSocket fuzzing: handshake injection, frame manipulation, auth bypass, 6 vulnerability types
 - HPP (HTTP Parameter Pollution) detector with 8+ test payload types
