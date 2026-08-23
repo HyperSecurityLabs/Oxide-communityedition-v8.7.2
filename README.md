@@ -14,6 +14,9 @@ FP Reduction · Zero-Day ML Anomaly Engine · WAF Massacre · Headless DOM · Di
 [![License](https://img.shields.io/badge/_License-GPL--3.0--only-8B81C3?style=for-the-badge&logo=libreoffice&logoColor=000&labelColor=7B68AE)](../LICENSE)
 [![Downloads](https://img.shields.io/badge/_Downloads-v8.7.2-91989F?style=for-the-badge&logo=github&logoColor=000&labelColor=F0F0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
 [![Zero-Day ML](https://img.shields.io/badge/_Zero--Day_ML-Anomaly_Engine-C46B5A?style=for-the-badge&logo=smart&logoColor=000&labelColor=FFF0F0)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2)
+[![Android](https://img.shields.io/badge/_Android-arm64_·_armv7_·_x86__64-3DDC84?style=for-the-badge&logo=android&logoColor=000)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
+[![Windows](https://img.shields.io/badge/_Windows-x86__64.exe-0078D4?style=for-the-badge&logo=windows&logoColor=FFF)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
+[![Kali](https://img.shields.io/badge/_Kali_Linux-x86__64·arm64-1E3A5F?style=for-the-badge&logo=kalilinux&logoColor=FFF)](https://www.kali.org/)
 
 </div>
 
