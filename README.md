@@ -244,7 +244,7 @@ OXIDE 8.7.2 integrates a Rust-native machine-learning pipeline for HTTP behavior
 - Model persistence with serialized model export/import and validation
 - Evidence-aware analysis linking model predictions to HTTP request/response behavior instead of treating ML predictions alone as confirmed vulnerabilities
 
-«Important: ML confidence represents a model prediction, not proof of exploitability. OXIDE separates anomaly detection, candidate identification, and vulnerability validation to reduce false positives.»
+> Important: ML confidence represents a model prediction, not proof of exploitability. OXIDE separates anomaly detection, candidate identification, and vulnerability validation to reduce false positives.
 
 ## Bayesian Confidence Scoring ***Advanced***
 - `bayesian_confidence()`: sequential Bayesian update across all detection modules
