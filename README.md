@@ -72,7 +72,8 @@ sudo cp target/release/oxide /usr/local/bin/
 | **Default Creds** | Known admin creds | **DB Fingerprint** | MySQL, PG, MSSQL, Oracle, SQLite |
 | **Content Filter** | Keys, tokens, secrets | **Agent** | Deep AI-driven anomaly scan |
 | **Fuzz** ⭐ | 6000+ payload injection | **SSTI** ⭐ | Template injection (Jinja2/Freemarker/Velocity) | **still In Development**|
-> Nosql Injection Still in development 
+> Nosql Injection Still in development needs wiring 
+
 ⭐ = Default modules (runs without `--modules` flag)
 
 ---
