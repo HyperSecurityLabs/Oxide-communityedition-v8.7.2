@@ -14,24 +14,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -90,8 +85,12 @@ impl Parser {
             return Err(anyhow::anyhow!("Header must be in format 'Key:Value'"));
         }
         
-        let key = parts[0].trim().to_string();
-        let value = parts[1].trim().to_string();
+        let key = parts[0].trim().replace('\r', "").replace('\n', "");
+        let value = parts[1].trim().replace('\r', "").replace('\n', "");
+        
+        if key.is_empty() {
+            return Err(anyhow::anyhow!("Header key cannot be empty"));
+        }
         
         Ok((key, value))
     }
@@ -112,7 +111,18 @@ impl Parser {
     }
 
     pub fn parse_modules(modules: &str) -> Vec<String> {
-        modules.split(',').map(|s| s.trim().to_string()).collect()
+        modules.split(',').map(|s| Self::normalize_module(s)).collect()
+    }
+
+    fn normalize_module(raw: &str) -> String {
+        let s = raw.trim().to_lowercase();
+        match s.as_str() {
+            "zeroday" | "zero_day" => "zero-day".to_string(),
+            "cmdi" | "cmd_injection" => "fuzz".to_string(),
+            "nosql" => "nosql".to_string(),
+            "ssti" => "ssti".to_string(),
+            other => other.to_string(),
+        }
     }
 
     pub fn is_valid_domain(domain: &str) -> bool {

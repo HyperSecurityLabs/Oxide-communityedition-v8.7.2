@@ -1,4 +1,4 @@
-# OXIDE v8.6.9 Community Edition
+# OXIDE v8.7.2 Community Edition
 
 ### *"Levenshtein walked so OXIDE could run. XSStrike taught me the way — I just made it faster, meaner, and hungrier."* — khaninkali
 
@@ -58,6 +58,15 @@ Chrome under the hood. SPAs, JS-rendered content, WebSockets — if it exists in
 
 This is the last freely-available Community Edition. Future development moves exclusively to OXIDE Pro Edition. Every star on GitHub brings OXIDE closer to `sudo apt install oxide` on Kali Linux.
 
+## Ships Everywhere
+
+[![Android](https://img.shields.io/badge/_Android-arm64_·_armv7_·_x86__64-3DDC84?style=for-the-badge&logo=android&logoColor=000)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
+[![Windows](https://img.shields.io/badge/_Windows-x86__64.exe-0078D4?style=for-the-badge&logo=windows&logoColor=FFF)](https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2/releases)
+[![Kali](https://img.shields.io/badge/_Kali_Linux-x86__64·arm64-1E3A5F?style=for-the-badge&logo=kalilinux&logoColor=FFF)](https://www.kali.org/)
+
+Native binaries in `oxide-android-builds/` (Termux-ready) and `target/x86_64-pc-windows-gnu/release/oxide.exe`. See [CROSS-COMPILE.md](CROSS-COMPILE.md).
+
 Built with 🦀 Rust. Forged in the offensive security trenches. Fueled by late nights and Levenshtein distance calculations.
 
 **HyperSecurityLabs · khaninkali · Lyara-Koroleva**
+GPL-3.0

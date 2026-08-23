@@ -1,0 +1,276 @@
+<div align="center">
+
+# OXIDE v8.7.2 — Community Edition
+
+**Open eXtensible Intelligence & Detection Engine**
+
+AI-powered Zero-Day & Vulnerability Scanner
+
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-4285F4?style=for-the-badge&logo=gnu&logoColor=white)](https://www.gnu.org/licenses/gpl-3.0)
+[![Rust](https://img.shields.io/badge/Rust-2021-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![Version](https://img.shields.io/badge/Version-8.7.2-00C853?style=for-the-badge&logo=semver&logoColor=white)](https://github.com/khaninkali/oxide-ce/releases)
+
+---
+
+### 15 Modules · 13 Fuzz Engines · Unified Concurrent Scanner
+
+---
+
+</div>
+
+## Platforms
+
+<table align="center">
+<tr>
+<td align="center"><b>Linux</b></td>
+<td align="center"><b>Kali Linux</b></td>
+<td align="center"><b>Parrot OS</b></td>
+<td align="center"><b>Windows</b></td>
+<td align="center"><b>Android</b></td>
+</tr>
+<tr>
+<td align="center">Debian Package</td>
+<td align="center">MITRE ATT&CK Menu</td>
+<td align="center">Parrot Menu</td>
+<td align="center">Binary</td>
+<td align="center">Termux</td>
+</tr>
+</table>
+
+---
+
+## Downloads
+
+<table align="center">
+<tr><td><b>Platform</b></td><td><b>File</b></td><td><b>Arch</b></td><td><b>Size</b></td></tr>
+<tr><td>Linux (Debian/Ubuntu)</td><td><code>oxide-ce_8.7.2-parrot_amd64.deb</code></td><td>x86_64</td><td>4.0 MB</td></tr>
+<tr><td>Kali Linux</td><td><code>oxide-ce_8.7.2-kali_amd64.deb</code></td><td>x86_64</td><td>4.0 MB</td></tr>
+<tr><td>Windows</td><td><code>oxide-ce-8.7.2-windows-x86_64.zip</code></td><td>x86_64</td><td>—</td></tr>
+<tr><td>Android (ARM64)</td><td><code>oxide-aarch64-linux-android</code></td><td>arm64</td><td>10.2 MB</td></tr>
+<tr><td>Android (ARM32)</td><td><code>oxide-armv7-linux-androideabi</code></td><td>armv7</td><td>7.5 MB</td></tr>
+<tr><td>Android (x86_64)</td><td><code>oxide-x86_64-linux-android</code></td><td>x86_64</td><td>11.3 MB</td></tr>
+<tr><td>Android (x86)</td><td><code>oxide-i686-linux-android</code></td><td>i686</td><td>11.0 MB</td></tr>
+<tr><td>Source Code</td><td><code>oxide-ce-8.7.2-src.tar.gz</code></td><td>—</td><td>—</td></tr>
+</table>
+
+---
+
+## Quick Start
+
+### Linux / Kali / Parrot
+
+```bash
+# Parrot OS
+sudo dpkg -i oxide-ce_8.7.2-parrot_amd64.deb
+
+# Kali Linux
+sudo dpkg -i oxide-ce_8.7.2-kali_amd64.deb
+
+# Run
+oxide-ce --help
+oxide-ce -u https://example.com --modules all
+```
+
+### Windows
+
+```powershell
+# Extract and run
+.\oxide.exe --help
+.\oxide.exe -u https://example.com --modules all
+```
+
+### Android (Termux)
+
+```bash
+# Download and set permissions
+chmod +x oxide
+./oxide --help
+./oxide -u https://example.com --modules sqli,xss,lfi
+```
+
+### From Source
+
+```bash
+git clone https://github.com/khaninkali/oxide-ce.git
+cd oxide-ce
+CARGO_PROFILE_RELEASE_LTO=thin CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 cargo build --release
+./target/release/oxide --help
+```
+
+---
+
+## What's New in v8.7.2
+
+### Unified Concurrent Fuzz Engine
+
+All module selections flow through a single chunk-based concurrent engine. No more separate code paths — one engine, one execution model, maximum performance.
+
+```
+┌─ sqli ──────┐
+├─ xss ───────┤
+├─ lfi ───────┤     Unified Fuzz Engine
+├─ ssti ──────┤──→  13 Fuzz Types · Deterministic · Zero False Positive
+├─ nosql ─────┤
+├─ blind ─────┤
+├─ cmdi ──────┤
+└─ crt ───────┘
+```
+
+### SSTI — Standalone Module
+
+Server-Side Template Injection as a dedicated isolated scanner:
+
+```bash
+oxide -u https://example.com --modules ssti
+```
+
+- Brute-force payload injection across parameters
+- Baseline stability check before testing
+- `7*7 = 49` arithmetic verification
+- Covers Jinja2, Twig, Freemarker, Mako, Slim, Handlebars, Pebble, Jade
+
+### Module Isolation
+
+Single-module mode now works correctly for all 15 modules:
+
+```bash
+oxide -u https://example.com --modules sqli     # Isolated SQLi scan
+oxide -u https://example.com --modules xss      # Isolated XSS scan
+oxide -u https://example.com --modules ssti     # Isolated SSTI scan
+oxide -u https://example.com --modules fuzz     # Isolated fuzz scan
+oxide -u https://example.com --modules all      # Full scan
+```
+
+### GUI Improvements
+
+- **Proxy auto-detection**: Enter Burp proxy URL → auto-enables `--burp` and `--insecure`
+- **System binary search**: GUI finds `oxide` in `/usr/bin`, `/usr/local/bin`, and relative paths
+- **Module chips**: SSTI and Zero-Day added; dead `insta`/`SQLi-D` duplicates removed
+- **Correct defaults**: threads=5, exploitation-level=25, payloads=100
+
+### Bug Fixes
+
+- **SESSION false positives**: Cookie scanning now checks each `Set-Cookie` header individually
+- **Parameter discovery findings**: `Severity::Info` findings no longer dropped by FP filter
+- **Vulnerability count**: Info-level findings shown separately from actual vulnerabilities
+- **Payload randomization removed**: Deterministic execution eliminates false positive flapping
+- **`--compile-enc`**: No longer requires `--url` flag
+- **`normalize_module`**: `ssti` and `nosql` no longer silently mapped to `fuzz`
+
+---
+
+## Architecture
+
+```
+oxide-ce (wrapper)
+  └── /usr/bin/oxide (binary)
+        ├── src/hybrid.rs          Fuzz engine + module orchestrator
+        ├── src/cli/parser.rs      Argument parsing + module normalization
+        ├── src/cli/args.rs        CLI definitions
+        ├── src/main.rs            Entry point + module tree
+        ├── src/detection/         Detection + confirmation logic
+        ├── src/scanner/           HTTP/TLS scanning
+        ├── src/payload/           Payload generation
+        ├── src/zero_day/          ML classifier (SmartCore RF + SVC)
+        └── gui/                   Tauri-based GUI (wry + tao)
+```
+
+### Modules
+
+| Module | Type | Description |
+|--------|------|-------------|
+| `sqli` | Vulnerability | SQL Injection (error, boolean, union, time-based) |
+| `xss` | Vulnerability | Cross-Site Scripting (reflected, stored, DOM) |
+| `lfi` | Vulnerability | Local File Inclusion (traversal, wrappers, filters) |
+| `ssti` | Vulnerability | Server-Side Template Injection |
+| `fuzz` | Fuzzing | Parameter + path fuzzing (13 engine types) |
+| `tls` | Security | TLS/SSL configuration analysis |
+| `cors` | Security | Cross-Origin misconfiguration |
+| `common` | Discovery | Common files and directories |
+| `creds` | Security | Credential detection and default logins |
+| `filter` | Security | WAF/IPS detection |
+| `session` | Security | Session and cookie security |
+| `parameter-discovery` | Info | Hidden parameter discovery |
+| `agent` | Info | User-agent detection |
+| `static` | Info | Static file analysis |
+| `zero-day` | ML | AI-powered zero-day classification |
+
+---
+
+## Fuzzing Engines
+
+| Engine | Description |
+|--------|-------------|
+| SQL Injection | Error, boolean, union, time-based payloads |
+| XSS | Reflected, stored, DOM-based vectors |
+| LFI | Path traversal, wrapper, filter bypass |
+| SSTI | Template injection (7 engines) |
+| Command Injection | OS command execution |
+| CRLF | Header injection |
+| Open Redirect | URL redirect manipulation |
+| SSRF | Server-side request forgery |
+| Prototype Pollution | JavaScript prototype injection |
+| GraphQL | API introspection and injection |
+| Deserialization | Java/PHP/Python .NET payload chains |
+| Error Based | Information leakage via error messages |
+| Boolean Blind | Differential response detection |
+
+---
+
+## System Requirements
+
+- **Linux**: Debian 10+ / Ubuntu 20.04+ / Kali 2024+ / Parrot 5+
+- **Windows**: Windows 10+ (x86_64)
+- **Android**: Termux on Android 7+ (API 24)
+- **RAM**: Minimum 2GB, recommended 4GB+
+- **Disk**: 50MB for binary + database
+
+---
+
+## Build from Source
+
+### Linux
+
+```bash
+sudo apt install build-essential pkg-config libssl-dev
+CARGO_PROFILE_RELEASE_LTO=thin CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16 cargo build --release
+```
+
+### Windows
+
+```bash
+# On Windows with Rust installed
+cargo build --release
+# Output: target/release/oxide.exe
+```
+
+### Android (cross-compile)
+
+```bash
+rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android i686-linux-android
+cargo ndk -t aarch64-linux-android build --release
+```
+
+### GUI
+
+```bash
+# Linux
+sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev cmake libsoup-3.0-dev
+cd gui && cargo build --release
+```
+
+---
+
+## License
+
+GNU General Public License v3.0 — See [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built by KhaninKali · HyperSecurity Offensive Labs**
+
+[![GitHub](https://img.shields.io/badge/GitHub-khaninkali-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/khaninkali)
+
+</div>

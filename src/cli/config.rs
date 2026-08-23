@@ -14,24 +14,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -42,7 +37,7 @@
 //    クロール設定 / crawl settings — crawl_depth, max_urls, jobs, headless
 //    出力設定 / output settings — format, output, silent_mode, verbose
 //    認証設定 / auth settings — cookie, proxy
-//    モジュールフラグ / module flags — zeroday, active, train, insta, session, multiattack, download, resume
+//    モジュールフラグ / module flags — zeroday, active, train, session, multiattack, download, resume
 //    ヘッダー / headers — custom HTTP headers
 //
 use anyhow::{Context, Result};
@@ -83,13 +78,12 @@ pub struct Config {
 
     // ── AUTH ──────────────────────────────────────────────────────────────
     pub cookie: Option<String>,
-    pub proxy: Option<String>,
+    pub burp: bool,
 
     // ── MODULES ───────────────────────────────────────────────────────────
     pub zeroday: bool,
     pub active: bool,
     pub train: bool,
-    pub insta: bool,
     pub session: bool,
     pub multiattack: bool,
     pub download: bool,
@@ -112,7 +106,7 @@ impl Default for Config {
 
             timeout: 30,
             payload_limit: 100,
-            exploitation_level: 50,
+            exploitation_level: 75,
             rate_limit: None,
             duration: None,
             exclude: vec![],
@@ -128,12 +122,11 @@ impl Default for Config {
             verbose: false,
 
             cookie: None,
-            proxy: None,
+            burp: false,
 
             zeroday: false,
             active: false,
             train: false,
-            insta: false,
             session: false,
             multiattack: false,
             download: false,
@@ -170,7 +163,7 @@ impl Config {
 
             timeout: 15 + (seed as u64 % 31),
             payload_limit: 100,
-            exploitation_level: 30 + (seed as u8 % 41),
+            exploitation_level: 60 + (seed as u8 % 21),
             rate_limit: None,
             duration: None,
             exclude: vec![],
@@ -186,12 +179,11 @@ impl Config {
             verbose: false,
 
             cookie: None,
-            proxy: None,
+            burp: false,
 
             zeroday: false,
             active: false,
             train: false,
-            insta: false,
             session: false,
             multiattack: false,
             download: false,
@@ -224,7 +216,7 @@ impl Config {
     /// Save with header comments (community-style format)
     pub fn save_with_header(&self, path: &PathBuf) -> Result<()> {
         let mut content = String::new();
-        content.push_str("# OXIDE v8.6.9community — Auto-generated config\n");
+        content.push_str("# OXIDE v8.7.2-community — Auto-generated config\n");
         content.push_str("# Delete this file to regenerate with fresh randomized values.\n");
         content.push_str("# Edit any value below to override — your changes persist.\n");
         content.push_str("\n");
@@ -243,7 +235,7 @@ impl Config {
         content.push_str("# === SCAN ===\n");
         content.push_str(&format!("# timeout = {}               # randomized on first gen (15–45s)\n", self.timeout));
         content.push_str(&format!("# payload_limit = {}\n", self.payload_limit));
-        content.push_str(&format!("# exploitation_level = {}    # randomized on first gen (30–70)\n", self.exploitation_level));
+        content.push_str(&format!("# exploitation_level = {}    # randomized on first gen (60–80)\n", self.exploitation_level));
         content.push_str(&format!("# rate_limit = {}\n", self.rate_limit.map_or("0".to_string(), |v| v.to_string())));
         content.push_str(&format!("# duration = {}\n", self.duration.map_or("0".to_string(), |v| v.to_string())));
         content.push_str(&format!("# exclude = [\"{}\"]\n", self.exclude.join("\", \"")));
@@ -268,7 +260,7 @@ impl Config {
         // AUTH
         content.push_str("# === AUTH ===\n");
         content.push_str(&format!("# cookie = \"{}\"\n", self.cookie.as_deref().unwrap_or("")));
-        content.push_str(&format!("# proxy = \"{}\"\n", self.proxy.as_deref().unwrap_or("")));
+        content.push_str(&format!("# burp = {}\n", self.burp));
         content.push_str("\n");
 
         // MODULES
@@ -276,7 +268,6 @@ impl Config {
         content.push_str(&format!("# zeroday = {}\n", self.zeroday));
         content.push_str(&format!("# active = {}\n", self.active));
         content.push_str(&format!("# train = {}\n", self.train));
-        content.push_str(&format!("# insta = {}\n", self.insta));
         content.push_str(&format!("# session = {}\n", self.session));
         content.push_str(&format!("# multiattack = {}\n", self.multiattack));
         content.push_str(&format!("# download = {}\n", self.download));

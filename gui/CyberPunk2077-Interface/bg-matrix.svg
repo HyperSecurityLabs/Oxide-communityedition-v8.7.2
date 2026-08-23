@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="void" cx="50%" cy="35%" r="90%">
+      <stop offset="0%" stop-color="#07130c"/>
+      <stop offset="55%" stop-color="#040a06"/>
+      <stop offset="100%" stop-color="#010301"/>
+    </radialGradient>
+    <linearGradient id="rain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c3d825" stop-opacity=".85"/>
+      <stop offset="60%" stop-color="#68be8d" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#007b43" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gridline" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#68be8d" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#68be8d" stop-opacity=".02"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#void)"/>
+
+  <!-- perspective floor grid -->
+  <g stroke="url(#gridline)" stroke-width="1">
+    <path d="M0 810 L1920 810"/><path d="M0 858 L1920 850"/><path d="M0 914 L1920 898"/>
+    <path d="M0 978 L1920 954"/><path d="M0 1050 L1920 1018"/>
+    <path d="M240 1080 L560 780"/><path d="M640 1080 L770 780"/><path d="M960 1080 L960 780"/>
+    <path d="M1280 1080 L1150 780"/><path d="M1680 1080 L1360 780"/>
+  </g>
+
+  <!-- falling glyph columns -->
+  <g font-family="'Noto Sans JP',monospace" font-size="26" fill="url(#rain)" filter="url(#glow)">
+    <text x="120" y="-20">脳</text><text x="120" y="52">走</text><text x="120" y="124">査</text>
+    <text x="360" y="-60">零</text><text x="360" y="18">日</text><text x="360" y="96">電</text><text x="360" y="168">脳</text>
+    <text x="610" y="-40">侵</text><text x="610" y="34">入</text>
+    <text x="860" y="-80">破</text><text x="860" y="-4">壊</text><text x="860" y="72">検</text><text x="860" y="148">知</text>
+    <text x="1110" y="-30">偽</text><text x="1110" y="44">陽</text>
+    <text x="1360" y="-70">改</text><text x="1360" y="6">竄</text><text x="1360" y="84">注</text><text x="1360" y="160">入</text>
+    <text x="1610" y="-46">漆</text><text x="1610" y="28">黒</text>
+    <text x="1810" y="-24">刃</text><text x="1810" y="50">鬼</text>
+  </g>
+  <g font-family="'Noto Sans JP',monospace" font-size="15" fill="#68be8d" opacity=".22">
+    <text x="90" y="300">01101100 0x1f 走査 1001</text>
+    <text x="700" y="420">SQLi XSS CMDi NoSQLi SSTI</text>
+    <text x="1300" y="260">0xFE 0x27 UNION SELECT 01001</text>
+    <text x="420" y="560">&gt;&gt; payload_stream :: shuffled :: seeded</text>
+    <text x="1100" y="620">[det:0] [err:0] eta --:--</text>
+  </g>
+
+  <!-- horizon scanline -->
+  <rect x="0" y="776" width="1920" height="3" fill="#c3d825" opacity=".28" filter="url(#glow)"/>
+  <rect x="0" y="782" width="1920" height="1" fill="#68be8d" opacity=".18"/>
+
+  <!-- vignette -->
+  <rect width="1920" height="1080" fill="black" opacity=".18"/>
+</svg>

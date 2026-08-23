@@ -170,7 +170,7 @@
 
   <rect x="392" y="838" width="240" height="30" rx="15" fill="none" stroke="#38B48B" stroke-width="1.5" opacity="0.55"/>
   <rect x="394" y="840" width="236" height="26" rx="13" fill="#F7D7D9" opacity="0.04"/>
-  <text x="512" y="858" font-family="'Courier New','Consolas',monospace" font-size="14" fill="#F7D7D9" text-anchor="middle" letter-spacing="5" opacity="0.85">COMMUNITY v8.6.9</text>
+  <text x="512" y="858" font-family="'Courier New','Consolas',monospace" font-size="14" fill="#F7D7D9" text-anchor="middle" letter-spacing="5" opacity="0.85">COMMUNITY v8.7.2</text>
 
   <line x1="200" y1="900" x2="824" y2="900" stroke="#E83929" stroke-width="1.5" opacity="0.35"/>
   <line x1="200" y1="905" x2="824" y2="905" stroke="#38B48B" stroke-width="0.8" opacity="0.18" stroke-dasharray="4 6"/>

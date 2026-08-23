@@ -16,24 +16,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -60,6 +55,8 @@ pub struct BlindSqliScanner {
     baseline_time: Duration,
     threshold_multiplier: f64,
     target: String,
+    /// Suppress internal progress prints (live-bar worker mode).
+    silent: bool,
 }
 
 impl BlindSqliScanner {
@@ -73,32 +70,45 @@ impl BlindSqliScanner {
             baseline_time: Duration::from_millis(0),
             threshold_multiplier: 2.5,
             target,
+            silent: false,
         })
+    }
+
+    /// Suppress internal progress prints (used by live-bar workers).
+    pub fn set_silent(&mut self, silent: bool) {
+        self.silent = silent;
     }
 
     /// Perform comprehensive blind SQL injection scan
     pub async fn comprehensive_scan(&mut self, url: &str, params: &[String]) -> Result<Vec<Finding>> {
-        println!("[*] Performing comprehensive blind SQL injection scan on {} (target: {})", url, self.target);
+        if !self.silent {
+            println!("[*] Performing comprehensive blind SQL injection scan on {} (target: {})", url, self.target);
+        }
         
         // Establish baseline response time
         self.establish_baseline(url, params).await?;
         
         // Test each parameter for blind SQL injection
         for param in params {
-            println!("  [*] Testing parameter: {} for blind SQL injection", param);
+            if !self.silent {
+                println!("  [*] Testing parameter: {} for blind SQL injection", param);
+            }
             
-            // Test boolean-based blind SQLi
+            // Test boolean-based blind SQLi (cheap differential first)
             if let Some(finding) = self.test_boolean_blind_sqli(url, param).await {
                 self.findings.push(finding);
             }
-            
-            // Test time-based blind SQLi
+
+            // Time-based blind SQLi — expensive sleeps, run as confirmation
             if let Some(finding) = self.test_time_blind_sqli(url, param).await {
                 self.findings.push(finding);
             }
         }
-        
-        Ok(self.findings.clone())
+
+        // return ONLY this URL's findings (prevents cross-URL duplicates)
+        let mut out = Vec::new();
+        std::mem::swap(&mut out, &mut self.findings);
+        Ok(out)
     }
 
     /// Establish baseline response time
@@ -176,9 +186,22 @@ impl BlindSqliScanner {
             let (true_text, _) = true_resp;
             let (false_text, _) = false_resp;
 
-                if true_text != false_text && 
-               (self.has_different_content(true_text, false_text) || 
+                if true_text != false_text &&
+               (self.has_different_content(true_text, false_text) ||
                 self.has_different_length(true_text, false_text)) {
+                    //  AI補強 / ResponseAnalyzer cross-checks the differential
+                    //  for SQL error signatures — enriches evidence, never
+                    //  creates findings on its own.
+                    let analyzer =
+                        crate::ai::response_analyzer::ResponseAnalyzer::new(0.3);
+                    let ai_analysis = analyzer.analyze(false_text, 0);
+                    let mut evidence = format!(
+                        "True condition: {} | False condition: {}",
+                        "' AND '1'='1", "' AND '1'='2"
+                    );
+                    if !ai_analysis.evidence.is_empty() {
+                        evidence.push_str(&format!(" | AI: {}", ai_analysis.evidence.join("; ")));
+                    }
                 return Some(
                     Finding::new(
                         url,
@@ -186,8 +209,7 @@ impl BlindSqliScanner {
                         &format!("Boolean-based Blind SQL Injection in parameter '{}'", param),
                         &format!("Parameter '{}' shows different responses for true/false SQL conditions", param)
                     )
-                    .with_evidence(&format!("True condition: {} | False condition: {}", 
-                                            "' AND '1'='1", "' AND '1'='2"))
+                    .with_evidence(&evidence)
                     .with_remediation("Use parameterized queries and input validation")
                 );
             }

@@ -1,11 +1,11 @@
 Package: oxide-ce
-Version: 8.6.9community-edition
+Version: 8.7.2
 Architecture: amd64
 Section: net
 Priority: optional
 Maintainer: KhaninKali <KhaninKali@hypersecuritylabs>
-Installed-Size: 11608
-Depends: libssl3, libc6, libgcc-s1, zlib1g, libzstd1
+Installed-Size: 8600
+Depends: libc6, libgcc-s1, zlib1g, libzstd1
 Homepage: https://hypersecurityoffensivelabs-about.is-best.net/
 Rules-Requires-Root: no
 XB-Kali-Package: oxide-ce
@@ -55,6 +55,7 @@ Description: OXIDE Community Edition — AI-powered Zero-Day & vulnerability sca
    * BlazingShadow™ Dedup Engine — eliminates duplicate findings
    * Bandwidth control with token bucket rate limiting
    * Distributed scanning via cluster architecture
-   * Proxy support (HTTP/HTTPS) with rotating user agents
+    * Burp Suite Pro integration via --burp flag
+    * Module isolation — default sqli,xss,lfi,fuzz; --modules all for full scan
    * Color-coded severity output (Critical/High/Medium/Low/Info)
    * CI/CD integration via JSON/XML/CSV/HTML export and exit codes

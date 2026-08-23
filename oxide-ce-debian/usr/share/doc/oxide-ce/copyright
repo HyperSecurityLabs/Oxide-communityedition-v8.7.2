@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: oxide-ce
 Upstream-Contact: KhaninKali @ HyperSecurity Offensive Labs
-Source: https://github.com/HyperSecurityLabs/oxide-communityedition-v8.6.9
+Source: https://github.com/HyperSecurityLabs/oxide-communityedition-v8.7.2
 
 Files: *
 Copyright: 2026 HyperSecurity Offensive Labs

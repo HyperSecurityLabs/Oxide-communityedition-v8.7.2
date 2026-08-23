@@ -40,7 +40,7 @@ fn main() {
     let proxy = event_loop.create_proxy();
 
     let window = WindowBuilder::new()
-        .with_title("OXIDE Community v8.6.9")
+        .with_title("OXIDE Community v8.7.2")
         .with_inner_size(LogicalSize::new(1200.0, 780.0))
         .with_min_inner_size(LogicalSize::new(800.0, 560.0))
         .with_decorations(false)
@@ -75,7 +75,7 @@ fn main() {
                     "cmd:close" => { *control_flow = ControlFlow::Exit; }
                     "cmd:minimize" => { window.set_minimized(true); }
                     "cmd:maximize" => { window.set_maximized(!window.is_maximized()); }
-                    _ => { let _ = wv.lock().unwrap().evaluate_script(&js); }
+                    _ => { let _ = wv.lock().unwrap_or_else(|e| e.into_inner()).evaluate_script(&js); }
                 }
             }
             _ => {}

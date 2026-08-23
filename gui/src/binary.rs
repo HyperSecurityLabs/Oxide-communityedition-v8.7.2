@@ -32,17 +32,30 @@ fn sanitize(s: &str) -> String {
 }
 
 pub fn find_oxide_binary() -> std::path::PathBuf {
+    let system_paths = [
+        "/usr/bin/oxide",
+        "/usr/local/bin/oxide",
+        "/usr/bin/oxide-ce",
+        "/usr/local/bin/oxide-ce",
+        "/opt/oxide/oxide",
+    ];
+    for p in &system_paths {
+        if std::path::Path::new(p).exists() {
+            return std::path::PathBuf::from(p);
+        }
+    }
+
+    let cwd = std::env::current_dir().unwrap_or_default();
     let candidates = [
-        "../../target/release/oxide-ce",
-        "../target/release/oxide-ce",
-        "target/release/oxide-ce",
         "../../target/release/oxide",
         "../target/release/oxide",
         "target/release/oxide",
-        "oxide-ce",
+        "../../target/release/oxide-ce",
+        "../target/release/oxide-ce",
+        "target/release/oxide-ce",
         "oxide",
+        "oxide-ce",
     ];
-    let cwd = std::env::current_dir().unwrap_or_default();
     for rel in &candidates {
         let p = cwd.join(rel);
         if p.exists() { return p; }
@@ -53,7 +66,13 @@ pub fn find_oxide_binary() -> std::path::PathBuf {
             if p.exists() { return p; }
         }
     }
-    std::path::PathBuf::from("oxide-ce")
+
+    for p in &system_paths {
+        if std::path::Path::new(p).exists() {
+            return std::path::PathBuf::from(p);
+        }
+    }
+    std::path::PathBuf::from("oxide")
 }
 
 fn needs_root(params: &std::collections::HashMap<String, String>) -> bool {
@@ -107,11 +126,11 @@ pub fn spawn_scan(
     opt!("output", "-o");
     opt!("ua", "--user-agent");
     opt!("cookie", "--cookie");
-    opt!("proxy", "--proxy");
+    opt!("burp", "--burp");
     opt!("exclude", "--exclude");
 
     if let Some(v) = params.get("modules") {
-        if !v.is_empty() && v != "all" { cmd.arg("--modules").arg(v); }
+        if !v.is_empty() { cmd.arg("--modules").arg(v); }
     }
 
     if let Some(v) = params.get("rate") {
@@ -142,11 +161,11 @@ pub fn spawn_scan(
         ("zeroday", "--zeroday"),
         ("active", "--active"),
         ("train", "--train"),
-        ("insta", "--insta"),
         ("session", "--session"),
         ("multi", "--multiattack"),
         ("headless", "--headless"),
         ("resume", "--resume"),
+        ("burp", "--burp"),
     ];
     for (key, flag) in &flags {
         if let Some(v) = params.get(*key) {
@@ -159,7 +178,7 @@ pub fn spawn_scan(
     match cmd.spawn() {
         Ok(mut child) => {
             let pid = child.id();
-            *child_pid.lock().unwrap() = Some(pid);
+            *child_pid.lock().unwrap_or_else(|e| e.into_inner()) = Some(pid);
             let _ = proxy.send_event(format!("setStatus('SCANNING  PID:{}','scanning')", pid));
 
             let stdout = child.stdout.take();
@@ -215,7 +234,7 @@ pub fn spawn_scan(
                 }
             }
             running.store(false, Ordering::SeqCst);
-            *child_pid.lock().unwrap() = None;
+            *child_pid.lock().unwrap_or_else(|e| e.into_inner()) = None;
             let _ = proxy.send_event("setRunning(false)".to_string());
         }
         Err(e) => {

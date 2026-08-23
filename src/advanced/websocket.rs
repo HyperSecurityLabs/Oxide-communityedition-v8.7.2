@@ -12,24 +12,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -491,12 +486,16 @@ impl WebSocketTester {
                                     &response[..response.floor_char_boundary(response.len().min(100))]),
                             });
                         }
-                        Err(_) => {}
+                        Err(e) => {
+                            eprintln!("  [!] WS auth-bypass send failed: {}", e);
+                        }
                     }
                 }
                 let _ = self.close_connection(&mut stream).await;
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] WS auth-bypass connection failed: {}", e);
+            }
         }
         
         // Test 2: Try common authentication bypass headers
@@ -545,7 +544,9 @@ impl WebSocketTester {
                     }
                     let _ = self.close_connection(&mut stream).await;
                 }
-                Err(_) => {}
+                Err(e) => {
+                    eprintln!("  [!] WS unauthenticated connection failed: {}", e);
+                }
             }
             
             tokio::time::sleep(Duration::from_millis(100)).await;
@@ -588,14 +589,18 @@ impl WebSocketTester {
                                 });
                             }
                         }
-                        Err(_) => {}
+                        Err(e) => {
+                            eprintln!("  [!] WS unauthenticated send failed: {}", e);
+                        }
                     }
                     tokio::time::sleep(Duration::from_millis(50)).await;
                 }
                 
                 let _ = self.close_connection(&mut stream).await;
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] WS unauthenticated op connection failed: {}", e);
+            }
         }
         
         findings
@@ -636,7 +641,9 @@ impl WebSocketTester {
                     _ => {}
                 }
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] WS format confusion connection failed: {}", e);
+            }
         }
         
         // Test 2: Control frame injection
@@ -667,7 +674,9 @@ impl WebSocketTester {
                     }
                 }
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] WS control frame test connection failed: {}", e);
+            }
         }
         
         // Test 3: Fragmented message with mixed opcodes
@@ -707,7 +716,9 @@ impl WebSocketTester {
                     _ => {}
                 }
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] WS fragmentation test connection failed: {}", e);
+            }
         }
         
         findings

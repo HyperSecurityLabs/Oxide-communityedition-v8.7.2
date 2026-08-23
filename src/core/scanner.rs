@@ -12,24 +12,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -122,7 +117,9 @@ impl Scanner {
                         response: Some(response),
                         payload: path.clone(),
                     };
-                    let _ = self.tx.send(result).await;
+                    if self.tx.send(result).await.is_err() {
+                        // Channel closed — results will be collected via other paths
+                    }
                 }
                 Err(e) => {
                     eprintln!("  [!] Request failed on {}: {}", url, e);
@@ -138,7 +135,6 @@ impl Scanner {
     //  scan_params: パラメータベースの電脳走査
     //  Scans query parameters by appending ?payload to the target URL.
     //  クエリ文字列インジェクションをテスト
-    //  エラーはサイレント無視 (Err(_) => {})
     async fn scan_params(&self, params: &[String]) -> Result<()> {
         let spinner = Spinner::param_spinner();
 
@@ -154,9 +150,13 @@ impl Scanner {
                         response: Some(response),
                         payload: param.clone(),
                     };
-                    let _ = self.tx.send(result).await;
+                    if self.tx.send(result).await.is_err() {
+                        // Channel closed — results will be collected via other paths
+                    }
                 }
-                Err(_) => {}
+                Err(e) => {
+                    eprintln!("  [!] Param scan request failed for {}: {}", url, e);
+                }
             }
 
             let _ = spinner.next();
@@ -191,9 +191,13 @@ impl Scanner {
                         response: Some(response),
                         payload: header_str.clone(),
                     };
-                    let _ = self.tx.send(result).await;
+                    if self.tx.send(result).await.is_err() {
+                        // Channel closed — results will be collected via other paths
+                    }
                 }
-                Err(_) => {}
+                Err(e) => {
+                    eprintln!("  [!] Header scan request failed: {}", e);
+                }
             }
 
             let _ = spinner.next();
@@ -206,27 +210,49 @@ impl Scanner {
     //  Sends payloads as POST body content for parameter/body injection testing.
     //  POSTリクエストのボディにペイロードを電脳設定して送信
     //  HTTP POST + raw body の両方をテスト
-    pub async fn scan_body(&self, payloads: &[String]) -> Result<()> {
+    pub async fn scan_body(&self, payloads: &[String]) -> Result<Vec<crate::detection::analyzer::Finding>> {
+        use crate::detection::analyzer::{Finding, Severity};
+        let mut findings = Vec::new();
         for payload in payloads {
             let url = format!("{}", self.args.target_url());
-
-            let _test_post = self.client.post(&url, payload).await;
 
             let request = HttpRequest::post(&url, payload);
 
             match self.client.send(request).await {
                 Ok(response) => {
+                    let body_text = &response.body;
+                    let is_error_like = response.status >= 400
+                        || body_text.to_lowercase().contains("error")
+                        || body_text.to_lowercase().contains("exception")
+                        || body_text.to_lowercase().contains("stack trace")
+                        || body_text.to_lowercase().contains("syntax");
+
+                    if is_error_like && !body_text.is_empty() {
+                        findings.push(Finding {
+                            url: url.clone(),
+                            title: format!("Body injection response (HTTP {})", response.status),
+                            severity: Severity::Medium,
+                            evidence: format!("Payload '{}' triggered HTTP {}", payload, response.status),
+                            description: "POST body payload triggered an error response. Possible injection vector.".to_string(),
+                            remediation: "Validate and sanitize all POST body inputs server-side".to_string(),
+                        });
+                    }
+
                     let result = ScanResult {
                         url: url.clone(),
                         status: response.status,
                         response: Some(response),
                         payload: payload.clone(),
                     };
-                    let _ = self.tx.send(result).await;
+                    if self.tx.send(result).await.is_err() {
+                        // Channel closed — results will be collected via other paths
+                    }
                 }
-                Err(_) => {}
+                Err(e) => {
+                    eprintln!("  [!] Body scan request failed: {}", e);
+                }
             }
         }
-        Ok(())
+        Ok(findings)
     }
 }

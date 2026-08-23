@@ -1,12 +1,11 @@
 [Desktop Entry]
-Name=oXide8.6.9
-GenericName=open eXtensible intelligence and detection engine
-Comment=HyperSecurityLabs — oXide v8.6.9 CE — AI-powered zero-day web exploitation & vulnerability scanner
-Exec=oxide-ce
+Name=OXIDE CE
+Comment=AI-powered Zero-Day & Vulnerability Scanner
+Encoding=UTF-8
+Exec=/usr/bin/oxide-ce
 Icon=oxide-community
+StartupNotify=false
 Terminal=true
 Type=Application
-Categories=kali-web-vulnerability-scanning;kali-initial-access;kali-reconnaissance;
-Keywords=scanner;vulnerability;security;web;hypersecurity;khaninkali;oxide;
-StartupNotify=true
-StartupWMClass=oxide-community
+Categories=01-reconnaissance;
+Keywords=scanner;vulnerability;security;web;sqli;xss;lfi;fuzz;ssti;burp;nikto;nuclei;

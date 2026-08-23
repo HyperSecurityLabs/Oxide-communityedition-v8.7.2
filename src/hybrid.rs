@@ -18,24 +18,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -43,7 +38,7 @@ use anyhow::Result;
 use colored::Colorize;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
-use std::sync::Mutex;
+use tokio::sync::Mutex;
 use std::time::Duration;
 use tokio::sync::mpsc;
 use url::Url;
@@ -59,7 +54,6 @@ use crate::http::client::{HttpClient, HttpClientConfig};
 use crate::http::headless::HeadlessCrawler;
 use crate::
 detection::behavior::BehaviorAnalyzer;
-use crate::detection::signatures::SignatureDatabase;
 use crate::report::html::HtmlReport;
 use crate::payload::generator::PayloadGenerator;
 use crate::payload::fuzzer::Fuzzer;
@@ -85,9 +79,9 @@ use crate::recon::{ActiveRecon, ReconResult};
 use oxide::utils::time::TimeUtil;
 use crate::zero_day::engine::ZeroDayEngine;
 
-//  HybridScanner — メイン電脳走査オーケストレーター / main scan orchestrator
-//  8+フェーズを調整: RECON  CRAWL  FUZZ  SQLi  XSS  LFI  TLS  CORS
-//  orchestrates 8+ phases: recon, crawl, fuzz, sqli, xss, lfi, tls, cors, common, creds, filter, ml
+//  HybridScanner — the main character of this show
+//  8+ phases of pure scan aggression: RECON  CRAWL  FUZZ  SQLi  XSS  LFI  TLS  CORS
+//  This thing has more phases than your teenage rebellious period.
 pub struct HybridScanner {
     args: CliArgs,
     client: Arc<HttpClient>,
@@ -97,8 +91,9 @@ pub struct HybridScanner {
     fuzzer: Fuzzer,
     analyzer: Analyzer,
     findings: Vec<Finding>,
+    discovered_urls: Vec<String>,
+    downloader: Option<crate::utils::downloader::Downloader>,
     behavior_analyzer: BehaviorAnalyzer,
-    signature_db: SignatureDatabase,
     zero_day_engine: ZeroDayEngine,
     pub req_count: AtomicUsize,
 }
@@ -107,19 +102,21 @@ pub struct HybridScanner {
 //  全フェーズの初期化・実行・結果収集を担当 / handles init, execution, and result collection for all phases
 impl HybridScanner {
     pub fn get_discovered_urls(&self) -> Vec<String> {
-        Vec::new()
+        self.discovered_urls.clone()
     }
 
-    //  コンストラクタ / constructor — initializes HTTP client, crawlers, scanner, fuzzer, analyzer, ML engine
+    //  コンストラクタ / constructor — builds the whole damn arsenal
+    //  Initializes: HTTP client, crawlers, scanner, fuzzer, analyzer, ML engine
+    //  Basically loads the gun, aims it, and lets the user pull the trigger
     pub fn new(args: CliArgs) -> Result<Self> {
         // Use TimeUtil::sleep for brief initialization delay
         TimeUtil::sleep(std::time::Duration::from_millis(50));
         
         let client_config = HttpClientConfig {
-            insecure: args.insecure,
+            insecure: args.insecure || args.burp,
             follow_redirects: true,
             max_redirects: args.max_redirects,
-            proxy: args.proxy.clone(),
+            proxy: if args.burp { Some("http://127.0.0.1:8080".to_string()) } else { None },
             user_agent: args.user_agent.clone(),
             cookie: args.cookie.clone(),
             jobs: args.jobs,
@@ -128,10 +125,10 @@ impl HybridScanner {
         let client = Arc::new(client);
 
         let crawler_config = HttpClientConfig {
-            insecure: args.insecure,
+            insecure: args.insecure || args.burp,
             follow_redirects: true,
             max_redirects: args.max_redirects,
-            proxy: args.proxy.clone(),
+            proxy: if args.burp { Some("http://127.0.0.1:8080".to_string()) } else { None },
             user_agent: args.user_agent.clone(),
             cookie: args.cookie.clone(),
             jobs: args.jobs,
@@ -156,15 +153,13 @@ impl HybridScanner {
         };
 
         let payload_gen = PayloadGenerator::new();
-        let (tx, _rx) = mpsc::channel(100);
+        let (tx, _rx) = mpsc::channel(500);
 
         let scanner = Scanner::new(client.clone(), args.clone(), payload_gen.clone(), tx.clone());
         let fuzzer = Fuzzer::new();
         let analyzer = Analyzer::new();
 
         let behavior_analyzer = BehaviorAnalyzer::new();
-        let signature_db = SignatureDatabase::new();
-        let zero_day_engine = ZeroDayEngine::new();
 
         Ok(Self {
             args,
@@ -175,41 +170,71 @@ impl HybridScanner {
             fuzzer,
             analyzer,
             findings: Vec::new(),
+            discovered_urls: Vec::new(),
+            downloader: None,
             behavior_analyzer,
-            signature_db,
-            zero_day_engine,
+            zero_day_engine: ZeroDayEngine::new(),
             req_count: AtomicUsize::new(0),
         })
     }
 
-    //  メイン電脳走査実行 / main scan execution
-    //  全8+フェーズを逐次実行 / executes all 8+ phases sequentially
+    //  メイン電脳走査実行 / main scan execution — where the magic (and destruction) happens
+    //  All 8+ phases run sequentially, each one probing deeper
+    //  like a curious cat that won't stop until it breaks something
     //  各フェーズ: タイムアウトチェック  モジュールフィルタ  実行  結果収集
     //  each phase: timeout check  module filter  execute  collect findings
     pub async fn run_hybrid_scan(&mut self) -> Result<Vec<Finding>> {
         let mut modules = self.args.get_modules();
-        if self.args.insta && !modules.contains(&"insta".to_string()) {
-            modules.push("insta".to_string());
-        }
         if self.args.session && !modules.contains(&"session".to_string()) {
             modules.push("session".to_string());
         }
         let excluded = self.args.get_excluded();
         let verbose = self.args.verbose;
+        let silent = self.args.silent_mode;
+        //  電脳孤立モード / isolated mode — exactly one module selected:
+        //  dedicated scanners switch to concurrent dispatch + LiveProgress.
+        //  --modules all keeps the classic sequential pipeline.
+        let isolated = modules.len() == 1 && !modules.contains(&"all".to_string());
+        //  FUZZ統合 / module scans are bound to the concurrent fuzz engine.
+        //  When it runs, dedicated sqli/xss/lfi blocks skip (no double-dipping).
+        let mut fuzz_covered = false;
 
         let parsed_url = Parser::ensure_http(self.args.target_url());
         if !UrlUtil::is_valid_url(&parsed_url) {
             return Err(anyhow::anyhow!("Invalid target URL"));
         }
 
-        let _target_domain = if let Ok(url) = Url::parse(&parsed_url) {
-            UrlUtil::extract_domain(&url)
-        } else {
-            parsed_url.clone()
-        };
-
         let start = std::time::Instant::now();
         let mut all_findings = Vec::new();
+
+        //  RESUME / チェックポイント復元 — default-on for every scan (--no-resume opts out)
+        let checkpoint_cache = oxide::advanced::cache::ScanCache::new_sync("checkpoints");
+        if self.args.resume_enabled() {
+            let host = Url::parse(&parsed_url)
+                .ok()
+                .and_then(|u| u.host_str().map(|h| h.to_string()))
+                .unwrap_or_default();
+            let saved = checkpoint_cache.list_checkpoints().await;
+            if let Some(cp) = saved
+                .iter()
+                .filter(|c| c.target.contains(&host))
+                .max_by_key(|c| c.last_update)
+            {
+                println!(
+                    "  {} Resumed checkpoint for {} — {} urls / {} findings restored",
+                    tc("[↺]", FUJI),
+                    tc(&cp.target, HISUI),
+                    cp.completed_urls.len(),
+                    cp.findings.len()
+                );
+                for u in &cp.completed_urls {
+                    if !self.discovered_urls.contains(u) {
+                        self.discovered_urls.push(u.clone());
+                    }
+                }
+                all_findings.extend(cp.findings.iter().cloned());
+            }
+        }
         let duration_limit = if self.args.duration > 0 {
             Some(std::time::Duration::from_secs(self.args.duration))
         } else {
@@ -229,17 +254,15 @@ impl HybridScanner {
 
         println!("  {} {} {}",
             tc("◆", HISUI),
-
             tc("Engines initialised — starting scan with", TSUYUKUSA),
-
             tc(&modules.join(", "), HISUI).bold());
+        print_module_info(&modules, &excluded);
         Output::print_line();
 
-        // 
-        //  PHASE 1: TARGET RECON — Fingerprint, WAF, Server Info, OS
-        //   アクティブ/パッシブリコン / active or passive reconnaissance
-        //   WAF電脳検出・サーバーフィンガープリント・OS識別・ポート電脳走査
-        //   WAF detection, server fingerprint, OS identification, port scan
+        //
+        //  PHASE 1: TARGET RECON — Strip the target down to its birthday suit
+        //   WAF detection, server fingerprint, OS identification, port scanning
+        //   We see everything. Nothing hides from us. We're the paparazzi of the internet.
         // 
 
         check_timeout!();
@@ -293,12 +316,12 @@ impl HybridScanner {
                     }.await
                 );
 
-                let _ua_probes = recon_step!(
+                recon_step!(
                     "Multi-UA probe (5 agents)",
                     recon.probe_with_all_agents(self.args.target_url()).await
                 );
 
-                let _error_pages = recon_step!(
+                recon_step!(
                     "Error page probing (6 paths, parallel)",
                     recon.detect_error_pages().await
                 );
@@ -459,10 +482,11 @@ impl HybridScanner {
             }
         }
 
-        // 
-        //  PHASE 2: CRAWL — Discover URLs, forms, links, JS endpoints
-        //   BFSクロール / BFS web crawl — discovers site structure
-        //   Headless Chrome対応 / supports headless Chrome for JS rendering
+        //
+        //  PHASE 2: CRAWL — Spider through the site like a hungover bee
+        //   BFS web crawl — discovers site structure, URLs, forms, scripts
+        //   Headless Chrome option for those fancy JavaScript-heavy sites
+        //   Basically Googlebot but with intentions.
         // 
 
         check_timeout!();
@@ -514,7 +538,7 @@ impl HybridScanner {
         let max_payload = base_payloads;
 
         // Auto-downloader — active when --download flag is set
-        let _downloader = if self.args.download {
+        self.downloader = if self.args.download {
             use crate::utils::downloader::Downloader;
             let dl = Downloader::new(self.args.target_url());
             println!(
@@ -537,34 +561,50 @@ impl HybridScanner {
             }
         }
 
-        let new_sig = crate::detection::signatures::VulnSignature {
-            id: "OXIDE-TEST".to_string(),
-            name: "Custom Test Sig".to_string(),
-            severity: "Info".to_string(),
-            pattern: r"test".to_string(),
-            description: "Test signature".to_string(),
-            remediation: "None".to_string(),
-        };
-        self.signature_db.add(new_sig);
-
-        // 
-        //  PHASE 3: FUZZING — Fuzz all discovered URLs with payloads
-        //   同時ファジングエンジン / concurrent fuzzing engine
-        //   SQLi / XSS / LFI / CMDi / NoSQL ペイロード注入 / payload injection
-        //   チャンクベース並行アーキテクチャ / chunk-based async architecture
+        //
+        //  PHASE 3: FUZZING — Poke every parameter until something screams
+        //   Concurrent payload injection engine: SQLi / XSS / LFI / CMDi / NoSQL
+        //   Chunk-based async architecture — like throwing spaghetti at a wall,
+        //   except the wall is a web server and the spaghetti is malicious payloads.
         // 
 
         check_timeout!();
-        if modules.contains(&"all".to_string()) || modules.contains(&"fuzz".to_string()) {
+        //  統合ゲート / the concurrent fuzz engine owns ALL payload-module
+        //  scanning — isolation included. One architecture, one live display:
+        //  --modules sqli shows the SQLi pip first, advances on completion.
+        if modules.contains(&"all".to_string())
+            || modules.contains(&"fuzz".to_string())
+            || modules.contains(&"sqli".to_string())
+            || modules.contains(&"xss".to_string())
+            || modules.contains(&"lfi".to_string())
+        {
             if !excluded.contains(&"fuzz".to_string()) {
-                let fuzz_modules: &[(&str, usize)] = &[
-                    ("SQLi",  max_payload.min(8)),
-                    ("SQLi-D", (max_payload / 2).max(1).min(4)),
-                    ("XSS",   max_payload.min(8)),
-                    ("LFI",   max_payload.min(6)),
-                    ("CMDi",  (max_payload / 2).max(1).min(4)),
-                    ("NoSQL", max_payload.min(6)),
-                ];
+                fuzz_covered = true;
+                //  選択適応モジュール連鎖 / adaptive chain — show ONLY what the
+                //  user selected: --modules sqli,xss → "SQLi › SQLi-D › XSS".
+                //  CMDi / NoSQL are fuzz-phase extras, shown on all/fuzz runs.
+                let want = |k: &str| {
+                    modules.contains(&"all".to_string()) || modules.contains(&k.to_string())
+                };
+                let cap_hi = max_payload.min(8);
+                let cap_md = (max_payload / 2).max(1).min(4);
+                let cap_lo = max_payload.min(6);
+                let mut fuzz_modules: Vec<(&str, usize)> = Vec::new();
+                if want("sqli") {
+                    fuzz_modules.push(("SQLi", cap_hi));
+                    fuzz_modules.push(("SQLi-D", cap_md));
+                }
+                if want("xss") {
+                    fuzz_modules.push(("XSS", cap_hi));
+                }
+                if want("lfi") {
+                    fuzz_modules.push(("LFI", cap_lo));
+                }
+                if want("fuzz") {
+                    fuzz_modules.push(("CMDi", cap_md));
+                    fuzz_modules.push(("SSTI", cap_md));
+                    fuzz_modules.push(("NoSQL", cap_lo));
+                }
                 let payloads_per_param: usize = fuzz_modules.iter().map(|(_, c)| c).sum();
                 let mut url_payload_counts: Vec<usize> = Vec::new();
                 for url in &crawled_urls {
@@ -572,10 +612,20 @@ impl HybridScanner {
                     url_payload_counts.push(n);
                 }
                 let total_payloads: usize = url_payload_counts.iter().sum();
+                //  走査見積り / per-scanner payload estimate — req totals up front
+                let estimate: String = fuzz_modules.iter()
+                    .map(|(l, c)| format!("{}×{}", l, c))
+                    .collect::<Vec<_>>()
+                    .join("  ");
                 println!("  {} {}  {}",
                     tc("┌─", HISUI),
                     tc("FUZZING → Payload injection on all discovered URLs", FUJI),
                     tc(&format!("[level={}, payloads/param={}]", self.args.exploitation_level, max_payload), GIN));
+                println!("  {} {}  {} URLs × params → {} requests",
+                    tc("│", HISUI),
+                    tc(&estimate, TSUYUKUSA),
+                    tc(&crawled_urls.len().to_string(), WAKABA),
+                    tc(&format!("{}", total_payloads), SHU));
                 let fuzz_start = std::time::Instant::now();
                 let mut total_detections = 0usize;
                 let mut total_errors = 0usize;
@@ -588,7 +638,7 @@ impl HybridScanner {
                 let prog_fuzz_url = Arc::new(Mutex::new(String::new()));
                 let stdout_lock: Arc<Mutex<()>> = Arc::new(Mutex::new(()));
 
-                if !self.args.verbose {
+                if !self.args.verbose && !silent {
                     let s = prog_stop.clone();
                     let r = prog_req.clone();
                     let d = prog_det.clone();
@@ -607,9 +657,6 @@ impl HybridScanner {
                     const WHITE: (u8,u8,u8) = (235,230,240);
                     const LAVENDER: (u8,u8,u8) = (159,144,186);
                     const GRAY: (u8,u8,u8) = (145,152,159);
-                    const METER_FILLED: &str = "┻";
-                    const METER_BREACH: &str = "┳";
-                    const METER_EMPTY: &str = "·";
                     const WAVE: [[usize; 5]; 12] = [
                         [0,1,2,4,7], [1,2,4,7,4], [2,4,7,4,2], [4,7,4,2,1],
                         [7,4,2,1,0], [4,2,1,0,1], [2,1,0,1,2], [1,0,1,2,4],
@@ -625,12 +672,12 @@ impl HybridScanner {
                             let det = d.load(Ordering::Relaxed);
                             let err = e.load(Ordering::Relaxed);
                             let mod_idx = m.load(Ordering::Relaxed).min(mod_labels.len().saturating_sub(1));
-                            let _cur_fuzz = fu.lock().unwrap_or_else(|e| e.into_inner()).clone();
+                            let _cur_fuzz = fu.lock().await.clone();
                             let elapsed = start.elapsed();
                             let pct = if total > 0 { req as f64 / total as f64 } else { 0.0 };
                             let _rate = if elapsed.as_secs_f64() > 0.0 { req as f64 / elapsed.as_secs_f64() } else { 0.0 };
 
-                            let _lock = sl.lock().unwrap_or_else(|e| e.into_inner());
+                            let _lock = sl.lock().await;
                             if !first_render {
                                 print!("\x1B[2A");
                             }
@@ -645,17 +692,17 @@ impl HybridScanner {
                                 .join("");
 
                             let bar_total = total.max(1);
-                            let filled = (req as f64 / bar_total as f64 * 10.0) as usize;
+                            let filled = (req as f64 / bar_total as f64 * 20.0) as usize;
                             let pulse_idx = (frame_idx / 2) % 4;
                             let mut bar = String::new();
-                            for i in 0..10 {
+                            for i in 0..20 {
                                 if i < filled {
-                                    bar.push_str(&tc(METER_FILLED, PINK));
+                                    bar.push_str(&tc("█", PINK));
                                 } else if i == filled {
                                     let c = if pulse_idx < 2 { WHITE } else { LAVENDER };
-                                    bar.push_str(&tc(METER_BREACH, c));
+                                    bar.push_str(&tc("┳", c));
                                 } else {
-                                    bar.push_str(&tc(METER_EMPTY, GRAY));
+                                    bar.push_str(&tc("─", GRAY));
                                 }
                             }
 
@@ -699,7 +746,14 @@ impl HybridScanner {
                             };
 
                             let secs = elapsed.as_secs_f64();
-                            println!("\r\x1B[2K {} {} {}  {}  {} req:{} tot:{} {} {} {}",
+                            let rate = req as f64 / secs.max(0.001);
+                            let eta_s = if rate > 0.0 && total > req {
+                                ((total - req) as f64 / rate) as usize
+                            } else {
+                                0
+                            };
+                            let eta_str = format!("{}:{:02}", eta_s / 60, eta_s % 60);
+                            println!("\r\x1B[2K {} {} {}  {}  {} req:{} tot:{} eta:{} {} {} {}",
                                 tc("\u{2503}", GIN),
                                 wave_str,
                                 bar,
@@ -707,6 +761,7 @@ impl HybridScanner {
                                 tc(&format!("{:>5.1}%", pct * 100.0), TSUYUKUSA),
                                 tc(&req.to_string(), SHU),
                                 tc(&total_disp, GIN),
+                                tc(&eta_str, HISUI),
                                 det_s,
                                 err_s,
                                 tc(&format!("{:>5.1}s", secs), GIN));
@@ -821,8 +876,8 @@ impl HybridScanner {
                     }
                 }
                 prog_stop.store(true, Ordering::Relaxed);
-                if !self.args.verbose {
-                    let _lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                if !self.args.verbose && !silent {
+                    let _lock = stdout_lock.lock().await;
                     print!("\r\x1B[2K\n\x1B[2K\n\x1B[2K");
                     let _ = std::io::Write::flush(&mut std::io::stdout());
                     drop(_lock);
@@ -842,11 +897,10 @@ impl HybridScanner {
             }
         }
 
-        // 
-        //  PHASE 4: VULNERABILITY SCANNING — SQLi, XSS, LFI, CMDi
-        //   専用スキャナー / dedicated per-vuln scanners
-        //   ファジング済みの場合はスキップ（重複防止）
-        //   skipped if fuzzing already ran (avoids duplicate findings)
+        //
+        //  PHASE 4: VULNERABILITY SCANNING — The specialized assassins
+        //   SQLi, XSS, LFI, CMDi — each with their own deadly payloads
+        //   Skipped if fuzzing already ran (no double-dipping, that's greedy)
         //
         //  NOTE: If fuzzing was already run (--fuzz or --all), the dedicated
         //  scanners below are skipped to avoid duplicate findings («two shows
@@ -856,11 +910,16 @@ impl HybridScanner {
 
         check_timeout!();
         // SQL Injection Scan
-        if modules.contains(&"all".to_string()) || modules.contains(&"sqli".to_string()) {
+        if !fuzz_covered
+            && (modules.contains(&"all".to_string()) || modules.contains(&"sqli".to_string()))
+        {
             if !excluded.contains(&"sqli".to_string()) {
+                //  統合エンジンへ / isolation bound into the concurrent fuzz
+                //  engine — same live display for every module selection.
+                {
                 let ph_stop = Arc::new(AtomicBool::new(false));
                 let ph_lines = Arc::new(AtomicUsize::new(1));
-                if !self.args.verbose {
+                if !self.args.verbose && !silent {
                     let frame = oxide::scanner::precision::bidir_braille(0);
                     println!("  {}{}{}  {}", tc("[+]", HISUI), tc(frame, FUJI), tc("SQLi", HISUI), tc("Testing SQL injection on all URLs", FUJI));
                     let s = ph_stop.clone();
@@ -879,13 +938,13 @@ impl HybridScanner {
                         }
                     });
                 } else {
-                    print_phase_sub("SQLi", "Testing SQL injection on all URLs");
+                    if !silent { print_phase_sub("SQLi", "Testing SQL injection on all URLs"); }
                 }
                 let mut sqli_scanner = SqlInjectionScanner::new(
                     self.client.clone(), self.args.target_url().to_string(), self.args.exploitation_level, self.args.silent_mode
                 );
                 for url in crawled_urls.iter().take(self.args.payload_limit) {
-                    if !self.args.verbose {
+                    if !self.args.verbose && !silent {
                         println!("  {} {}", tc("->", TSUYUKUSA), url);
                         ph_lines.fetch_add(1, Ordering::Relaxed);
                     }
@@ -893,7 +952,7 @@ impl HybridScanner {
                     if let Ok(findings) = sqli_scanner.comprehensive_scan(url, &params).await {
                         for finding in findings {
                             let f = self.convert_finding(&finding);
-                            if !self.args.verbose {
+                            if !self.args.verbose && !silent {
                                 println!("  {} {}  {}", fmt_sev_label(&f.severity), f.title, tc(url, TSUYUKUSA));
                                 ph_lines.fetch_add(1, Ordering::Relaxed);
                             } else {
@@ -909,15 +968,19 @@ impl HybridScanner {
                     print!("\x1B[{}A\r\x1B[2K", n);
                 }
                 println!("  {} SQLi scan complete", tc("[+]", HISUI));
+                }
             }
         }
 
         // XSS Scan
-        if modules.contains(&"all".to_string()) || modules.contains(&"xss".to_string()) {
+        if !fuzz_covered
+            && (modules.contains(&"all".to_string()) || modules.contains(&"xss".to_string()))
+        {
             if !excluded.contains(&"xss".to_string()) {
+                {
                 let ph_stop = Arc::new(AtomicBool::new(false));
                 let ph_lines = Arc::new(AtomicUsize::new(1));
-                if !self.args.verbose {
+                if !self.args.verbose && !silent {
                     let frame = oxide::scanner::precision::bidir_braille(0);
                     println!("  {}{}{}  {}", tc("[+]", HISUI), tc(frame, FUJI), tc("XSS", HISUI), tc("Testing cross-site scripting on all URLs", FUJI));
                     let s = ph_stop.clone();
@@ -936,13 +999,13 @@ impl HybridScanner {
                         }
                     });
                 } else {
-                    print_phase_sub("XSS", "Testing cross-site scripting on all URLs");
+                    if !silent { print_phase_sub("XSS", "Testing cross-site scripting on all URLs"); }
                 }
                 let mut xss_scanner = XssScanner::new(
                     self.client.clone(), self.args.target_url().to_string()
                 );
                 for url in crawled_urls.iter().take(self.args.payload_limit) {
-                    if !self.args.verbose {
+                    if !self.args.verbose && !silent {
                         println!("  {} {}", tc("->", TSUYUKUSA), url);
                         ph_lines.fetch_add(1, Ordering::Relaxed);
                     }
@@ -963,15 +1026,19 @@ impl HybridScanner {
                     print!("\x1B[{}A\r\x1B[2K", n);
                 }
                 println!("  {} XSS scan complete", tc("[+]", HISUI));
+                }
             }
         }
 
         // LFI Scan
-        if modules.contains(&"all".to_string()) || modules.contains(&"lfi".to_string()) {
+        if !fuzz_covered
+            && (modules.contains(&"all".to_string()) || modules.contains(&"lfi".to_string()))
+        {
             if !excluded.contains(&"lfi".to_string()) {
+                {
                 let ph_stop = Arc::new(AtomicBool::new(false));
                 let ph_lines = Arc::new(AtomicUsize::new(1));
-                if !self.args.verbose {
+                if !self.args.verbose && !silent {
                     let frame = oxide::scanner::precision::bidir_braille(0);
                     println!("  {}{}{}  {}", tc("[+]", HISUI), tc(frame, FUJI), tc("LFI", HISUI), tc("Testing local file inclusion on all URLs", FUJI));
                     let s = ph_stop.clone();
@@ -990,13 +1057,13 @@ impl HybridScanner {
                         }
                     });
                 } else {
-                    print_phase_sub("LFI", "Testing local file inclusion on all URLs");
+                    if !silent { print_phase_sub("LFI", "Testing local file inclusion on all URLs"); }
                 }
                 let mut lfi_scanner = LFIScanner::new(
                     self.client.clone(), self.args.exploitation_level
                 );
                 for url in crawled_urls.iter().take(self.args.payload_limit) {
-                    if !self.args.verbose {
+                    if !self.args.verbose && !silent {
                         println!("  {} {}", tc("->", TSUYUKUSA), url);
                         ph_lines.fetch_add(1, Ordering::Relaxed);
                     }
@@ -1024,6 +1091,75 @@ impl HybridScanner {
                     print!("\x1B[{}A\r\x1B[2K", n);
                 }
                 println!("  {} LFI scan complete", tc("[+]", HISUI));
+                }
+            }
+        }
+
+        // SSTI Scan (isolated — math-reflection detection)
+        if !fuzz_covered
+            && (modules.contains(&"all".to_string()) || modules.contains(&"ssti".to_string()))
+        {
+            if !excluded.contains(&"ssti".to_string()) {
+                {
+                let ph_stop = Arc::new(AtomicBool::new(false));
+                let ph_lines = Arc::new(AtomicUsize::new(1));
+                if !self.args.verbose && !silent {
+                    let frame = oxide::scanner::precision::bidir_braille(0);
+                    println!("  {}{}{}  {}", tc("[+]", HISUI), tc(frame, FUJI), tc("SSTI", HISUI), tc("Testing server-side template injection on all URLs", FUJI));
+                    let s = ph_stop.clone();
+                    let lb = ph_lines.clone();
+                    tokio::spawn(async move {
+                        let mut idx = 1usize;
+                        loop {
+                            tokio::time::sleep(Duration::from_millis(120)).await;
+                            if s.load(Ordering::Relaxed) { break; }
+                            let n = lb.load(Ordering::Relaxed);
+                            let frame = oxide::scanner::precision::bidir_braille(idx);
+                            idx += 1;
+                            print!("\x1B[{}A\r\x1B[2K  {}{}{}  {}\n", n, tc("[+]", HISUI), tc(frame, FUJI), tc("SSTI", HISUI), tc("Testing server-side template injection on all URLs", FUJI));
+                            if n > 1 { print!("\x1B[{}B", n - 1); }
+                            let _ = std::io::Write::flush(&mut std::io::stdout());
+                        }
+                    });
+                } else {
+                    if !silent { print_phase_sub("SSTI", "Testing server-side template injection on all URLs"); }
+                }
+                let ssti_payloads = self.fuzzer.generate_ssti_payloads();
+                for url in crawled_urls.iter().take(self.args.payload_limit) {
+                    if !self.args.verbose && !silent {
+                        println!("  {} {}", tc("->", TSUYUKUSA), url);
+                        ph_lines.fetch_add(1, Ordering::Relaxed);
+                    }
+                    let baseline = self.client.get(url).await.map(|r| r.body).unwrap_or_default();
+                    for param in self.extract_params_from_url(url) {
+                        for payload in ssti_payloads.iter().take(4) {
+                            let fuzz_url = UrlUtil::inject_param(url, &param, &urlencoding::encode(payload));
+                            if let Ok(response) = self.client.get(&fuzz_url).await {
+                                if payload.contains("7*7") && response.body.contains("49") && !baseline.contains("49") {
+                                    let f = Finding::new(url, Severity::High,
+                                        &format!("SSTI via {}", param),
+                                        "Template expression evaluated: 7*7=49 reflected in response",
+                                    ).with_evidence(&format!("payload: {}\nresponse reflects computed value 49", payload));
+                                    if !self.args.verbose && !silent {
+                                        println!("  {} {}  {}", fmt_sev_label(&f.severity), f.title, tc(url, TSUYUKUSA));
+                                        ph_lines.fetch_add(1, Ordering::Relaxed);
+                                    } else {
+                                        println!("  SSTI  {} via param `{}`  {}", "7*7→49", param, tc(url, TSUYUKUSA));
+                                    }
+                                    all_findings.push(f);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                ph_stop.store(true, Ordering::Relaxed);
+                let n = ph_lines.load(Ordering::Relaxed);
+                if !self.args.verbose && n > 0 {
+                    print!("\x1B[{}A\r\x1B[2K", n);
+                }
+                println!("  {} SSTI scan complete", tc("[+]", HISUI));
+                }
             }
         }
 
@@ -1037,7 +1173,14 @@ impl HybridScanner {
             if !excluded.contains(&"tls".to_string()) {
                 print_phase_banner("TLS", "TLS/SSL security assessment");
                 let tls_scanner = TlsScanner::new(120)?;
-                let tls_findings = tls_scanner.scan(self.args.target_url()).await;
+                let tls_findings = if isolated && !silent && !verbose {
+                    let live = crate::cli::progress::LiveProgress::start("TLS", 0);
+                    let r = tls_scanner.scan(self.args.target_url()).await;
+                    live.stop().await;
+                    r
+                } else {
+                    tls_scanner.scan(self.args.target_url()).await
+                };
                 for finding in tls_findings {
                     let sev = match finding.severity {
                         TlsSeverity::Critical => Severity::Critical,
@@ -1065,7 +1208,18 @@ impl HybridScanner {
             if !excluded.contains(&"cors".to_string()) {
                 print_phase_banner("CORS", "Cross-Origin Resource Sharing assessment");
                 let cors_scanner = CorsScanner::new(120)?;
-                let cors_findings = cors_scanner.scan(self.args.target_url()).await;
+                let cors_findings = if isolated && !silent && !verbose {
+                    let endpoints: Vec<String> =
+                        crawled_urls.iter().take(10).cloned().collect();
+                    let live = crate::cli::progress::LiveProgress::start("CORS", 0);
+                    let r = cors_scanner
+                        .scan_urls(self.args.target_url(), &endpoints, 10)
+                        .await;
+                    live.stop().await;
+                    r
+                } else {
+                    cors_scanner.scan(self.args.target_url()).await
+                };
                 for finding in cors_findings {
                     let sev = match finding.severity {
                         CorsSeverity::Critical => Severity::Critical,
@@ -1092,9 +1246,16 @@ impl HybridScanner {
         // Common application paths (Nikto-style)
         if modules.contains(&"all".to_string()) || modules.contains(&"common".to_string()) {
             if !excluded.contains(&"common".to_string()) {
-                print_phase_sub("COMMON", "Probing common application paths");
+                if !silent { print_phase_sub("COMMON", "Probing common application paths"); }
                 if let Ok(common_scanner) = CommonAppScanner::new(120) {
-                    let common_findings = common_scanner.scan(self.args.target_url(), self.args.download).await;
+                    let common_findings = if isolated && !silent && !verbose {
+                        let live = crate::cli::progress::LiveProgress::start("COMMON", 0);
+                        let r = common_scanner.scan(self.args.target_url(), self.args.download).await;
+                        live.stop().await;
+                        r
+                    } else {
+                        common_scanner.scan(self.args.target_url(), self.args.download).await
+                    };
                     for finding in common_findings {
                         let sev = match finding.severity {
                             CommonAppSeverity::Critical => Severity::Critical,
@@ -1117,9 +1278,16 @@ impl HybridScanner {
         // Default credentials test
         if modules.contains(&"all".to_string()) || modules.contains(&"creds".to_string()) {
             if !excluded.contains(&"creds".to_string()) {
-                print_phase_sub("CREDS", "Testing default credentials");
+                if !silent { print_phase_sub("CREDS", "Testing default credentials"); }
                 if let Ok(creds_scanner) = DefaultCredsScanner::new(120) {
-                    let creds_findings = creds_scanner.scan(self.args.target_url()).await;
+                    let creds_findings = if isolated && !silent && !verbose {
+                        let live = crate::cli::progress::LiveProgress::start("CREDS", 0);
+                        let r = creds_scanner.scan(self.args.target_url()).await;
+                        live.stop().await;
+                        r
+                    } else {
+                        creds_scanner.scan(self.args.target_url()).await
+                    };
                     for finding in creds_findings {
                         let sev = match finding.severity {
                             CredsSeverity::Critical => Severity::Critical,
@@ -1156,7 +1324,6 @@ impl HybridScanner {
         // 
         //  PHASE 8: CONTENT FILTER + ML ANOMALY DETECTION
         //   機密データフィルター / sensitive data content filter
-        //   Instagram OSINT / Instagram open-source intelligence
         //   セッションハイジャックテスト / session hijack testing
         //   MLゼロデイ異常検知 / ML-based zero-day anomaly detection
         //   静的パス電脳走査 / static path scanning
@@ -1168,9 +1335,15 @@ impl HybridScanner {
         // Hybrid Content Filter - dynamic sensitive data detection
         if modules.contains(&"all".to_string()) || modules.contains(&"filter".to_string()) {
             if !excluded.contains(&"filter".to_string()) {
-                print_phase_sub("FILTER", "Dynamic content analysis for sensitive data");
+                if !silent { print_phase_sub("FILTER", "Dynamic content analysis for sensitive data"); }
                 let mut filter_hits = 0;
+                let filter_live = if isolated && !silent && !verbose {
+                    Some(crate::cli::progress::LiveProgress::start("FILTER", crawled_urls.len()))
+                } else {
+                    None
+                };
                 for url in &crawled_urls {
+                    if let Some(ref live) = filter_live { live.tick(); }
                     if let Ok(resp) = self.client.get(url).await {
                         // Pattern-based detection for sensitive data
                         let patterns: Vec<(&str, &str)> = vec![
@@ -1197,30 +1370,8 @@ impl HybridScanner {
                         }
                     }
                 }
+                if let Some(ref live) = filter_live { live.stop().await; }
                 println!("  {} Filter complete: {} hits", tc("[+]", HISUI), filter_hits);
-            }
-        }
-
-        // Instagram OSINT
-        if modules.contains(&"all".to_string()) || modules.contains(&"insta".to_string()) {
-            if !excluded.contains(&"insta".to_string()) {
-                print_phase_banner("INSTA", "Instagram OSINT — follower count, privacy check, media download");
-                match oxide::insta::InstaOSINT::new(120, false) {
-                    Ok(insta) => {
-                        match insta.full_scan(self.args.target_url()).await {
-                            Ok(insta_findings) => {
-                                for f in &insta_findings {
-                                    println!("  {} {} {}",
-                                        fmt_sev_label(&f.severity), f.title, tc(&format!("| {}", f.evidence), TSUYUKUSA));
-                                }
-                                all_findings.extend(insta_findings);
-                            }
-                            Err(e) => println!("  {} Instagram scan failed: {}", tc("[!]", SHU), e),
-                        }
-                    }
-                    Err(e) => println!("  {} Failed to initialize Instagram scanner: {}", tc("[!]", SHU), e),
-                }
-                println!("  {} Instagram OSINT complete", tc("[+]", HISUI));
             }
         }
 
@@ -1230,7 +1381,15 @@ impl HybridScanner {
                 print_phase_banner("SESSION", "Session hijack testing — cookie flags, fixation, predictability");
                 match oxide::session_hijack::SessionHijackTester::new(120, self.args.insecure) {
                     Ok(tester) => {
-                        match tester.full_test(self.args.target_url()).await {
+                        let session_result = if isolated && !silent && !verbose {
+                            let live = crate::cli::progress::LiveProgress::start("SESSION", 0);
+                            let r = tester.full_test(self.args.target_url()).await;
+                            live.stop().await;
+                            r
+                        } else {
+                            tester.full_test(self.args.target_url()).await
+                        };
+                        match session_result {
                             Ok(session_findings) => {
                                 for f in &session_findings {
                                     println!("  {} {} {}",
@@ -1250,7 +1409,7 @@ impl HybridScanner {
         // ML-Based Zero-Day Detection
         if modules.contains(&"all".to_string()) || modules.contains(&"zero-day".to_string()) || self.args.zeroday {
             if !excluded.contains(&"zero-day".to_string()) {
-                print_phase_sub("ML", "Zero-day anomaly detection");
+                if !silent { print_phase_sub("ML", "Zero-day anomaly detection"); }
                 let ml_findings = self.run_ml_detection(&crawled_urls).await?;
                 let ml_count = ml_findings.len();
                 all_findings.extend(ml_findings);
@@ -1270,32 +1429,52 @@ impl HybridScanner {
         check_timeout!();
         if modules.contains(&"all".to_string()) || modules.contains(&"agent".to_string()) {
             if !excluded.contains(&"agent".to_string()) {
-                print_phase_sub("AGENT", "Agent-based parallel vulnerability scan");
+                if !silent { print_phase_sub("AGENT", "Agent-based parallel vulnerability scan"); }
                 let agent_findings = self.scan_with_agents(crawled_urls.clone()).await?;
                 all_findings.extend(agent_findings);
                 println!("  {} Agent scan complete", tc("[+]", HISUI));
             }
         }
 
-        // Parallel vulnerability scan (ScanBoard)
+        // Parallel vulnerability scan (ScanBoard) — only when sqli, xss, or lfi are active
         check_timeout!();
+        if !fuzz_covered
+            && (modules.contains(&"all".to_string())
+                || modules.contains(&"sqli".to_string())
+                || modules.contains(&"xss".to_string())
+                || modules.contains(&"lfi".to_string())
+                || modules.contains(&"fuzz".to_string()))
         {
-            use crate::core::worker::ParallelScanner;
-            use crate::cli::display::ScanBoard;
+            if !excluded.contains(&"parallel".to_string()) {
+                use crate::core::worker::ParallelScanner;
+                use crate::cli::display::ScanBoard;
 
-            let worker_count = self.args.threads.min(8).max(1);
-            let board = ScanBoard::new(worker_count);
-            println!("\n  PARALLEL  Phase 5 — {} workers, {} URLs", worker_count, crawled_urls.len());
-            let scanner = ParallelScanner::new(self.client.clone(), self.args.clone(), worker_count);
-            let phase_findings = scanner.run(crawled_urls.clone(), board).await;
-            all_findings.extend(phase_findings);
+                let worker_count = self.args.threads.min(8).max(1);
+                let board = ScanBoard::new(worker_count);
+                println!("\n  PARALLEL  Phase 5 — {} workers, {} URLs", worker_count, crawled_urls.len());
+                let scanner = ParallelScanner::new(self.client.clone(), self.args.clone(), worker_count);
+                let phase_findings = scanner.run(crawled_urls.clone(), board).await;
+                all_findings.extend(phase_findings);
+            }
         }
 
-        // Body scanning
+        // Body scanning — only when sqli or fuzz modules are active
         check_timeout!();
-        if !excluded.contains(&"body".to_string()) {
+        if !fuzz_covered
+            && !excluded.contains(&"body".to_string())
+            && (modules.contains(&"all".to_string())
+                || modules.contains(&"sqli".to_string())
+                || modules.contains(&"fuzz".to_string()))
+        {
             let body_payloads = self.fuzzer.generate_sql_payloads();
-            let _ = self.scanner.scan_body(&body_payloads).await;
+            match self.scanner.scan_body(&body_payloads).await {
+                Ok(body_findings) => {
+                    all_findings.extend(body_findings);
+                }
+                Err(e) => {
+                    eprintln!("  [!] Body scan error: {}", e);
+                }
+            }
         }
 
         // 
@@ -1333,19 +1512,60 @@ impl HybridScanner {
         self.findings = confirmed_findings.clone();
 
         // Generate HTML report if output specified
-        if self.args.output.is_some() {
+        if let Some(ref output_path) = self.args.output {
             let html_output = HtmlReport::generate_header(
                 "OXIDE Scan Report",
                 self.args.target_url(),
                 "",
                 &final_duration,
-                0,
+                confirmed_findings.len(),
+                &modules,
             );
+            let mut html_body = String::new();
+            for finding in &confirmed_findings {
+                html_body.push_str(&format!(
+                    "<tr><td>{}</td><td>{:?}</td><td>{}</td><td>{}</td></tr>\n",
+                    finding.url, finding.severity, finding.title, finding.evidence
+                ));
+            }
             let html_table_start = HtmlReport::generate_table_start();
             let html_table_end = HtmlReport::generate_table_end();
             let html_footer = HtmlReport::generate_footer();
-            let full_html = format!("{}{}{}{}", html_output, html_table_start, html_table_end, html_footer);
-            println!("HTML report generated: {} bytes", full_html.len());
+            let full_html = format!("{}{}{}{}{}", html_output, html_table_start, html_body, html_table_end, html_footer);
+
+            let report_path = if output_path.ends_with(".html") {
+                output_path.clone()
+            } else {
+                format!("{}.html", output_path)
+            };
+            match std::fs::write(&report_path, &full_html) {
+                Ok(()) => println!("  {} HTML report saved → {}", tc("[OK]", HISUI), report_path),
+                Err(e) => eprintln!("  [!] Failed to save HTML report: {}", e),
+            }
+        }
+
+        //  CHECKPOINT SAVE / チェックポイント保存 — default-on resume support
+        if self.args.resume_enabled() {
+            let now = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_secs();
+            let cp = oxide::advanced::cache::ScanCheckpoint {
+                scan_id: format!("{}_{}", now, std::process::id()),
+                target: parsed_url.clone(),
+                start_time: now,
+                last_update: now,
+                completed_urls: self.discovered_urls.clone(),
+                pending_urls: Vec::new(),
+                completed_phases: vec!["hybrid-full".to_string()],
+                findings: confirmed_findings.clone(),
+                scan_config: {
+                    let mut m = std::collections::HashMap::new();
+                    m.insert("modules".to_string(), modules.join(","));
+                    m
+                },
+            };
+            let _ = checkpoint_cache.create_checkpoint(&cp).await;
         }
 
         Ok(confirmed_findings)
@@ -1469,17 +1689,20 @@ impl HybridScanner {
 
     //  WAF応答電脳検出 / WAF response detection — 403/503/429 + CF/cloudflare/ddos keywords
     fn is_waf_response(body: &str, status: u16) -> bool {
+        if !(status == 403 || status == 503 || status == 429) {
+            return false;
+        }
         let b = body.to_lowercase();
-        (status == 403 || status == 503 || status == 429) &&
-        (b.contains("cf-ray") || b.contains("cloudflare") ||
+        b.contains("cf-ray") || b.contains("cloudflare") ||
          b.contains("attention required") || b.contains("security check") ||
-         b.contains("ddos") || b.contains("waf") &&
-         (b.contains("blocked") || b.contains("denied")))
+         b.contains("ddos") || b.contains("waf") ||
+         b.contains("blocked") || b.contains("denied") ||
+         b.contains("forbidden") || b.contains("rate limit")
     }
 
     //  XSS反射電脳検出 / XSS reflection detection — payload appears in response but not baseline
-    fn contains_xss(body: &str, baseline_body: &str, payload: &str) -> bool {
-        if Self::is_waf_response(body, 200) { return false; }
+    fn contains_xss(body: &str, baseline_body: &str, payload: &str, status: u16) -> bool {
+        if Self::is_waf_response(body, status) { return false; }
         // Real XSS: the exact XSS payload appears after injection but NOT in baseline.
         // This means the server reflected our payload without proper sanitization.
         if baseline_body.contains(payload) { return false; }
@@ -1487,8 +1710,8 @@ impl HybridScanner {
     }
 
     //  LFI電脳検出 / LFI detection — /etc/passwd content appears in response but not baseline
-    fn contains_lfi(body: &str, baseline_body: &str) -> bool {
-        if Self::is_waf_response(body, 200) { return false; }
+    fn contains_lfi(body: &str, baseline_body: &str, status: u16) -> bool {
+        if Self::is_waf_response(body, status) { return false; }
         if baseline_body.is_empty() { return false; }
         // Check for password file evidence ONLY if it's new in the injected response
         let injected = body.to_lowercase();
@@ -1506,8 +1729,8 @@ impl HybridScanner {
     }
 
     //  CMDi電脳検出 / command injection detection — uid=/gid=/bin/bash etc in response but not baseline
-    fn contains_cmdi(body: &str, baseline_body: &str) -> bool {
-        if Self::is_waf_response(body, 200) { return false; }
+    fn contains_cmdi(body: &str, baseline_body: &str, status: u16) -> bool {
+        if Self::is_waf_response(body, status) { return false; }
         if baseline_body.is_empty() { return false; }
         let injected = body.to_lowercase();
         let baseline = baseline_body.to_lowercase();
@@ -1554,18 +1777,39 @@ impl HybridScanner {
         let cmd_payloads = self.fuzzer.generate_cmd_injection_payloads("127.0.0.1", 4444);
         let destructive_payloads = self.fuzzer.generate_destructive_sql_payloads();
         let nosql_payloads = self.fuzzer.generate_nosql_payloads();
+        let ssti_payloads = self.fuzzer.generate_ssti_payloads();
+
         let baseline_body = self.client.get(url).await
             .map(|r| r.body).unwrap_or_default();
 
-        // Test types to show per-request
-        let test_types = [
-            ("SQLi",   &sql_payloads, 8),
-            ("SQLi-D", &destructive_payloads, 4),
-            ("XSS",    &xss_payloads, 8),
-            ("LFI",    &lfi_payloads, 6),
-            ("CMDi",   &cmd_payloads, 4),
-            ("NoSQL",  &nosql_payloads, 6),
-        ];
+        // Test types to show per-request — adaptive to --modules selection
+        let sel = self.args.get_modules();
+        let want = |k: &str| {
+            k.is_empty() || sel.contains(&"all".to_string()) || sel.contains(&k.to_string())
+        };
+        let mut test_types: Vec<(&str, &Vec<String>, usize)> = Vec::new();
+        if want("sqli") {
+            test_types.push(("SQLi", &sql_payloads, 8));
+            //  破壊的ペイロードは高強度時のみ / destructive only at high intensity
+            if self.args.exploitation_level >= 60 {
+                test_types.push(("SQLi-D", &destructive_payloads, 4));
+            }
+        }
+        if want("xss") {
+            test_types.push(("XSS", &xss_payloads, 8));
+        }
+        if want("lfi") {
+            test_types.push(("LFI", &lfi_payloads, 6));
+        }
+        if want("fuzz") || want("ssti") {
+            if want("fuzz") {
+                test_types.push(("CMDi", &cmd_payloads, 4));
+            }
+            test_types.push(("SSTI", &ssti_payloads, 4));
+        }
+        if want("nosql") {
+            test_types.push(("NoSQL", &nosql_payloads, 6));
+        }
 
         for param in &params {
             for (mod_idx, &(label, payloads, count)) in test_types.iter().enumerate() {
@@ -1577,7 +1821,8 @@ impl HybridScanner {
                         }
                     }
                     let fuzz_url = UrlUtil::inject_param(url, param, &urlencoding::encode(payload));
-                    *prog_fuzz_url.lock().unwrap_or_else(|e| e.into_inner()) = fuzz_url.clone();
+                    //  パラメータ可視化 / show which parameter is under test
+                    *prog_fuzz_url.lock().await = format!("\u{2039}{}\u{203A} {}", param, fuzz_url);
                     requests += 1;
                     self.req_count.fetch_add(1, Ordering::Relaxed);
                     prog_req.fetch_add(1, Ordering::Relaxed);
@@ -1618,7 +1863,7 @@ impl HybridScanner {
                                             &finding.title,
                                         ).with_evidence(&finding.evidence)
                                         .with_remediation(&finding.remediation);
-                                        let _fw_lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                                        let _fw_lock = stdout_lock.lock().await;
                                         print!("\r\x1B[2K");
                                         let _ = std::io::stdout().flush();
                                         if self.args.verbose {
@@ -1652,7 +1897,7 @@ impl HybridScanner {
                                             &finding.title,
                                         ).with_evidence(&finding.evidence)
                                         .with_remediation(&finding.remediation);
-                                        let _fw_lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                                        let _fw_lock = stdout_lock.lock().await;
                                         print!("\r\x1B[2K");
                                         let _ = std::io::stdout().flush();
                                         if self.args.verbose {
@@ -1674,7 +1919,7 @@ impl HybridScanner {
                                     }
                                 }
                                 "XSS" => {
-                                    if Self::contains_xss(&response.body, &baseline_body, payload) {
+                                    if Self::contains_xss(&response.body, &baseline_body, payload, status) {
                                         let evidence = if response.body.len() > 200 {
                                             format!("...{}", &response.body[..response.body.floor_char_boundary(200)])
                                         } else {
@@ -1685,7 +1930,7 @@ impl HybridScanner {
                                             &format!("Payload reflected in param `{}`", param),
                                         ).with_evidence(&evidence)
                                         .with_remediation("Use contextual output encoding and CSP");
-                                        let _fw_lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                                        let _fw_lock = stdout_lock.lock().await;
                                         print!("\r\x1B[2K");
                                         let _ = std::io::stdout().flush();
                                         if self.args.verbose {
@@ -1704,7 +1949,7 @@ impl HybridScanner {
                                     }
                                 }
                                 "LFI" => {
-                                    if Self::contains_lfi(&response.body, &baseline_body) {
+                                    if Self::contains_lfi(&response.body, &baseline_body, status) {
                                         let evidence = if response.body.len() > 200 {
                                             format!("...{}", &response.body[..response.body.floor_char_boundary(200)])
                                         } else {
@@ -1715,7 +1960,7 @@ impl HybridScanner {
                                             &format!("LFI via param `{}`: /etc/passwd", param),
                                         ).with_evidence(&evidence)
                                         .with_remediation("Validate and sanitize file path inputs");
-                                        let _fw_lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                                        let _fw_lock = stdout_lock.lock().await;
                                         print!("\r\x1B[2K");
                                         let _ = std::io::stdout().flush();
                                         if self.args.verbose {
@@ -1734,7 +1979,7 @@ impl HybridScanner {
                                     }
                                 }
                                 "CMDi" => {
-                                    if Self::contains_cmdi(&response.body, &baseline_body) {
+                                    if Self::contains_cmdi(&response.body, &baseline_body, status) {
                                         let evidence = if response.body.len() > 200 {
                                             format!("...{}", &response.body[..response.body.floor_char_boundary(200)])
                                         } else {
@@ -1745,7 +1990,7 @@ impl HybridScanner {
                                             &format!("CMDi via param `{}`", param),
                                         ).with_evidence(&evidence)
                                         .with_remediation("Never pass user input to shell execution");
-                                        let _fw_lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                                        let _fw_lock = stdout_lock.lock().await;
                                         print!("\r\x1B[2K");
                                         let _ = std::io::stdout().flush();
                                         if self.args.verbose {
@@ -1776,7 +2021,7 @@ impl HybridScanner {
                                             &finding.title,
                                         ).with_evidence(&finding.evidence)
                                         .with_remediation(&finding.remediation);
-                                        let _fw_lock = stdout_lock.lock().unwrap_or_else(|e| e.into_inner());
+                                        let _fw_lock = stdout_lock.lock().await;
                                         print!("\r\x1B[2K");
                                         let _ = std::io::stdout().flush();
                                         if self.args.verbose {
@@ -1792,6 +2037,30 @@ impl HybridScanner {
                                             println!("  {} {}  {}  [{}]",
                                                 fmt_sev_label(&f.severity), f.title, tc(&fuzz_url, WAKABA), tc("nosql", module_colour("NoSQL")));
                                         }
+                                        findings.push(f);
+                                        drop(_fw_lock);
+                                    }
+                                }
+                                "SSTI" => {
+                                    //  数学反射検知 / template math reflection:
+                                    //  {{7*7}} / ${7*7} / <%= 7*7 %> → "49" in body,
+                                    //  baseline must NOT already contain it (FP guard).
+                                    if payload.contains("7*7")
+                                        && response.body.contains("49")
+                                        && !baseline_body.contains("49")
+                                    {
+                                        let f = Finding::new(&fuzz_url, Severity::High,
+                                            &format!("SSTI via {}", param),
+                                            "Template expression evaluated: 7*7=49 reflected in response",
+                                        ).with_evidence(&format!(
+                                            "payload: {}\nresponse reflects computed value 49",
+                                            payload
+                                        ));
+                                        let _fw_lock = stdout_lock.lock().await;
+                                        print!("\r\x1B[2K");
+                                        let _ = std::io::stdout().flush();
+                                        println!("  {} {}  {}  [{}]",
+                                            fmt_sev_label(&f.severity), f.title, tc(&fuzz_url, WAKABA), tc("ssti", module_colour("SSTI")));
                                         findings.push(f);
                                         drop(_fw_lock);
                                     }
@@ -1819,7 +2088,7 @@ impl HybridScanner {
 
     //  静的パス電脳走査 / static path scanning — probes common files/paths for info leaks
     async fn scan_static_paths(&self) -> Result<Vec<Finding>> {
-        let spinner = std::sync::Arc::new(std::sync::Mutex::new(Spinner::vuln_spinner()));
+        let spinner = std::sync::Arc::new(tokio::sync::Mutex::new(Spinner::vuln_spinner()));
         let spinner_clone = spinner.clone();
         
         // Start spinner animation task
@@ -1828,9 +2097,9 @@ impl HybridScanner {
             let mut counter = 0;
             loop {
                 interval.tick().await;
-                let frame = match spinner_clone.lock() {
-                    Ok(guard) => guard.next(),
-                    Err(poisoned) => poisoned.into_inner().next(),
+                let frame = {
+                    let guard = spinner_clone.lock().await;
+                    guard.next()
                 };
                 counter += 1;
                 print!("\r[{}] Scanning static paths ({}/20)...", frame, counter.min(20));
@@ -1859,12 +2128,14 @@ impl HybridScanner {
                         findings.push(finding);
                     }
                 }
-                Err(_) => {}
+                Err(e) => {
+                    eprintln!("  [!] Static path request failed for {}: {}", url, e);
+                }
             }
 
-            let _ = match spinner.lock() {
-                Ok(guard) => guard.next(),
-                Err(poisoned) => poisoned.into_inner().next(),
+            let _ = {
+                let guard = spinner.lock().await;
+                guard.next()
             };
         }
 
@@ -1934,14 +2205,30 @@ impl HybridScanner {
     }
 
     fn common_params() -> Vec<String> {
-        vec![
-            "id", "page", "file", "path", "search", "query", "q", "s", "cat", "category",
-            "pid", "aid", "uid", "bid", "did", "order", "sort", "limit", "offset", "start",
-            "end", "date", "from", "to", "type", "mode", "action", "cmd", "exec", "run",
-            "url", "redirect", "return", "next", "prev", "view", "format", "debug", "test",
-            "lang", "locale", "callback", "include", "template", "dir", "folder", "name",
-            "user", "username", "pass", "password", "token", "api_key", "key", "sig",
+        //  高収益パラメータ / high-yield param mining set — curated for real
+        //  backend sinks & WAF bypass; capped by exploitation level.
+        [
+            //  Tier 1 — SQLi gold (numeric + ORDER/LIMIT surfaces)
+            "id", "pid", "uid", "user_id", "product_id", "post_id",
+            "order", "sort", "orderby", "dir", "limit", "offset", "start",
+            //  Tier 2 — LFI / RCE sinks
+            "file", "path", "page", "template", "view", "include",
+            "lang", "doc", "load", "cmd", "exec", "run",
+            //  Tier 3 — open redirect / SSRF
+            "redirect", "next", "url", "return", "target", "continue",
+            //  Tier 4 — modern bypass surfaces
+            "callback", "jsonp", "format", "debug", "admin", "id[]",
         ].into_iter().map(String::from).collect()
+    }
+
+    /// Parameter cap scales with exploitation level — low intensity keeps
+    /// request totals sane, deep scans widen the mining surface.
+    fn param_cap(&self) -> usize {
+        match self.args.exploitation_level {
+            0..=39 => 10,
+            40..=59 => 18,
+            _ => 24,
+        }
     }
 
     fn extract_params_from_url(&self, url: &str) -> Vec<String> {
@@ -1958,7 +2245,10 @@ impl HybridScanner {
                 }
             }
         }
-        Self::common_params()
+        //  パラメータシード / param mining — no real params: seed the curated
+        //  high-yield set, capped by exploitation level.
+        let cap = self.param_cap();
+        Self::common_params().into_iter().take(cap).collect()
     }
 
     fn extract_params_from_urls(&self, urls: &[String]) -> Vec<String> {
@@ -2398,6 +2688,88 @@ fn print_phase_sub(module: &str, desc: &str) {
         tc(desc, FUJI));
 }
 
+fn print_module_info(active: &[String], excluded: &[String]) {
+    const ALL_MODULES: &[(&str, &str)] = &[
+        ("sqli",              "SQL injection detection"),
+        ("xss",               "Cross-site scripting detection"),
+        ("lfi",               "Local file inclusion testing"),
+        ("fuzz",              "Parameter fuzzing (CMDi, NoSQL, SSTI)"),
+        ("tls",               "TLS/SSL configuration assessment"),
+        ("cors",              "CORS misconfiguration scanning"),
+        ("common",            "Common paths & files (Nikto-style)"),
+        ("creds",             "Default credentials testing"),
+        ("parameter-discovery", "Hidden parameter discovery"),
+        ("filter",            "Sensitive data exposure detection"),
+        ("session",           "Session hijack testing"),
+        ("zero-day",          "ML-based zero-day anomaly detection"),
+        ("static",            "Static path scanning"),
+        ("agent",             "Agent-based parallel vulnerability scan"),
+    ];
+
+    let active_set: std::collections::HashSet<&str> = active.iter().map(|s| s.as_str()).collect();
+    let excluded_set: std::collections::HashSet<&str> = excluded.iter().map(|s| s.as_str()).collect();
+    let is_all = active_set.contains("all");
+
+    let active_count = if is_all { ALL_MODULES.len() } else {
+        ALL_MODULES.iter().filter(|(name, _)| active_set.contains(name)).count()
+    };
+
+    println!("  {} {}", tc("├─", TSUYUKUSA), tc("Module Summary", FUJI).bold());
+    println!("  {}  Active: {} {}",
+        tc("│", TSUYUKUSA),
+        tc(&active_count.to_string(), HISUI).bold(),
+        tc(&format!("out of {} available", ALL_MODULES.len()), FUJI));
+
+    let mut active_names: Vec<&str> = if is_all {
+        ALL_MODULES.iter().map(|(n, _)| *n).collect()
+    } else {
+        ALL_MODULES.iter()
+            .filter(|(name, _)| active_set.contains(name))
+            .map(|(name, _)| *name)
+            .collect()
+    };
+    active_names.sort();
+
+    if !active_names.is_empty() {
+        println!("  {}  Running: {}",
+            tc("│", TSUYUKUSA),
+            active_names.iter()
+                .map(|n| tc(n, HISUI).bold().to_string())
+                .collect::<Vec<_>>()
+                .join(&format!(" {} ", tc("•", TSUYUKUSA))));
+    }
+
+    let mut inactive: Vec<(&str, &str)> = ALL_MODULES.iter()
+        .filter(|(name, _)| !active_set.contains(name) && !excluded_set.contains(name) && !is_all)
+        .copied()
+        .collect();
+    inactive.sort_by_key(|(n, _)| *n);
+
+    if !inactive.is_empty() {
+        let hint_modules: Vec<&str> = inactive.iter().take(5).map(|(n, _)| *n).collect();
+        println!("  {}  Available: {} {}",
+            tc("│", TSUYUKUSA),
+            tc(&inactive.len().to_string(), TSUYUKUSA),
+            tc("more", FUJI));
+        println!("  {}  Tip: {} {}",
+            tc("│", TSUYUKUSA),
+            tc("Add with", FUJI),
+            tc(&format!("--modules {},...", hint_modules.join(",")), TSUYUKUSA));
+    }
+
+    if is_all {
+        println!("  {}  {}",
+            tc("│", TSUYUKUSA),
+            tc("Running ALL modules — use --modules <name> to isolate specific checks", TSUYUKUSA));
+    } else if active_count > 1 {
+        println!("  {}  {}",
+            tc("│", TSUYUKUSA),
+            tc(&format!("{} modules active — use --modules all for full scan", active_count), FUJI));
+    }
+
+    println!("  {}", tc("└─", TSUYUKUSA));
+}
+
 fn fmt_status(status: u16) -> String {
     match status {
         200..=299 => tc(&status.to_string(), HISUI),
@@ -2452,6 +2824,7 @@ fn module_colour(module: &str) -> (u8, u8, u8) {
         "LFI"    => TSUYUKUSA,
         "CMDi"   => FUJI,
         "NoSQL"  => WAKABA,
+        "SSTI"   => (159, 144, 186),
         _        => GIN,
     }
 }

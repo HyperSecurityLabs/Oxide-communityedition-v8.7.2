@@ -1,4 +1,4 @@
-# OXIDE v8.5.0community-edition — Auto-generated config
+# OXIDE v8.7.2 Community Edition — Auto-generated config
 # Delete this file to regenerate with fresh randomized values.
 # Edit any value below to override — your changes persist.
 # === CORE ===
@@ -31,7 +31,7 @@
 
 # === AUTH ===
 # cookie = "session=abc123"
-# proxy = "http://127.0.0.1:8080"
+# burp = true
 
 # === MODULES ===
 # zeroday = false

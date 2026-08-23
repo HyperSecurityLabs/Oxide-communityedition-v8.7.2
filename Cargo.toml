@@ -1,13 +1,9 @@
 [workspace]
-members = [
-       "oxide-proxy",
-       "hypersecurity",
-]
 exclude = ["target"]
 
 [package]
 name = "oxide"
-version = "8.6.9-community-edition"
+version = "8.7.2-community-edition"
 edition = "2021"
 authors = ["khaninkali | HyperSecurityLabs"]
 description = "OXIDE - Open eXtensible Intelligence & Detection Engine — Community Edition"
@@ -27,7 +23,7 @@ path = "src/main.rs"
 
 [dependencies]
 tokio = { version = "1.35", features = ["full"] }
-reqwest = { version = "0.11", features = ["json", "cookies", "gzip", "brotli"] }
+reqwest = { version = "0.11", features = ["json", "cookies", "gzip", "brotli", "rustls-tls"], default-features = false }
 clap = { version = "4.4", features = ["derive"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
@@ -58,7 +54,6 @@ libloading = "0.8"
 aes-gcm = "0.10"
 tempfile = "3.10"
 zeroize = { version = "1.8", features = ["derive", "alloc"] }
-hypersecurity = { path = "hypersecurity" }
 csv = "1.4.0"
 rusqlite = { version = "0.31", features = ["bundled"] }
 smartcore = "0.3"
@@ -71,7 +66,7 @@ strsim = "0.11"
 
 [profile.release]
 opt-level = 3
-lto = "fat"
+lto = "thin"
 panic = "abort"
 strip = "symbols"
 codegen-units = 1

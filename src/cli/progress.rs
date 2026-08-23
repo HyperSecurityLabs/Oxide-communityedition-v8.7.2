@@ -14,24 +14,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -164,4 +159,192 @@ impl Clone for Progress {
             start_time: self.start_time,
         }
     }
+}
+
+impl Progress {
+    /// Record a failed request (network error, timeout, 5xx handling upstream).
+    pub fn add_error(&self) { self.errors.fetch_add(1, Ordering::Relaxed); }
+}
+
+// ============================================================================
+//  LiveProgress — 電脳ライブ進行表示 / cyberpunk live progress renderer
+// ============================================================================
+//  Single-line in-place progress display for isolated module scans.
+//  Reusable by any scanner:
+//      let live = LiveProgress::start("SQLi", urls.len());   // determinate
+//      let live = LiveProgress::start("TLS", 0);             // pulse mode
+//      ... work, then live.progress().increment() / add_high() ...
+//      live.stop().await;
+//
+//  Determinate (total > 0):
+//    ⌁ SQLi   ▕████████████░░░░░░░░░░░░▏ 42/100 ⚑3 18.5r/s 経過00:12 ETA00:07
+//  Indeterminate (total == 0): sweeping pulse segment + elapsed + findings.
+//
+//  Renders at ~10Hz on one redrawn line; stop() paints the final frame and
+//  releases the line so post-scan output never tears.
+// ============================================================================
+
+use std::io::Write as IoWrite;
+use std::sync::atomic::AtomicBool;
+use super::display::{FUJI, GIN, HISUI, SAKURA, SHU, TSUYUKUSA, WAKABA};
+
+const BAR_W: usize = 26;
+
+fn ltc(s: &str, c: (u8, u8, u8)) -> String {
+    format!("\x1B[38;2;{};{};{}m{}\x1B[0m", c.0, c.1, c.2, s)
+}
+
+/// Two-segment colour interpolation HISUI → TSUYUKUSA → FUJI across t ∈ [0,1].
+fn bar_gradient(t: f64) -> (u8, u8, u8) {
+    let (a, b, c) = (HISUI, TSUYUKUSA, FUJI);
+    let (r, g, bl) = if t < 0.5 {
+        let lt = t / 0.5;
+        (
+            a.0 as f64 * (1.0 - lt) + b.0 as f64 * lt,
+            a.1 as f64 * (1.0 - lt) + b.1 as f64 * lt,
+            a.2 as f64 * (1.0 - lt) + b.2 as f64 * lt,
+        )
+    } else {
+        let lt = (t - 0.5) / 0.5;
+        (
+            b.0 as f64 * (1.0 - lt) + c.0 as f64 * lt,
+            b.1 as f64 * (1.0 - lt) + c.1 as f64 * lt,
+            b.2 as f64 * (1.0 - lt) + c.2 as f64 * lt,
+        )
+    };
+    (r as u8, g as u8, bl as u8)
+}
+
+pub struct LiveProgress {
+    progress: Arc<Progress>,
+    stop_flag: Arc<AtomicBool>,
+}
+
+impl LiveProgress {
+    /// Start the live renderer. `total == 0` switches to indeterminate pulse mode.
+    pub fn start(label: &str, total: usize) -> Arc<Self> {
+        let lp = Arc::new(Self {
+            progress: Arc::new(Progress::new(total)),
+            stop_flag: Arc::new(AtomicBool::new(false)),
+        });
+        let p = lp.progress.clone();
+        let s = lp.stop_flag.clone();
+        let label = label.to_string();
+        let indeterminate = total == 0;
+        tokio::spawn(async move {
+            Self::render_loop(p, s, label, indeterminate).await;
+        });
+        lp
+    }
+
+    /// Shared counters — increment(), add_high(), add_request(), add_error()…
+    pub fn progress(&self) -> &Arc<Progress> {
+        &self.progress
+    }
+
+    /// Advance completed-work counter by one unit.
+    pub fn tick(&self) {
+        self.progress.increment();
+    }
+
+    /// Stop rendering, paint the final frame, release the line.
+    pub async fn stop(&self) {
+        self.stop_flag.store(true, Ordering::Relaxed);
+        // Renderer polls at 100ms — give it one cycle to draw the final frame.
+        tokio::time::sleep(Duration::from_millis(140)).await;
+    }
+
+    async fn render_loop(progress: Arc<Progress>, stop: Arc<AtomicBool>, label: String, indeterminate: bool) {
+        let mut frame: usize = 0;
+        loop {
+            if stop.load(Ordering::Relaxed) { break; }
+            Self::draw(&progress, &label, indeterminate, frame);
+            frame += 1;
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        // Final frame + newline so subsequent prints start clean.
+        Self::draw(&progress, &label, false, frame);
+        println!();
+        let _ = std::io::stdout().flush();
+    }
+
+    fn draw(p: &Progress, label: &str, indeterminate: bool, frame: usize) {
+        let cur = p.get_current();
+        let total = p.get_total();
+        let vulns = p.get_vulns();
+        let errors = p.get_errors();
+        let elapsed = p.get_elapsed();
+        let secs = elapsed.as_secs_f64().max(0.001);
+        let rate = cur as f64 / secs;
+
+        let mut line = String::from("\r\x1B[2K");
+        line.push_str(&ltc("⌁", FUJI));
+        line.push(' ');
+        line.push_str(&ltc(&format!("{:<7}", label), TSUYUKUSA));
+        line.push_str(&ltc("▕", GIN));
+
+        if indeterminate || total == 0 {
+            // Pulse: bright segment sweeping back and forth over dim track.
+            let seg = 8usize.min(BAR_W);
+            let span = BAR_W.saturating_sub(seg);
+            let raw = frame % (2 * span.max(1));
+            let pos = if raw <= span { raw } else { 2 * span.max(1) - raw };
+            for i in 0..BAR_W {
+                if i >= pos && i < pos + seg {
+                    let t = (i - pos) as f64 / seg.max(1) as f64;
+                    line.push_str(&ltc("█", bar_gradient(t)));
+                } else {
+                    line.push_str(&ltc("░", GIN));
+                }
+            }
+            line.push_str(&ltc("▏", GIN));
+            line.push_str(&ltc(&format!("経過 {}", fmt_mmss(elapsed.as_secs())), GIN));
+        } else {
+            let pct = ((cur * 100) / total.max(1)).min(100);
+            let filled = (BAR_W * pct) / 100;
+            for i in 0..BAR_W {
+                if i < filled {
+                    let t = i as f64 / BAR_W as f64;
+                    line.push_str(&ltc("█", bar_gradient(t)));
+                } else {
+                    line.push_str(&ltc("░", GIN));
+                }
+            }
+            line.push_str(&ltc("▏", GIN));
+            line.push_str(&ltc(&format!("{}/{}", cur, total), HISUI));
+            line.push(' ');
+            line.push_str(&ltc(&format!("{}%", pct), WAKABA));
+            line.push_str(&ltc(" 経過 ", GIN));
+            line.push_str(&ltc(&fmt_mmss(elapsed.as_secs()), GIN));
+            if rate >= 0.5 {
+                let eta = ((total.saturating_sub(cur)) as f64 / rate) as u64;
+                line.push_str(&ltc(" ETA ", GIN));
+                line.push_str(&ltc(&fmt_mmss(eta), FUJI));
+            }
+        }
+
+        // Findings flag — vermilion when hot, silver when cold.
+        if vulns > 0 {
+            line.push_str(&ltc(&format!(" ⚑{}", vulns), SHU));
+            let crit = p.get_critical();
+            if crit > 0 {
+                line.push_str(&ltc(&format!(" ☠{}", crit), SHU));
+            }
+        } else {
+            line.push_str(&ltc(" ⚑0", GIN));
+        }
+        if errors > 0 {
+            line.push_str(&ltc(&format!(" ✗{}", errors), SHU));
+        }
+        // Sakura sparkle head-tick so the line always feels alive.
+        let spark = ["·", "✦", "∗", "✦"][frame % 4];
+        line.push_str(&ltc(&format!(" {} ", spark), SAKURA));
+
+        print!("{}", line);
+        let _ = std::io::stdout().flush();
+    }
+}
+
+fn fmt_mmss(secs: u64) -> String {
+    format!("{:02}:{:02}", secs / 60, secs % 60)
 }

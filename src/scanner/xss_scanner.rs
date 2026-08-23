@@ -17,24 +17,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -128,6 +123,8 @@ pub struct XssScanner {
     /// or interactsh instance).  Must be set explicitly — no default is provided
     /// so payloads never accidentally beacon to a third-party domain.
     callback_host: Option<String>,
+    /// Suppress internal progress prints (live-bar worker mode).
+    silent: bool,
 }
 
 impl XssScanner {
@@ -138,7 +135,13 @@ impl XssScanner {
             findings: Vec::new(),
             target,
             callback_host: None,
+            silent: false,
         }
+    }
+
+    /// Suppress internal progress prints (used by live-bar workers).
+    pub fn set_silent(&mut self, silent: bool) {
+        self.silent = silent;
     }
 
     /// Set the out-of-band callback host for exploitation payloads.
@@ -159,13 +162,17 @@ impl XssScanner {
 
     /// Scan a specific URL for XSS vulnerabilities
     pub async fn scan_url(&mut self, url: &str, params: &[String]) -> Result<Vec<Finding>> {
-        println!("[*] Scanning {} for XSS vulnerabilities (target: {})", url, self.target);
+        if !self.silent {
+            println!("[*] Scanning {} for XSS vulnerabilities (target: {})", url, self.target);
+        }
         
         let mut findings = Vec::new();
         
         // Test each parameter with XSS payloads
         for param in params {
-            println!("  [*] Testing parameter: {}", param);
+            if !self.silent {
+                println!("  [*] Testing parameter: {}", param);
+            }
             
             if let Some(finding) = self.test_param_for_xss(url, param).await {
                 findings.push(finding.clone());
@@ -178,16 +185,32 @@ impl XssScanner {
 
     /// Test a specific parameter for XSS vulnerabilities
     async fn test_param_for_xss(&self, url: &str, param: &str) -> Option<Finding> {
-        let payloads = vec![
+        let base_payloads: Vec<String> = vec![
             "<script>alert('XSS')</script>",
             "<img src=x onerror=alert('XSS')>",
             "<svg onload=alert('XSS')>",
             "<body onload=alert('XSS')>",
             "javascript:alert('XSS')",
             "<iframe src=javascript:alert('XSS')>",
-        ];
-        
-        for payload in payloads.iter().take(15) {
+        ]
+        .into_iter()
+        .map(String::from)
+        .collect();
+
+        //  AI第二段階 / PayloadMutator generates filter-evasion variants of
+        //  the base set; detection below stays identical (no FP change).
+        let mut payloads = base_payloads.clone();
+        {
+            let mut mutator = crate::ai::payload_mutator::PayloadMutator::new();
+            payloads.extend(
+                mutator
+                    .mutate_multiple(&base_payloads, Some(1))
+                    .into_iter()
+                    .take(12),
+            );
+        }
+
+        for payload in payloads.iter().take(18) {
             let response = self.make_request(url, param, payload).await;
             
             match response {
@@ -279,13 +302,17 @@ impl XssScanner {
 
     /// Perform a comprehensive XSS scan with multiple techniques
     pub async fn comprehensive_scan(&mut self, url: &str, params: &[String]) -> Result<Vec<Finding>> {
-        println!("[*] Performing comprehensive XSS scan on {}", url);
+        if !self.silent {
+            println!("[*] Performing comprehensive XSS scan on {}", url);
+        }
         
         let mut findings = Vec::new();
         
         // Test each parameter with different XSS techniques
         for param in params {
-            println!("  [*] Comprehensive test for parameter: {}", param);
+            if !self.silent {
+                println!("  [*] Comprehensive test for parameter: {}", param);
+            }
             
             // Test with reflected XSS payloads
             if let Some(finding) = self.test_reflected_xss(url, param).await {

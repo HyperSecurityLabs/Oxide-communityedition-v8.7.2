@@ -12,24 +12,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -58,6 +53,7 @@ pub struct ReportGenerator {
     target_ip: String,
     discovered_urls: Vec<String>,
     duration_secs: u64,
+    modules: Vec<String>,
 }
 
 impl ReportGenerator {
@@ -69,7 +65,13 @@ impl ReportGenerator {
             target_ip: target_ip.to_string(),
             discovered_urls: discovered_urls.to_vec(),
             duration_secs,
+            modules: vec![],
         }
+    }
+
+    pub fn with_modules(mut self, modules: Vec<String>) -> Self {
+        self.modules = modules;
+        self
     }
 
     pub fn add_finding(&mut self, finding: Finding) {
@@ -100,7 +102,7 @@ impl ReportGenerator {
     pub fn save_json_report(&self, path: &PathBuf) -> Result<()> {
         use std::fs;
         let findings: Vec<_> = self.findings.iter().cloned().collect();
-        let json_report = JsonReport::from_findings(&self.target, &self.target_ip, &findings, &self.discovered_urls, self.duration_secs);
+        let json_report = JsonReport::from_findings(&self.target, &self.target_ip, &findings, &self.discovered_urls, self.duration_secs, &self.modules);
         let json = serde_json::to_string_pretty(&json_report)?;
         fs::write(path, json)?;
         Ok(())
@@ -116,6 +118,7 @@ impl ReportGenerator {
             &self.target_ip,
             &dur,
             self.discovered_urls.len(),
+            &self.modules,
         );
         html.push_str(&HtmlReport::generate_links_section(&self.discovered_urls));
         html.push_str(&HtmlReport::generate_table_start());
@@ -229,6 +232,7 @@ impl Clone for ReportGenerator {
             target_ip: self.target_ip.clone(),
             discovered_urls: self.discovered_urls.clone(),
             duration_secs: self.duration_secs,
+            modules: self.modules.clone(),
         }
     }
 }

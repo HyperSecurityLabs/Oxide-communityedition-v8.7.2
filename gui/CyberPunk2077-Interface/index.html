@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OXIDE Community v8.6.9</title>
+<title>OXIDE Community v8.7.2</title>
 <link rel="stylesheet" href="oxide://CyberPunk2077-Interface/style.css" />
 <style>@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');</style>
 </head>
@@ -15,7 +15,7 @@
 <div id="logo">
 <div id="logo-icon">*</div>
 <div><div id="logo-text"><span class="text-red">OXIDE</span> <span class="text-green">COMMUNITY</span> <span id="info-btn" title="About OXIDE Community">[*]</span></div>
-<div id="logo-sub"><span class="text-red">v8.6.9</span> <span class="text-green">&gt;&gt;</span> <span class="text-blue">CyberPunk2077-Interface</span></div></div>
+<div id="logo-sub"><span class="text-red">v8.7.2</span> <span class="text-green">&gt;&gt;</span> <span class="text-blue">CyberPunk2077-Interface</span></div></div>
 </div>
 <div id="header-right">
 <div id="status-badge"><div id="status-dot"></div><span id="status-text">READY</span></div>
@@ -56,9 +56,9 @@
 <div class="opt-group-header"><span class="text-red">*</span><span class="text-red">PERFORMANCE</span></div>
 <div class="opt-group-content open">
 <div class="opt-grid triple">
-<div class="opt"><label>Threads</label><input type="number" id="opt-threads" value="20" min="1" max="100" /></div>
+<div class="opt"><label>Threads</label><input type="number" id="opt-threads" value="5" min="1" max="100" /></div>
 <div class="opt"><label>Rate /s</label><input type="number" id="opt-rate" value="0" min="0" /></div>
-<div class="opt"><label>Payloads</label><input type="number" id="opt-payloads" value="50" min="1" /></div>
+<div class="opt"><label>Payloads</label><input type="number" id="opt-payloads" value="100" min="1" /></div>
 </div>
 </div>
 </div>
@@ -67,7 +67,7 @@
 <div class="opt-group-header"><span class="text-green">&gt;&gt;</span><span class="text-green">SCAN</span></div>
 <div class="opt-group-content">
 <div class="opt-grid triple">
-<div class="opt"><label>Exploit Level</label><input type="number" id="opt-level" value="50" min="1" max="100" /></div>
+<div class="opt"><label>Exploit Level</label><input type="number" id="opt-level" value="25" min="1" max="100" /></div>
 <div class="opt"><label>Duration (s)</label><input type="number" id="opt-duration" value="0" min="0" /></div>
 <div class="opt"><label>Max Redirects</label><input type="number" id="opt-redirects" value="10" min="0" /></div>
 </div>
@@ -104,18 +104,21 @@
 <div class="opt-group-content open">
 <div id="mods">
 <span class="mod-chip active" data-mod="all">ALL</span>
-<span class="mod-chip" data-mod="xss">XSS</span>
 <span class="mod-chip" data-mod="sqli">SQLi</span>
+<span class="mod-chip" data-mod="xss">XSS</span>
 <span class="mod-chip" data-mod="lfi">LFI</span>
-<span class="mod-chip" data-mod="cors">CORS</span>
-<span class="mod-chip" data-mod="tls">TLS</span>
-<span class="mod-chip" data-mod="session">SESSION</span>
-<span class="mod-chip" data-mod="insta">INSTA</span>
-<span class="mod-chip" data-mod="agent">AGENT</span>
-<span class="mod-chip" data-mod="engine">ENGINE</span>
-<span class="mod-chip" data-mod="static">STATIC</span>
 <span class="mod-chip" data-mod="fuzz">FUZZ</span>
-<span class="mod-chip" data-mod="recon">RECON</span>
+<span class="mod-chip" data-mod="ssti">SSTI</span>
+<span class="mod-chip" data-mod="tls">TLS</span>
+<span class="mod-chip" data-mod="cors">CORS</span>
+<span class="mod-chip" data-mod="common">COMMON</span>
+<span class="mod-chip" data-mod="creds">CREDS</span>
+<span class="mod-chip" data-mod="filter">FILTER</span>
+<span class="mod-chip" data-mod="session">SESSION</span>
+<span class="mod-chip" data-mod="parameter-discovery">PARAMS</span>
+<span class="mod-chip" data-mod="agent">AGENT</span>
+<span class="mod-chip" data-mod="zero-day">ZERO-DAY</span>
+<span class="mod-chip" data-mod="static">STATIC</span>
 </div>
 <div style="margin-top: 6px;">
 <div class="toggle-row">
@@ -198,7 +201,7 @@
 
 <div id="footer">
 <span>HyperSecurity Offensive Labs</span>
-<span><span class="text-red">O</span><span class="text-green">X</span><span class="text-blue">I</span><span class="text-green">D</span><span class="text-orange">E</span> v8.6.9</span>
+<span><span class="text-red">O</span><span class="text-green">X</span><span class="text-blue">I</span><span class="text-green">D</span><span class="text-orange">E</span> v8.7.2</span>
 </div>
 
 <div id="about-overlay" class="overlay" style="display:none">
@@ -210,11 +213,11 @@
 <div id="about-body">
 <div class="about-section">
 <div class="about-label">ENGINE</div>
-<div class="about-value text-red">v8.6.9</div>
+<div class="about-value text-red">v8.7.2</div>
 </div>
 <div class="about-section">
 <div class="about-label">GUI</div>
-<div class="about-value text-green">v1.0.0</div>
+<div class="about-value text-green">v8.7.2</div>
 </div>
 <div class="about-section">
 <div class="about-label">STACK</div>

@@ -135,6 +135,10 @@
     });
     if (mods.length === 0) mods.push('all');
 
+    var proxyVal = v('opt-proxy').trim();
+    var useBurp  = proxyVal.length > 0 ? 'true' : '';
+    var useInsecure = (useBurp === 'true') ? 'true' : t('toggle-insecure');
+
     return {
       url:       urlIn.value.trim(),
       threads:   v('opt-threads'), level: v('opt-level'),
@@ -144,9 +148,9 @@
       jobs:      v('opt-jobs'), redirects: v('opt-redirects'),
       modules:   mods.join(','),
       ua:        v('opt-ua'), cookie: v('opt-cookie'),
-      proxy:     v('opt-proxy'), output: v('opt-output'),
+      burp:      useBurp, output: v('opt-output'),
       headers:   v('opt-headers'),
-      follow:    t('toggle-follow'), insecure: t('toggle-insecure'),
+      follow:    t('toggle-follow'), insecure: useInsecure,
       verbose:   t('toggle-verbose'), silent: t('toggle-silent'),
       download:  t('toggle-download'),
       zeroday:   t('toggle-zeroday'), active: t('toggle-active'),

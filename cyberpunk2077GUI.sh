@@ -42,6 +42,26 @@ verify_prereqs() {
     echo ""
 }
 
+install_gui_deps() {
+    echo -e "\n${YELLOW}${BOLD}[GUI System Libraries]${NC}"
+    if dpkg -s libwebkit2gtk-4.1-dev &>/dev/null && dpkg -s libgtk-3-dev &>/dev/null; then
+        ok "GUI system libraries already installed"
+        return
+    fi
+    info "Installing GUI system libraries (requires sudo)..."
+    sudo apt-get update -qq
+    sudo apt-get install -y \
+        libwebkit2gtk-4.1-dev \
+        libgtk-3-dev \
+        cmake \
+        libsoup-3.0-dev \
+        libjavascriptcoregtk-4.1-dev \
+        libayatana-appindicator3-dev \
+        pkg-config \
+        libssl-dev
+    ok "GUI system libraries installed"
+}
+
 usage() {
     cat <<EOF
 Usage: $0 [OPTIONS]
@@ -86,6 +106,7 @@ done
 
 cd "$SRC_DIR"
 verify_prereqs
+install_gui_deps
 
 if [[ "$BUILD_DB" == true ]]; then
     echo -e "\n${YELLOW}${BOLD}[Database Build]${NC}"

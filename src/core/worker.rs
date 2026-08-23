@@ -12,24 +12,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -144,18 +139,9 @@ impl ParallelScanner {
         Arc::try_unwrap(all_findings).map(|rw| rw.into_inner()).unwrap_or_default()
     }
 
-    //  probe_vulns: 追加脆弱性プローブ
+    //  probe_vulns: targeted vulnerability probes — respects --modules isolation
     //  Secondary targeted probes — SQLi, XSS, LFI on all discovered parameters.
-    //  Probe matrix:
-    //   - SQLi: "'" と "' OR '1'='1"  "sql syntax" インジケータ
-    //   - XSS:  "OXIDEXSS"  "<script>alert(1)" リフレクションチェック
-    //   - LFI:  "../../../../etc/passwd"  "root:x:" パターンマッチ
-    //  Parameter extraction:
-    //   1. URLから既存パラメータを抽出 (UrlUtil::extract_query_param_names)
-    //   2. 空なら共通パラメータ名リストでフォールバック
-    //   3. 各パラメータ各プローブの直積でテスト
-    //  レート制限: args.rate_limit > 0 の場合1秒あたりのリクエスト数を制限
-    //  ペイロードがレスポンスに反映され + インジケータが一致  Finding生成
+    //  Only fires probes for modules the user actually requested.
     async fn probe_vulns(
         client:   &Arc<HttpClient>,
         args:     &CliArgs,
@@ -164,12 +150,14 @@ impl ParallelScanner {
         board:    &Arc<ScanBoard>,
         findings: &Arc<RwLock<Vec<Finding>>>,
     ) {
-        let probes: &[(&str, &str, &str)] = &[
-            ("SQLi", "'",                        "sql syntax"),
-            ("SQLi", "' OR '1'='1",              "sql syntax"),
-            ("XSS",  "OXIDEXSS",                 "<script>alert(1)"),
-            ("LFI",  "../../../../etc/passwd",    "root:x:"),
-            ("LFI",  "..%2F..%2Fetc%2Fpasswd",   "root:x:"),
+        let active = args.get_modules();
+        let is_all = active.contains(&"all".to_string());
+        let probes: &[(&str, &str, &str, &str)] = &[
+            ("SQLi", "'",                        "sql syntax", "sqli"),
+            ("SQLi", "' OR '1'='1",              "sql syntax", "sqli"),
+            ("XSS",  "OXIDEXSS",                 "<script>alert(1)", "xss"),
+            ("LFI",  "../../../../etc/passwd",    "root:x:", "lfi"),
+            ("LFI",  "..%2F..%2Fetc%2Fpasswd",   "root:x:", "lfi"),
         ];
 
         let mut params = UrlUtil::extract_query_param_names(base_url);
@@ -182,7 +170,9 @@ impl ParallelScanner {
         }
 
         for param in &params {
-            for &(label, payload, indicator) in probes {
+            for &(label, payload, indicator, module_key) in probes {
+                // Skip probes for modules not requested
+                if !is_all && !active.contains(&module_key.to_string()) { continue; }
                 let probe_url = UrlUtil::inject_param(base_url, param, &urlencoding::encode(payload));
                 board.worker_start(wid, label, base_url).await;
                 if let Ok(resp) = client.send(HttpRequest::get(&probe_url)).await {

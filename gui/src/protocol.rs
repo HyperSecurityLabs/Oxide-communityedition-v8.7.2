@@ -11,7 +11,7 @@ fn ok_response() -> http::Response<Cow<'static, [u8]>> {
         .header("Content-Type", "text/plain")
         .header("Access-Control-Allow-Origin", "*")
         .body(Cow::from(b"ok".to_vec()))
-        .unwrap()
+        .expect("static response construction")
 }
 
 pub fn build_handler(
@@ -33,7 +33,7 @@ pub fn build_handler(
                 .header("Content-Type", mime)
                 .header("Access-Control-Allow-Origin", "*")
                 .body(Cow::from(body.into_bytes()))
-                .unwrap();
+                .expect("static response construction");
         }
 
         if uri.starts_with("oxide://scan/start") {
@@ -65,12 +65,12 @@ pub fn build_handler(
                 .header("Content-Type", "text/plain")
                 .header("Access-Control-Allow-Origin", "*")
                 .body(Cow::from(b"ok".to_vec()))
-                .unwrap();
+                .expect("static response construction");
         }
 
         if uri.starts_with("oxide://scan/stop") {
             running.store(false, Ordering::SeqCst);
-            if let Some(pid) = *child_pid.lock().unwrap() {
+            if let Some(pid) = *child_pid.lock().unwrap_or_else(|e| e.into_inner()) {
                 let _ = std::process::Command::new("kill")
                     .args(&[pid.to_string()])
                     .spawn();
@@ -80,7 +80,7 @@ pub fn build_handler(
                 .header("Content-Type", "text/plain")
                 .header("Access-Control-Allow-Origin", "*")
                 .body(Cow::from(b"stopped".to_vec()))
-                .unwrap();
+                .expect("static response construction");
         }
 
         if uri == "oxide://window/close" {
@@ -104,6 +104,6 @@ pub fn build_handler(
             .status(404)
             .header("Access-Control-Allow-Origin", "*")
             .body(Cow::from(b"NOT FOUND".to_vec()))
-            .unwrap()
+            .expect("static response construction")
     }
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT="OXIDE Community Edition v8.6.9"
+PROJECT="OXIDE Community Edition v8.7.2"
 SRC_DIR="$(cd "$(dirname "$0")" && pwd)"
 DISPLAY_FILE="$SRC_DIR/src/cli/display.rs"
 

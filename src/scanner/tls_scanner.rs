@@ -16,24 +16,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -407,7 +402,9 @@ impl TlsScanner {
                     remediation: "Check network connectivity or firewall rules.".to_string(),
                 });
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] TCP fingerprint task failed: {}", e);
+            }
         }
         findings
     }
@@ -1015,7 +1012,9 @@ impl TlsScanner {
                     }
                 }
             }
-            Err(_) => {}
+            Err(e) => {
+                eprintln!("  [!] Cipher suite check request failed: {}", e);
+            }
         }
 
         // Probe for weak cipher acceptance by offering only weak ciphers
@@ -1158,32 +1157,40 @@ impl TlsScanner {
         }
 
         if let Some(set_cookie) = headers.get("set-cookie").and_then(|v| v.to_str().ok()) {
-            if !set_cookie.contains("Secure") {
-                findings.push(TlsFinding {
-                    severity: TlsSeverity::Medium,
-                    title: "Cookie Missing Secure Flag".to_string(),
-                    description: "Cookie sent without Secure flag.".to_string(),
-                    evidence: set_cookie.to_string(),
-                    remediation: "Add Secure flag to all cookies.".to_string(),
-                });
-            }
-            if !set_cookie.contains("HttpOnly") {
-                findings.push(TlsFinding {
-                    severity: TlsSeverity::Medium,
-                    title: "Cookie Missing HttpOnly Flag".to_string(),
-                    description: "Cookie accessible via JavaScript.".to_string(),
-                    evidence: set_cookie.to_string(),
-                    remediation: "Add HttpOnly flag to session cookies.".to_string(),
-                });
-            }
-            if !set_cookie.contains("SameSite") {
-                findings.push(TlsFinding {
-                    severity: TlsSeverity::Low,
-                    title: "Cookie Missing SameSite Attribute".to_string(),
-                    description: "Cookie may be vulnerable to CSRF.".to_string(),
-                    evidence: set_cookie.to_string(),
-                    remediation: "Add SameSite=Strict or SameSite=Lax.".to_string(),
-                });
+            //  Split multiple Set-Cookie headers (comma-separated) and check each cookie
+            //  individually — a cookie with Secure but no HttpOnly is NOT "missing Secure".
+            for cookie_raw in set_cookie.split(", ") {
+                let cookie = cookie_raw.trim();
+                if cookie.is_empty() { continue; }
+                let name = cookie.split('=').next().unwrap_or("").trim();
+                if name.is_empty() { continue; }
+                if !cookie.contains("Secure") {
+                    findings.push(TlsFinding {
+                        severity: TlsSeverity::Medium,
+                        title: format!("Cookie '{}' Missing Secure Flag", name),
+                        description: format!("Cookie '{}' sent without Secure flag.", name),
+                        evidence: cookie.to_string(),
+                        remediation: "Add Secure flag to all cookies.".to_string(),
+                    });
+                }
+                if !cookie.contains("HttpOnly") {
+                    findings.push(TlsFinding {
+                        severity: TlsSeverity::Medium,
+                        title: format!("Cookie '{}' Missing HttpOnly Flag", name),
+                        description: format!("Cookie '{}' accessible via JavaScript.", name),
+                        evidence: cookie.to_string(),
+                        remediation: "Add HttpOnly flag to session cookies.".to_string(),
+                    });
+                }
+                if !cookie.contains("SameSite") {
+                    findings.push(TlsFinding {
+                        severity: TlsSeverity::Low,
+                        title: format!("Cookie '{}' Missing SameSite Attribute", name),
+                        description: format!("Cookie '{}' may be vulnerable to CSRF.", name),
+                        evidence: cookie.to_string(),
+                        remediation: "Add SameSite=Strict or SameSite=Lax.".to_string(),
+                    });
+                }
             }
         }
         findings

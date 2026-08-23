@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 DEB_DIR="oxide-ce-debian"
-DEB_OUT="oxide-ce_8.6.9community-edition_amd64.deb"
+DEB_OUT="oxide-ce_8.7.2community-edition_amd64.deb"
 
 echo "[*] Checking prerequisites..."
 for cmd in dpkg-deb install; do

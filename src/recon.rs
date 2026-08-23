@@ -18,24 +18,19 @@
 //
 //
 // ---------------------------------------------------------------------------
-//   WARNING / 警告 / 警告
+//   LICENSE / ライセンス — GNU General Public License v3 (GPL-3.0)
 // ---------------------------------------------------------------------------
-//  This source code is the exclusive property of HyperSecurityOffensiveLabs.
-//  You are permitted to VIEW this code for educational and reference
-//  purposes only. You may NOT modify, distribute, sublicense, or create
-//  derivative works without explicit written permission from khaninkali
-//  and the HyperSecurityOffensiveLabs development team.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 //
-//  このソースコードはHyperSecurityOffensiveLabsの独占的知的財産です
-//  教育目的および参照目的での閲覧のみ許可されています
-//  khaninkaliおよびHyperSecurityOffensiveLabs開発チームの
-//  書面による明示的な許可なく修正配布サブライセンス
-//  または二次的著作物の作成を禁止します
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
 //
-//  本源代码是HyperSecurityOffensiveLabs的独家财产
-//  仅允许出于教育和参考目的查看未经khaninkali和
-//  HyperSecurityOffensiveLabs开发团队的书面明确许可，
-//  禁止修改分发再许可或创建衍生作品
+//  OXIDE v8.7.2-community-edition — HyperSecurityOffensiveLabs
 // ---------------------------------------------------------------------------
 //
 //
@@ -69,10 +64,10 @@
 //  15. Reverse DNS / WHOIS lookups
 
 use anyhow::Result;
-//  Beautiful Raw packet injection Hackers Favourate Pnet for DDos attacks
-//  Active fingerPrining 
-//  Dont fire it up in targets 
-//  Needed Admins
+//  Beautiful Raw packet injection — the hackers' favorite pnet
+//  Active fingerprinting so aggressive it makes nmap jealous
+//  Don't fire this up on production targets unless you want a visit from the feds
+//  Needs root/admin — we're not amateurs here
 
 use pnet::packet::ip::IpNextHeaderProtocols;
 use pnet::packet::tcp::{ 
@@ -91,6 +86,7 @@ use crate::http::request::HttpRequest;
 use crate::http::useragents::UserAgentPool;
 use crate::cli::display::{HISUI, GIN, SHU};
 use colored::Colorize;
+use pnet::packet::Packet;
 
 fn tc(s: &str, c: (u8, u8, u8)) -> String { s.truecolor(c.0, c.1, c.2).to_string() }
 
@@ -181,8 +177,9 @@ impl ActiveRecon {
         self.client.send(req).await
     }
 
-    //  マルチUAプローブ / multi-UA probe — detects WAF differential blocking
-    //  5種類のUAでサーバー挙動の差異を電脳検出 / detects server behavioral differences
+    //  Multi-UA probe — because one User-Agent is never enough
+    //  Sends 5 different UAs and watches the server sweat
+    //  It's like speed dating, but for WAF detection
     pub async fn probe_with_all_agents(&self, url: &str) -> Vec<(String, u16, usize)> {
         let mut results = Vec::new();
 
@@ -210,20 +207,40 @@ impl ActiveRecon {
         }
     }
 
+    //  ローカルIPアドレス取得 / get local IP address for outbound connections
+    async fn local_ip(&self) -> Option<Ipv4Addr> {
+        match tokio::net::UdpSocket::bind("0.0.0.0:0").await {
+            Ok(socket) => {
+                let _ = socket.connect(format!("{}:80", self.target
+                    .trim_start_matches("http://")
+                    .trim_start_matches("https://")
+                    .split('/')
+                    .next()
+                    .unwrap_or(&self.target))).await;
+                if let Ok(addr) = socket.local_addr() {
+                    if let std::net::IpAddr::V4(ip) = addr.ip() {
+                        return Some(ip);
+                    }
+                }
+                None
+            }
+            Err(_) => None,
+        }
+    }
+
     //  pnet生TCPプローブ / raw TCP SYN probe — TTL/window/DF analysis for OS classification
     async fn raw_tcp_probe(&self) -> Result<OsFingerprint> {
         // Resolve target IP
-        let target_ip = match self.resolve_target().await {
-            Some(ip) => ip,
+        let dest_ip = match self.resolve_target().await {
+            Some(IpAddr::V4(ip)) => ip,
+            Some(_) => return Err(anyhow::anyhow!("IPv4 required for raw TCP probe")),
             None => return Err(anyhow::anyhow!("Could not resolve target")),
         };
 
-        // Use pnet to send a SYN packet and capture the SYN-ACK
+        // Layer3 channel — full IPv4 packets so the reply's TTL/DF are readable
         let (mut tx, mut rx) = pnet::transport::transport_channel(
             4096,
-            pnet::transport::TransportChannelType::Layer4(
-                pnet::transport::TransportProtocol::Ipv4(IpNextHeaderProtocols::Tcp),
-            ),
+            pnet::transport::TransportChannelType::Layer3(IpNextHeaderProtocols::Tcp),
         )?;
 
         let source_port = 49152u16;
@@ -241,11 +258,7 @@ impl ActiveRecon {
         tcp_packet.set_flags(TcpFlags::SYN);
         tcp_packet.set_window(window);
         tcp_packet.set_urgent_ptr(0);
-        let source_ip = Ipv4Addr::new(0, 0, 0, 0);
-        let dest_ip = match target_ip {
-            IpAddr::V4(ip) => ip,
-            _ => return Err(anyhow::anyhow!("IPv4 required for raw TCP probe")),
-        };
+        let source_ip = self.local_ip().await.unwrap_or_else(|| Ipv4Addr::new(127, 0, 0, 1));
         let tcp_checksum = ipv4_checksum(
             &tcp_packet.to_immutable(),
             &source_ip,
@@ -253,21 +266,46 @@ impl ActiveRecon {
         );
         tcp_packet.set_checksum(tcp_checksum);
 
+        let tcp_bytes = tcp_packet.packet().to_vec();
+        drop(tcp_packet);
+
+        let tcp_len = tcp_bytes.len();
+        let mut ip_buffer = vec![0u8; 20 + tcp_len];
+        let mut ip_packet = pnet::packet::ipv4::MutableIpv4Packet::new(&mut ip_buffer)
+            .expect("buffer should fit IPv4 header + TCP segment");
+        ip_packet.set_version(4);
+        ip_packet.set_header_length(5);
+        ip_packet.set_total_length((20 + tcp_len) as u16);
+        ip_packet.set_identification(0x1234);
+        ip_packet.set_flags(pnet::packet::ipv4::Ipv4Flags::DontFragment);
+        ip_packet.set_ttl(64);
+        ip_packet.set_next_level_protocol(IpNextHeaderProtocols::Tcp);
+        ip_packet.set_source(source_ip);
+        ip_packet.set_destination(dest_ip);
+        ip_packet.set_payload(&tcp_bytes);
+        ip_packet.set_checksum(pnet::packet::ipv4::checksum(&ip_packet.to_immutable()));
+
         // Send the SYN packet
-        tx.send_to(&tcp_packet.to_immutable(), dest_ip.into())?;
+        tx.send_to(ip_packet.to_immutable(), IpAddr::V4(dest_ip))?;
 
         // Wait for SYN-ACK with timeout
-        let mut iter = pnet::transport::tcp_packet_iter(&mut rx);
+        let mut iter = pnet::transport::ipv4_packet_iter(&mut rx);
         let start = Instant::now();
         while start.elapsed() < Duration::from_secs(3) {
             match iter.next() {
-                Ok((tcp, addr)) => {
+                Ok((ip, addr)) => {
                     if addr != IpAddr::V4(dest_ip) { continue; }
+                    if ip.get_next_level_protocol() != IpNextHeaderProtocols::Tcp { continue; }
+                    let tcp = match pnet::packet::tcp::TcpPacket::new(ip.payload()) {
+                        Some(t) => t,
+                        None => continue,
+                    };
                     if tcp.get_destination() == source_port
                         && tcp.get_flags() == (TcpFlags::SYN | TcpFlags::ACK)
                     {
-                        let ttl = 64u8;
-                        let os = self.classify_os(ttl, tcp.get_window(), true);
+                        let df = (ip.get_flags()
+                            & pnet::packet::ipv4::Ipv4Flags::DontFragment) != 0;
+                        let os = self.classify_os(ip.get_ttl(), tcp.get_window(), df);
                         return Ok(os);
                     }
                 }
@@ -300,7 +338,9 @@ impl ActiveRecon {
         }
     }
 
-    // ※ OS分類ロジック / OS classification logic — matches TTL/win/DF against known fingerprints
+    //  OS fingerprinting — because every OS has a tell, like poker players
+    //  TTL, window size, DF flag — the tri-fecta of OS identification
+    //  Linux says "64", Windows brags with "128", and Cisco is just weird at "255"
     fn classify_os(&self, ttl: u8, window: u16, df: bool) -> OsFingerprint {
         match (ttl, window, df) {
             (64, 65535, true) => OsFingerprint {
@@ -354,7 +394,7 @@ impl ActiveRecon {
     // ※ ServerヘッダーからのOS推定 / OS classification from HTTP Server header
     fn classify_os_from_server(&self, server: &str, _ttl: u8) -> OsFingerprint {
         let sl = server.to_lowercase();
-        let (family, version) = if             (sl.contains("windows ") || sl.contains("windows/") || sl.contains("windows-") || sl.contains("windows\\")) || sl.contains("microsoft-iis") || sl.contains("iis/") || sl.contains("asp.net") {
+        let (family, version) = if (sl.contains("windows ") || sl.contains("windows/") || sl.contains("windows-") || sl.contains("windows\\")) || sl.contains("microsoft-iis") || sl.contains("iis/") || sl.contains("asp.net") {
             ("Windows", "Server via HTTP")
         } else if sl.contains("nginx/") || sl.contains(" nginx ") || sl.contains("apache/") || sl.contains(" ubuntu") || sl.contains(" ubuntu)") || sl.contains(" debian") || sl.contains(" debian)") || sl.contains(" centos") || sl.contains(" centos)") {
             ("Linux", "via HTTP Server header")
@@ -570,9 +610,9 @@ impl ActiveRecon {
         }
     }
 
-    //  Cloudflareバイパスプローブ / Cloudflare origin bypass via spoofed headers
-    //  CDNが信頼する10種類のヘッダーでオリジンIPを露呈させる
-    //  10 spoofed headers that CDNs trust, revealing real origin IP & server
+    //  Cloudflare bypass — the "I know you're hiding something" technique
+    //  10 spoofed headers that CDNs trust — because CDN configs are lazy
+    //  One of these might just expose the origin server's dirty laundry
     /// Cloudflare / WAF bypass probe — sends requests with spoofed headers
     /// that CDNs trust to reveal the real origin IP and server fingerprint.
     /// Returns list of (header_used, server_header, response_body_preview).
@@ -593,8 +633,6 @@ impl ActiveRecon {
 
         for (header, value) in bypass_headers {
             let mut req = HttpRequest::get(&self.target);
-            req.add_header("User-Agent", self.aggressive_pool.next());
-            req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             req.add_header(header, value);
             if let Ok(resp) = self.client.send(req).await {
                 let server = resp.get_header("Server").cloned().unwrap_or_default();

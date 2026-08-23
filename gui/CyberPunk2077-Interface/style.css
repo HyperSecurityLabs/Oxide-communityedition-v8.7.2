@@ -1,32 +1,38 @@
 :root {
-  --bg-void:      #0D1117;
-  --bg-card:      rgba(17, 24, 36, 0.92);
-  --bg-input:     rgba(0, 0, 0, 0.5);
+  /*  純和色パレット / pure traditional Japanese pigments — matrix mode  */
+  --bg-void:      #040a06;                       /* 漆黒 shikkoku, green-tinted void */
+  --bg-card:      rgba(8, 20, 13, 0.90);
+  --bg-input:     rgba(0, 0, 0, 0.55);
 
-  --jpn-tsuyukusa: #2EA9DF;
-  --jpn-fuji:      #8B81C3;
-  --jpn-wakaba:    #8BB85C;
-  --jpn-shu:       #E83929;
-  --jpn-yamabuki:  #FFB11B;
-  --jpn-kin:       #C89B3C;
-  --jpn-ai:        #165E83;
+  --jpn-wakatake: #68BE8D;                       /* 若竹 young bamboo — primary glow   */
+  --jpn-tokowa:   #007B43;                       /* 常磐 deep evergreen                */
+  --jpn-wakakusa: #C3D825;                       /* 若草 bright shoot — matrix accent  */
+  --jpn-tsuyukusa:#2EA9DF;                       /* 露草 dayflower blue — info         */
+  --jpn-fuji:     #8B81C3;                       /* 藤 wisteria                        */
+  --jpn-shu:      #E83929;                       /* 朱 vermilion — danger              */
+  --jpn-yamabuki: #FFB11B;                       /* 山吹 golden amber                  */
+  --jpn-kin:      #C89B3C;                       /* 金 gold                            */
+  --jpn-ai:       #165E83;                       /* 藍 indigo                          */
+
+  /* legacy aliases (kept for existing rules) */
+  --jpn-wakaba:   var(--jpn-wakatake);
 
   --tsuyukusa-dim: rgba(46, 169, 223, 0.5);
   --tsuyukusa-bg:  rgba(46, 169, 223, 0.1);
   --fuji-dim:      rgba(139, 129, 195, 0.5);
   --fuji-bg:       rgba(139, 129, 195, 0.08);
-  --wakaba-dim:    rgba(139, 184, 92, 0.5);
-  --wakaba-bg:     rgba(139, 184, 92, 0.1);
+  --wakaba-dim:    rgba(104, 190, 141, 0.55);
+  --wakaba-bg:     rgba(104, 190, 141, 0.10);
   --shu-dim:       rgba(232, 57, 41, 0.5);
   --shu-bg:        rgba(232, 57, 41, 0.1);
 
-  --text-bright:  #E2E2E2;
-  --text-main:    rgba(210, 215, 220, 0.92);
-  --text-dim:     rgba(160, 170, 180, 0.72);
-  --text-muted:   rgba(110, 120, 130, 0.5);
+  --text-bright:  #DCEFE2;
+  --text-main:    rgba(200, 216, 206, 0.92);
+  --text-dim:     rgba(140, 165, 148, 0.75);
+  --text-muted:   rgba(95, 118, 102, 0.5);
 
-  --ln:           rgba(46, 169, 223, 0.2);
-  --ln-strong:    rgba(46, 169, 223, 0.4);
+  --ln:           rgba(104, 190, 141, 0.22);
+  --ln-strong:    rgba(195, 216, 37, 0.45);
 
   --font:         'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Source Code Pro', 'SF Mono', 'Consolas', 'Liberation Mono', monospace;
   --font-ui:      'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
@@ -37,9 +43,15 @@
 html { height: 100%; overflow: hidden; }
 body {
   background: var(--bg-void);
-  background-image: radial-gradient(ellipse 90% 60% at 0% 20%, rgba(46,169,223,0.20) 0%, transparent 55%),
-                    radial-gradient(ellipse 60% 80% at 100% 60%, rgba(139,129,195,0.13) 0%, transparent 50%),
-                    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(232,57,41,0.06) 0%, transparent 40%);
+  /*  電脳背景 / cyberpunk-matrix backdrop — original SVG, falling kanji rain */
+  background-image:
+    url('bg-matrix.svg'),
+    radial-gradient(ellipse 90% 60% at 0% 20%, rgba(104,190,141,0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 100% 60%, rgba(22,94,131,0.14) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 30% at 50% 100%, rgba(232,57,41,0.06) 0%, transparent 40%);
+  background-size: cover, auto, auto, auto;
+  background-position: center, 0 0, 0 0, 0 0;
+  background-attachment: fixed;
   font-family: var(--font-ui);
   height: 100vh; overflow: hidden; display: flex; flex-direction: column;
   color: var(--text-main);
@@ -105,14 +117,14 @@ body {
 
 .glass {
   background: var(--bg-card);
-  background-image: linear-gradient(135deg, rgba(46,169,223,0.10) 0%, rgba(139,129,195,0.04) 50%, transparent 80%);
+  background-image: linear-gradient(135deg, rgba(104,190,141,0.10) 0%, rgba(22,94,131,0.05) 50%, transparent 80%);
   border: 1px solid var(--ln);
-  border-left: 2px solid rgba(46,169,223,0.35);
+  border-left: 2px solid rgba(195,216,37,0.40);
   outline: 1px solid rgba(255, 255, 255, 0.04);
   outline-offset: -2px;
   padding: 10px;
-  box-shadow: 0 0 30px rgba(46,169,223,0.05),
-              2px 0 20px rgba(46,169,223,0.04);
+  box-shadow: 0 0 30px rgba(104,190,141,0.06),
+              2px 0 20px rgba(104,190,141,0.05);
 }
 .glass-title {
   font-family: var(--font); font-size: 9px; text-transform: uppercase; letter-spacing: 2.5px;
