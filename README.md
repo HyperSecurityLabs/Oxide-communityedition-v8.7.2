@@ -163,8 +163,6 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 
 ## v8.7.2 — Unified Engine Update
 
-[![Unified Fuzzing](https://img.shields.io/badge/_Fuzzing_Engine-UNIFIED_CONCURRENT-FFB11B?style=for-the-badge&labelColor=1A1A1A)]()
-
 - ALL module selections (`--modules sqli` included) now flow through one chunk-based concurrent engine with the same live display
 - Adaptive module chain: shows only selected scanners, extras (CMDi/SSTI/NoSQL) on `fuzz`/`all`
 - **SSTI wired in** — template math-reflection detection ({{7*7}}→49) with baseline FP guard
@@ -177,9 +175,6 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - XSS/LFI/CMDi/Blind-SQLi/Path-traversal: AI `PayloadMutator` variants + silent worker mode
 - LFI progressive escalation: cheap reads first, bypass phases gated by exploitation level
 - HTTP client panic-free header handling; global live request ticker
-
-### Licensing
-- Full source relicensed under **GNU GPL-3.0** (102 files)
 
 ## v8.7.2 — Hardened Production Release
 
