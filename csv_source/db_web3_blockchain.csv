@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - WEB3 & BLOCKCHAIN SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+WEB3-0001,/rpc,POST,200,jsonrpc,Critical,Web3,JSON-RPC,JSON-RPC endpoint.,Secure RPC access.,false
+WEB3-0002,/eth,POST,200,jsonrpc,Critical,Web3,ETH RPC,Ethereum RPC endpoint.,Secure ETH RPC.,false
+WEB3-0003,/ethereum,POST,200,jsonrpc,Critical,Web3,Ethereum Alt,Ethereum RPC alt.,Secure Ethereum.,false
+WEB3-0004,/api/eth,POST,200,jsonrpc,Critical,Web3,API ETH,API ETH endpoint.,Secure API ETH.,false
+WEB3-0005,/v1/eth,POST,200,jsonrpc,Critical,Web3,ETH V1,ETH v1 endpoint.,Secure ETH v1.,false
+WEB3-0006,/web3,POST,200,web3,Critical,Web3,Web3 Provider,Web3 provider.,Secure Web3.,false
+WEB3-0007,/web3/provider,POST,200,provider,Critical,Web3,Web3 Provider Alt,Web3 provider alt.,Secure provider.,false
+WEB3-0008,/jsonrpc,POST,200,jsonrpc,Critical,Web3,JSON-RPC Alt,JSON-RPC alt endpoint.,Secure JSON-RPC.,false
+WEB3-0009,/graphql,POST,200,data,Critical,Web3,GraphQL,GraphQL endpoint.,Secure GraphQL.,false
+WEB3-0010,/thegraph,POST,200,data,Critical,Web3,The Graph,The Graph endpoint.,Secure The Graph.,false
+WEB3-0011,/subgraphs,POST,200,subgraph,Critical,Web3,Subgraphs,Subgraphs endpoint.,Secure subgraphs.,false
+WEB3-0012,/subgraph,POST,200,subgraph,Critical,Web3,Subgraph,Subgraph endpoint.,Secure subgraph.,false
+WEB3-0013,/ipfs,GET,200,ipfs,Critical,Web3,IPFS,IPFS gateway.,Secure IPFS.,false
+WEB3-0014,/ipfs/api,POST,200,api,Critical,Web3,IPFS API,IPFS API endpoint.,Secure IPFS API.,false
+WEB3-0015,/api/v0,POST,200,api,Critical,Web3,IPFS V0,IPFS v0 API.,Secure IPFS v0.,false
+WEB3-0016,/api/v0/add,POST,200,Hash,Critical,Web3,IPFS Add,IPFS add endpoint.,Secure IPFS add.,false
+WEB3-0017,/api/v0/cat,POST,200,data,Critical,Web3,IPFS Cat,IPFS cat endpoint.,Secure IPFS cat.,false
+WEB3-0018,/api/v0/ls,POST,200,Links,Critical,Web3,IPFS LS,IPFS ls endpoint.,Secure IPFS ls.,false
+WEB3-0019,/api/v0/pin,POST,200, Pins,Critical,Web3,IPFS Pin,IPFS pin endpoint.,Secure IPFS pin.,false
+WEB3-0020,/api/v0/config,POST,200,Key,Critical,Web3,IPFS Config,IPFS config endpoint.,Secure IPFS config.,false
+WEB3-0021,/api/v0/swarm,POST,200,Strings,Critical,Web3,IPFS Swarm,IPFS swarm endpoint.,Secure IPFS swarm.,false
+WEB3-0022,/api/v0/dag,POST,200,Cid,Critical,Web3,IPFS DAG,IPFS DAG endpoint.,Secure IPFS DAG.,false
+WEB3-0023,/api/v0/files,POST,200,Entries,Critical,Web3,IPFS Files,IPFS files endpoint.,Secure IPFS files.,false
+WEB3-0024,/api/v0/key,POST,200,Key,Critical,Web3,IPFS Key,IPFS key endpoint.,Secure IPFS key.,false
+WEB3-0025,/api/v0/name,POST,200,Path,Critical,Web3,IPFS Name,IPFS name endpoint.,Secure IPFS name.,false
+WEB3-0026,/api/v0/object,POST,200,Links,Critical,Web3,IPFS Object,IPFS object endpoint.,Secure IPFS object.,false
+WEB3-0027,/api/v0/pubsub,POST,200,Strings,Critical,Web3,IPFS PubSub,IPFS pubsub endpoint.,Secure IPFS pubsub.,false
+WEB3-0028,/api/v0/stats,POST,200,NumGC,Critical,Web3,IPFS Stats,IPFS stats endpoint.,Secure IPFS stats.,false
+WEB3-0029,/api/v0/repo,POST,200,NumObjects,Critical,Web3,IPFS Repo,IPFS repo endpoint.,Secure IPFS repo.,false
+WEB3-0030,/api/v0/bootstrap,POST,200,Peers,Critical,Web3,IPFS Bootstrap,IPFS bootstrap endpoint.,Secure IPFS bootstrap.,false
+WEB3-0031,/api/v0/id,POST,200,ID,Critical,Web3,IPFS ID,IPFS id endpoint.,Secure IPFS id.,false
+WEB3-0032,/api/v0/version,POST,200,Version,Critical,Web3,IPFS Version,IPFS version endpoint.,Secure IPFS version.,false
+WEB3-0033,/api/v0/log,POST,200,Messages,Critical,Web3,IPFS Log,IPFS log endpoint.,Secure IPFS log.,false
+WEB3-0034,/hardhat,GET,200,hardhat,Critical,Web3,Hardhat,Hardhat node.,Secure Hardhat.,false
+WEB3-0035,/hardhat/console,GET,200,console,Critical,Web3,Hardhat Console,Hardhat console.,Secure console.,false
+WEB3-0036,/ganache,GET,200,ganache,Critical,Web3,Ganache,Ganache CLI.,Secure Ganache.,false
+WEB3-0037,/ganache/console,GET,200,console,Critical,Web3,Ganache Console,Ganache console.,Secure console.,false
+WEB3-0038,/truffle,GET,200,truffle,Critical,Web3,Truffle,Truffle dashboard.,Secure Truffle.,false
+WEB3-0039,/truffle/dashboard,GET,200,dashboard,Critical,Web3,Truffle Dashboard,Truffle dashboard UI.,Secure dashboard.,false
+WEB3-0040,/etherscan,GET,200,etherscan,Critical,Web3,Etherscan,Etherscan API.,Secure Etherscan.,false
+WEB3-0041,/api.etherscan.io,GET,200,etherscan,Critical,Web3,Etherscan API,Etherscan API alt.,Secure Etherscan API.,false
+WEB3-0042,/infura,POST,200,infura,Critical,Web3,Infura,Infura endpoint.,Secure Infura.,false
+WEB3-0043,/infura.io,POST,200,infura,Critical,Web3,Infura IO,Infura IO endpoint.,Secure Infura IO.,false
+WEB3-0044,/alchemy,POST,200,alchemy,Critical,Web3,Alchemy,Alchemy endpoint.,Secure Alchemy.,false
+WEB3-0045,/alchemyapi,POST,200,alchemy,Critical,Web3,Alchemy API,Alchemy API endpoint.,Secure Alchemy API.,false
+WEB3-0046,/quicknode,POST,200,quicknode,Critical,Web3,QuickNode,QuickNode endpoint.,Secure QuickNode.,false
+WEB3-0047,/chainstack,POST,200,chainstack,Critical,Web3,Chainstack,Chainstack endpoint.,Secure Chainstack.,false
+WEB3-0048,/ankr,POST,200,ankr,Critical,Web3,Ankr,Ankr endpoint.,Secure Ankr.,false
+WEB3-0049,/getblock,POST,200,getblock,Critical,Web3,GetBlock,GetBlock endpoint.,Secure GetBlock.,false
+WEB3-0050,/pocket,POST,200,pocket,Critical,Web3,Pocket,Pocket endpoint.,Secure Pocket.,false
+WEB3-0051,/binance,POST,200,binance,Critical,Web3,Binance,Binance RPC.,Secure Binance.,false
+WEB3-0052,/bsc,POST,200,bsc,Critical,Web3,BSC,Binance Smart Chain.,Secure BSC.,false
+WEB3-0053,/polygon,POST,200,polygon,Critical,Web3,Polygon,Polygon RPC.,Secure Polygon.,false
+WEB3-0054,/matic,POST,200,matic,Critical,Web3,Matic,Matic RPC.,Secure Matic.,false
+WEB3-0055,/avalanche,POST,200,avalanche,Critical,Web3,Avalanche,Avalanche RPC.,Secure Avalanche.,false
+WEB3-0056,/avax,POST,200,avax,Critical,Web3,AVAX,AVAX RPC.,Secure AVAX.,false
+WEB3-0057,/fantom,POST,200,fantom,Critical,Web3,Fantom,Fantom RPC.,Secure Fantom.,false
+WEB3-0058,/ftm,POST,200,ftm,Critical,Web3,FTM,FTM RPC.,Secure FTM.,false
+WEB3-0059,/arbitrum,POST,200,arbitrum,Critical,Web3,Arbitrum,Arbitrum RPC.,Secure Arbitrum.,false
+WEB3-0060,/optimism,POST,200,optimism,Critical,Web3,Optimism,Optimism RPC.,Secure Optimism.,false
+WEB3-0061,/base,POST,200,base,Critical,Web3,Base,Base RPC.,Secure Base.,false
+WEB3-0062,/zksync,POST,200,zksync,Critical,Web3,zkSync,zkSync RPC.,Secure zkSync.,false
+WEB3-0063,/starknet,POST,200,starknet,Critical,Web3,Starknet,Starknet RPC.,Secure Starknet.,false
+WEB3-0064,/celo,POST,200,celo,Critical,Web3,Celo,Celo RPC.,Secure Celo.,false
+WEB3-0065,/harmony,POST,200,harmony,Critical,Web3,Harmony,Harmony RPC.,Secure Harmony.,false
+WEB3-0066,/metis,POST,200,metis,Critical,Web3,Metis,Metis RPC.,Secure Metis.,false
+WEB3-0067,/moonbeam,POST,200,moonbeam,Critical,Web3,Moonbeam,Moonbeam RPC.,Secure Moonbeam.,false
+WEB3-0068,/moonriver,POST,200,moonriver,Critical,Web3,Moonriver,Moonriver RPC.,Secure Moonriver.,false
+WEB3-0069,/aurora,POST,200,aurora,Critical,Web3,Aurora,Aurora RPC.,Secure Aurora.,false
+WEB3-0070,/cronos,POST,200,cronos,Critical,Web3,Cronos,Cronos RPC.,Secure Cronos.,false
+WEB3-0071,/kava,POST,200,kava,Critical,Web3,Kava,Kava RPC.,Secure Kava.,false
+WEB3-0072,/kcc,POST,200,kcc,Critical,Web3,KCC,KCC RPC.,Secure KCC.,false
+WEB3-0073,/okx,POST,200,okx,Critical,Web3,OKX,OKX RPC.,Secure OKX.,false
+WEB3-0074,/heco,POST,200,heco,Critical,Web3,HECO,HECO RPC.,Secure HECO.,false
+WEB3-0075,/gatechain,POST,200,gatechain,Critical,Web3,GateChain,GateChain RPC.,Secure GateChain.,false
+WEB3-0076,/smartbch,POST,200,smartbch,Critical,Web3,SmartBCH,SmartBCH RPC.,Secure SmartBCH.,false
+WEB3-0077,/boba,POST,200,boba,Critical,Web3,Boba,Boba RPC.,Secure Boba.,false
+WEB3-0078,/evmos,POST,200,evmos,Critical,Web3,Evmos,Evmos RPC.,Secure Evmos.,false
+WEB3-0079,/syscoin,POST,200,syscoin,Critical,Web3,Syscoin,Syscoin RPC.,Secure Syscoin.,false
+WEB3-0080,/fuse,POST,200,fuse,Critical,Web3,Fuse,Fuse RPC.,Secure Fuse.,false
+WEB3-0081,/iotex,POST,200,iotex,Critical,Web3,IoTeX,IoTeX RPC.,Secure IoTeX.,false
+WEB3-0082,/oasis,POST,200,oasis,Critical,Web3,Oasis,Oasis RPC.,Secure Oasis.,false
+WEB3-0083,/emerald,POST,200,emerald,Critical,Web3,Emerald,Emerald RPC.,Secure Emerald.,false
+WEB3-0084,/clv,POST,200,clv,Critical,Web3,CLV,CLV RPC.,Secure CLV.,false
+WEB3-0085,/rei,POST,200,rei,Critical,Web3,REI,REI RPC.,Secure REI.,false
+WEB3-0086,/meter,POST,200,meter,Critical,Web3,Meter,Meter RPC.,Secure Meter.,false
+WEB3-0087,/theta,POST,200,theta,Critical,Web3,Theta,Theta RPC.,Secure Theta.,false
+WEB3-0088,/coinex,POST,200,coinex,Critical,Web3,CoinEx,CoinEx RPC.,Secure CoinEx.,false
+WEB3-0089,/fusion,POST,200,fusion,Critical,Web3,Fusion,Fusion RPC.,Secure Fusion.,false
+WEB3-0090,/tomo,POST,200,tomo,Critical,Web3,Tomo,Tomo RPC.,Secure Tomo.,false
+WEB3-0091,/velas,POST,200,velas,Critical,Web3,Velas,Velas RPC.,Secure Velas.,false
+WEB3-0092,/astar,POST,200,astar,Critical,Web3,Astar,Astar RPC.,Secure Astar.,false
+WEB3-0093,/shiden,POST,200,shiden,Critical,Web3,Shiden,Shiden RPC.,Secure Shiden.,false
+WEB3-0094,/edgeware,POST,200,edgeware,Critical,Web3,Edgeware,Edgeware RPC.,Secure Edgeware.,false
+WEB3-0095,/crab,POST,200,crab,Critical,Web3,Crab,Crab RPC.,Secure Crab.,false
+WEB3-0096,/darwinia,POST,200,darwinia,Critical,Web3,Darwinia,Darwinia RPC.,Secure Darwinia.,false
+WEB3-0097,/pangolin,POST,200,pangolin,Critical,Web3,Pangolin,Pangolin RPC.,Secure Pangolin.,false
+WEB3-0098,/ethereum Classic,POST,200,etc,Critical,Web3,ETC,Ethereum Classic RPC.,Secure ETC.,false
+WEB3-0099,/mordor,POST,200,mordor,Critical,Web3,Mordor,Mordor RPC.,Secure Mordor.,false
+WEB3-0100,/kotti,POST,200,kotti,Critical,Web3,Kotti,Kotti RPC.,Secure Kotti.,false

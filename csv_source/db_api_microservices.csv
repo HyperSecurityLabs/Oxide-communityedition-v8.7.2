@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - API & MICROSERVICES SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+API-0001,/api,GET,200,api,Low,Api,API Root,REST API root endpoint.,Review API documentation.,false
+API-0002,/api/v1,GET,200,v1,Low,Api,API V1,API version 1 endpoint.,Version your APIs.,false
+API-0003,/api/v2,GET,200,v2,Low,Api,API V2,API version 2 endpoint.,Use latest version.,false
+API-0004,/api/v3,GET,200,v3,Low,Api,API V3,API version 3 endpoint.,Review v3 changes.,false
+API-0005,/api/latest,GET,200,latest,Low,Api,API Latest,Latest API version.,Pin API versions.,false
+API-0006,/api/internal,GET,200,internal,High,Api,Internal API,Internal API exposed.,Secure internal APIs.,false
+API-0007,/api/private,GET,200,private,High,Api,Private API,Private API endpoint.,Add authentication.,false
+API-0008,/api/public,GET,200,public,Low,Api,Public API,Public API endpoint.,Review public exposure.,false
+API-0009,/api/admin,GET,200,admin,Critical,Api,Admin API,Administrative API endpoint.,Secure admin APIs.,false
+API-0010,/api/users,GET,200,users,High,Api,Users API,User management API.,Implement authorization.,false
+API-0011,/api/user,GET,200,user,High,Api,User API,User endpoint.,Secure user data.,false
+API-0012,/api/auth,GET,200,auth,Medium,Api,Auth API,Authentication API.,Secure auth flow.,false
+API-0013,/api/login,POST,200,token,High,Api,Login API,API login endpoint.,Implement rate limiting.,false
+API-0014,/api/register,POST,200,user,High,Api,Register API,Registration API.,Add CAPTCHA.,false
+API-0015,/api/config,GET,200,config,Critical,Api,Config API,Configuration API.,Remove from production.,false
+API-0016,/api/settings,GET,200,settings,High,Api,Settings API,Settings endpoint.,Secure settings API.,false
+API-0017,/api/status,GET,200,status,Medium,Api,Status API,Status check API.,Limit exposure.,false
+API-0018,/api/health,GET,200,health,Medium,Api,Health API,Health check API.,Secure health checks.,false
+API-0019,/api/metrics,GET,200,metrics,Critical,Api,Metrics API,Metrics endpoint.,Secure metrics.,false
+API-0020,/api/debug,GET,200,debug,Critical,Api,Debug API,Debug endpoint.,Remove debug APIs.,false
+API-0021,/api/test,GET,200,test,Medium,Api,Test API,Test endpoint.,Remove test APIs.,false
+API-0022,/api/docs,GET,200,docs,Medium,Api,API Docs,API documentation.,Secure docs access.,false
+API-0023,/api/documentation,GET,200,documentation,Medium,Api,API Documentation,Full API docs.,Review exposure.,false
+API-0024,/api/swagger,GET,200,swagger,Critical,Api,Swagger UI,Swagger interface.,Remove from production.,false
+API-0025,/api/swagger.json,GET,200,swagger,Critical,Api,Swagger JSON,API specification.,Secure spec files.,false
+API-0026,/api/openapi.json,GET,200,openapi,Critical,Api,OpenAPI Spec,OpenAPI specification.,Secure OpenAPI.,false
+API-0027,/api/spec,GET,200,spec,Critical,Api,API Spec,API specification file.,Remove specs.,false
+API-0028,/api/schema,GET,200,schema,Critical,Api,API Schema,GraphQL/JSON schema.,Secure schemas.,false
+API-0029,/api/graphql,POST,200,graphql,Critical,Api,GraphQL Endpoint,GraphQL API endpoint.,Implement depth limiting.,false
+API-0030,/api/gql,POST,200,gql,Critical,Api,GraphQL Alt,Alternative GraphQL path.,Secure GraphQL.,false
+API-0031,/api/query,POST,200,query,Critical,Api,GraphQL Query,GraphQL query endpoint.,Add query complexity.,false
+API-0032,/api/mutation,POST,200,mutation,Critical,Api,GraphQL Mutation,GraphQL mutation endpoint.,Validate mutations.,false
+API-0033,/api/subscription,GET,101,subscription,Critical,Api,GraphQL Subscription,GraphQL subscriptions.,Secure subscriptions.,false
+API-0034,/api/playground,GET,200,playground,Critical,Api,GraphQL Playground,GraphQL IDE.,Remove playground.,false
+API-0035,/api/graphiql,GET,200,graphiql,Critical,Api,GraphiQL,GraphQL interface.,Remove from production.,false
+API-0036,/api/altair,GET,200,altair,Critical,Api,Altair,GraphQL client.,Remove Altair.,false
+API-0037,/api/voyager,GET,200,voyager,Critical,Api,Voyager,GraphQL voyager.,Remove voyager.,false
+API-0038,/api/explorer,GET,200,explorer,Critical,Api,API Explorer,API exploration tool.,Remove explorers.,false
+API-0039,/api/introspection,POST,200,__schema,Critical,Api,GraphQL Introspection,Schema introspection.,Disable introspection.,false
+API-0040,/api/batch,POST,200,batch,Critical,Api,Batch Requests,Batch API requests.,Limit batch size.,false
+API-0041,/api/bulk,POST,200,bulk,Critical,Api,Bulk Operations,Bulk API operations.,Rate limit bulk.,false
+API-0042,/api/export,POST,200,export,High,Api,Export API,Data export API.,Secure exports.,true
+API-0043,/api/import,POST,200,import,Critical,Api,Import API,Data import API.,Validate imports.,false
+API-0044,/api/upload,POST,200,upload,Critical,Api,Upload API,File upload API.,Validate uploads.,false
+API-0045,/api/download,GET,200,download,High,Api,Download API,File download API.,Secure downloads.,true
+API-0046,/api/backup,GET,200,backup,Critical,Api,Backup API,Backup API endpoint.,Secure backups.,true
+API-0047,/api/restore,POST,200,restore,Critical,Api,Restore API,Restore API endpoint.,Secure restore.,false
+API-0048,/api/sync,POST,200,sync,High,Api,Sync API,Synchronization API.,Secure sync.,false
+API-0049,/api/webhook,POST,200,webhook,High,Api,Webhook Handler,Webhook receiver.,Validate webhooks.,false
+API-0050,/api/callback,GET,200,callback,High,Api,OAuth Callback,OAuth callback URL.,Secure callbacks.,false
+API-0051,/api/token,POST,200,token,High,Api,Token Endpoint,Token generation.,Secure token endpoint.,false
+API-0052,/api/refresh,POST,200,refresh,High,Api,Token Refresh,Token refresh endpoint.,Secure refresh.,false
+API-0053,/api/revoke,POST,200,revoke,High,Api,Token Revoke,Token revocation.,Implement revocation.,false
+API-0054,/api/oauth,GET,200,oauth,Medium,Api,OAuth Endpoint,OAuth authorization.,Secure OAuth flow.,false
+API-0055,/api/oauth2,GET,200,oauth2,Medium,Api,OAuth2 Endpoint,OAuth2 endpoint.,Use PKCE.,false
+API-0056,/api/authorize,GET,200,authorize,Medium,Api,Authorize Endpoint,Authorization endpoint.,Secure authorize.,false
+API-0057,/api/access_token,POST,200,access_token,High,Api,Access Token,Token endpoint.,Secure token generation.,false
+API-0058,/api/jwt,POST,200,jwt,High,Api,JWT Endpoint,JWT token endpoint.,Secure JWT handling.,false
+API-0059,/api/verify,POST,200,verify,Medium,Api,Verify Token,Token verification.,Implement verification.,false
+API-0060,/api/validate,POST,200,validate,Medium,Api,Validate Token,Token validation.,Add validation.,false
+API-0061,/api/session,GET,200,session,High,Api,Session API,Session management.,Secure sessions.,false
+API-0062,/api/sessions,GET,200,sessions,Critical,Api,Sessions API,All sessions endpoint.,Secure session list.,false
+API-0063,/api/logout,POST,200,logout,Medium,Api,Logout API,Logout endpoint.,Implement logout.,false
+API-0064,/api/me,GET,200,me,Medium,Api,Current User,Current user endpoint.,Secure /me endpoint.,false
+API-0065,/api/profile,GET,200,profile,Medium,Api,User Profile,Profile endpoint.,Secure profile data.,false
+API-0066,/api/account,GET,200,account,High,Api,User Account,Account endpoint.,Secure account API.,false
+API-0067,/api/accounts,GET,200,accounts,Critical,Api,All Accounts,All accounts endpoint.,Secure accounts list.,false
+API-0068,/api/roles,GET,200,roles,High,Api,Roles API,Roles management.,Secure roles API.,false
+API-0069,/api/permissions,GET,200,permissions,High,Api,Permissions API,Permissions endpoint.,Secure permissions.,false
+API-0070,/api/groups,GET,200,groups,High,Api,Groups API,User groups API.,Secure groups.,false
+API-0071,/api/teams,GET,200,teams,High,Api,Teams API,Teams management.,Secure teams.,false
+API-0072,/api/organizations,GET,200,organizations,High,Api,Orgs API,Organizations endpoint.,Secure orgs.,false
+API-0073,/api/tenants,GET,200,tenants,High,Api,Tenants API,Tenant management.,Isolate tenants.,false
+API-0074,/api/namespaces,GET,200,namespaces,High,Api,Namespaces API,Namespace management.,Secure namespaces.,false
+API-0075,/api/projects,GET,200,projects,Medium,Api,Projects API,Projects endpoint.,Secure projects.,false
+API-0076,/api/resources,GET,200,resources,Medium,Api,Resources API,Resources endpoint.,Secure resources.,false
+API-0077,/api/assets,GET,200,assets,Medium,Api,Assets API,Assets endpoint.,Secure assets.,false
+API-0078,/api/files,GET,200,files,High,Api,Files API,Files management.,Secure file API.,false
+API-0079,/api/documents,GET,200,documents,Medium,Api,Documents API,Documents endpoint.,Secure documents.,false
+API-0080,/api/images,GET,200,images,Low,Api,Images API,Images endpoint.,Secure image access.,false
+API-0081,/api/videos,GET,200,videos,Low,Api,Videos API,Videos endpoint.,Secure video access.,false
+API-0082,/api/media,GET,200,media,Low,Api,Media API,Media endpoint.,Secure media.,false
+API-0083,/api/content,GET,200,content,Medium,Api,Content API,Content management.,Secure content API.,false
+API-0084,/api/posts,GET,200,posts,Medium,Api,Posts API,Blog posts API.,Secure posts API.,false
+API-0085,/api/articles,GET,200,articles,Medium,Api,Articles API,Articles endpoint.,Secure articles.,false
+API-0086,/api/blogs,GET,200,blogs,Medium,Api,Blogs API,Blogs endpoint.,Secure blogs.,false
+API-0087,/api/news,GET,200,news,Medium,Api,News API,News endpoint.,Secure news API.,false
+API-0088,/api/events,GET,200,events,Medium,Api,Events API,Events endpoint.,Secure events.,false
+API-0089,/api/calendar,GET,200,calendar,Medium,Api,Calendar API,Calendar endpoint.,Secure calendar.,false
+API-0090,/api/bookings,GET,200,bookings,High,Api,Bookings API,Bookings endpoint.,Secure bookings.,false
+API-0091,/api/reservations,GET,200,reservations,High,Api,Reservations API,Reservations endpoint.,Secure reservations.,false
+API-0092,/api/orders,GET,200,orders,High,Api,Orders API,Orders management.,Secure orders.,false
+API-0093,/api/payments,GET,200,payments,Critical,Api,Payments API,Payments endpoint.,PCI compliance required.,false
+API-0094,/api/invoices,GET,200,invoices,High,Api,Invoices API,Invoices endpoint.,Secure invoices.,true
+API-0095,/api/transactions,GET,200,transactions,Critical,Api,Transactions API,Transactions endpoint.,Secure transactions.,false
+API-0096,/api/subscriptions,GET,200,subscriptions,High,Api,Subscriptions API,Subscriptions endpoint.,Secure subs.,false
+API-0097,/api/plans,GET,200,plans,Medium,Api,Plans API,Plans endpoint.,Secure plans.,false
+API-0098,/api/pricing,GET,200,pricing,Medium,Api,Pricing API,Pricing endpoint.,Secure pricing.,false
+API-0099,/api/products,GET,200,products,Medium,Api,Products API,Products endpoint.,Secure products.,false
+API-0100,/api/services,GET,200,services,Medium,Api,Services API,Services endpoint.,Secure services.,false

@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - SUPPLY CHAIN SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+SUP-0001,/package.json,GET,200,dependencies,Medium,SupplyChain,Package JSON,NPM package manifest.,Review dependencies.,true
+SUP-0002,/package-lock.json,GET,200,lockfileVersion,Medium,SupplyChain,Package Lock,NPM lock file.,Verify lockfile.,true
+SUP-0003,/npm-shrinkwrap.json,GET,200,dependencies,Medium,SupplyChain,NPM Shrinkwrap,NPM shrinkwrap.,Verify shrinkwrap.,true
+SUP-0004,/yarn.lock,GET,200,yarn,Medium,SupplyChain,Yarn Lock,Yarn lock file.,Verify lockfile.,true
+SUP-0005,/.npmrc,GET,200,registry,Critical,SupplyChain,NPM Config,NPM configuration.,Remove from web.,true
+SUP-0006,/.yarnrc,GET,200,registry,Critical,SupplyChain,Yarn Config,Yarn configuration.,Remove from web.,true
+SUP-0007,/node_modules,GET,200,index,Critical,SupplyChain,Node Modules,NPM dependencies directory.,Remove node_modules.,false
+SUP-0008,/node_modules/.package-lock.json,GET,200,lockfileVersion,Critical,SupplyChain,Node Modules Lock,Node modules lock.,Remove node_modules.,true
+SUP-0009,/bower.json,GET,200,dependencies,Medium,SupplyChain,Bower JSON,Bower manifest.,Review bower.,true
+SUP-0010,/bower_components,GET,200,bower,Critical,SupplyChain,Bower Components,Bower directory.,Remove bower_components.,false
+SUP-0011,/component.json,GET,200,dependencies,Medium,SupplyChain,Component JSON,Component manifest.,Review component.,true
+SUP-0012,/composer.json,GET,200,require,Medium,SupplyChain,Composer JSON,PHP composer manifest.,Review composer.,true
+SUP-0013,/composer.lock,GET,200,content-hash,Medium,SupplyChain,Composer Lock,Composer lock file.,Verify lockfile.,true
+SUP-0014,/vendor,GET,200,autoload,Critical,SupplyChain,Vendor Directory,PHP vendor directory.,Remove vendor.,false
+SUP-0015,/vendor/autoload.php,GET,200,autoload,Critical,SupplyChain,Vendor Autoload,Composer autoload.,Remove vendor.,true
+SUP-0016,/Gemfile,GET,200,gem,Medium,SupplyChain,Gemfile,Ruby dependencies.,Review gems.,true
+SUP-0017,/Gemfile.lock,GET,200,specs,Medium,SupplyChain,Gemfile Lock,Ruby lock file.,Verify lockfile.,true
+SUP-0018,/.bundle,GET,200,config,Critical,SupplyChain,Bundle Config,Bundler configuration.,Remove from web.,false
+SUP-0019,/requirements.txt,GET,200,==,Medium,SupplyChain,Requirements,Python dependencies.,Review requirements.,true
+SUP-0020,/Pipfile,GET,200,packages,Medium,SupplyChain,Pipfile,Pipenv manifest.,Review pipfile.,true
+SUP-0021,/Pipfile.lock,GET,200,sha256,Medium,SupplyChain,Pipfile Lock,Pipenv lock.,Verify lockfile.,true
+SUP-0022,/setup.py,GET,200,setup,Medium,SupplyChain,Setup Python,Python setup file.,Review setup.,true
+SUP-0023,/setup.cfg,GET,200,metadata,Medium,SupplyChain,Setup Config,Setup configuration.,Review config.,true
+SUP-0024,/pyproject.toml,GET,200,tool,Medium,SupplyChain,PyProject,Python project config.,Review pyproject.,true
+SUP-0025,/poetry.lock,GET,200,content-hash,Medium,SupplyChain,Poetry Lock,Poetry lock file.,Verify lockfile.,true
+SUP-0026,/poetry.toml,GET,200,poetry,Critical,SupplyChain,Poetry Config,Poetry configuration.,Remove from web.,true
+SUP-0027,/.pypirc,GET,200,pypi,Critical,SupplyChain,PyPI Config,PyPI configuration.,Remove pypirc.,true
+SUP-0028,/Cargo.toml,GET,200,dependencies,Medium,SupplyChain,Cargo TOML,Rust manifest.,Review cargo.,true
+SUP-0029,/Cargo.lock,GET,200,package,Medium,SupplyChain,Cargo Lock,Rust lock file.,Verify lockfile.,true
+SUP-0030,/go.mod,GET,200,module,Medium,SupplyChain,Go Mod,Go module manifest.,Review go.mod.,true
+SUP-0031,/go.sum,GET,200,checksum,Medium,SupplyChain,Go Sum,Go checksum file.,Verify go.sum.,true
+SUP-0032,/vendor,GET,200,vendor,Critical,SupplyChain,Go Vendor,Go vendor directory.,Remove vendor.,false
+SUP-0033,/Gopkg.toml,GET,200,constraint,Medium,SupplyChain,Dep TOML,Dep manifest.,Review dep.,true
+SUP-0034,/Gopkg.lock,GET,200,projects,Medium,SupplyChain,Dep Lock,Dep lock file.,Verify lockfile.,true
+SUP-0035,/glide.yaml,GET,200,import,Medium,SupplyChain,Glide YAML,Glide manifest.,Review glide.,true
+SUP-0036,/glide.lock,GET,200,hash,Medium,SupplyChain,Glide Lock,Glide lock file.,Verify lockfile.,true
+SUP-0037,/pom.xml,GET,200,dependencies,Critical,SupplyChain,Maven POM,Maven project object model.,Review POM.,true
+SUP-0038,/build.gradle,GET,200,dependencies,Critical,SupplyChain,Gradle Build,Gradle build file.,Review gradle.,true
+SUP-0039,/settings.gradle,GET,200,pluginManagement,Critical,SupplyChain,Gradle Settings,Gradle settings.,Review settings.,true
+SUP-0040,/gradle.properties,GET,200,gradle,Critical,SupplyChain,Gradle Properties,Gradle properties.,Secure properties.,true
+SUP-0041,/gradle/wrapper,GET,200,gradle-wrapper,Critical,SupplyChain,Gradle Wrapper,Gradle wrapper.,Secure wrapper.,false
+SUP-0042,/gradlew,GET,200,#!/bin/sh,Critical,SupplyChain,Gradle Wrapper Script,Gradle wrapper script.,Remove from web.,true
+SUP-0043,/build.sbt,GET,200,libraryDependencies,Critical,SupplyChain,SBT Build,Scala SBT build.,Review SBT.,true
+SUP-0044,/project/build.properties,GET,200,sbt.version,Critical,SupplyChain,SBT Properties,SBT properties.,Remove from web.,true
+SUP-0045,/mix.exs,GET,200,deps,Medium,SupplyChain,Mix Elixir,Elixir Mix manifest.,Review mix.,true
+SUP-0046,/mix.lock,GET,200,hex,Medium,SupplyChain,Mix Lock,Elixir lock file.,Verify lockfile.,true
+SUP-0047,/rebar.config,GET,200,deps,Medium,SupplyChain,Rebar Config,Erlang rebar config.,Review rebar.,true
+SUP-0048,/Podfile,GET,200,pod,Medium,SupplyChain,CocoaPods,CocoaPods manifest.,Review pods.,true
+SUP-0049,/Podfile.lock,GET,200,PODS,Medium,SupplyChain,CocoaPods Lock,CocoaPods lock.,Verify lockfile.,true
+SUP-0050,/Cartfile,GET,200,github,Medium,SupplyChain,Carthage,Carthage manifest.,Review carthage.,true
+SUP-0051,/Cartfile.resolved,GET,200,github,Medium,SupplyChain,Carthage Resolved,Carthage resolved.,Verify resolved.,true
+SUP-0052,/Package.swift,GET,200,dependencies,Medium,SupplyChain,Swift Package,Swift Package Manager.,Review package.,true
+SUP-0053,/Package.resolved,GET,200,version,Medium,SupplyChain,Swift Resolved,SPM resolved.,Verify resolved.,true
+SUP-0054,/conanfile.txt,GET,200,requires,Medium,SupplyChain,Conan File,Conan dependencies.,Review conan.,true
+SUP-0055,/conanfile.py,GET,200,requires,Medium,SupplyChain,Conan Python,Conan Python file.,Review conanfile.,true
+SUP-0056,/conan.lock,GET,200,graph_lock,Medium,SupplyChain,Conan Lock,Conan lock file.,Verify lockfile.,true
+SUP-0057,/vcpkg.json,GET,200,dependencies,Medium,SupplyChain,Vcpkg JSON,Vcpkg manifest.,Review vcpkg.,true
+SUP-0058,/vcpkg-configuration.json,GET,200,default-registry,Critical,SupplyChain,Vcpkg Config,Vcpkg configuration.,Remove from web.,true
+SUP-0059,/manifest.json,GET,200,dependencies,Medium,SupplyChain,Vcpkg Manifest,Vcpkg manifest alt.,Review manifest.,true
+SUP-0060,/buckaroo.toml,GET,200,dependencies,Medium,SupplyChain,Buckaroo,Buckaroo manifest.,Review buckaroo.,true
+SUP-0061,/paket.dependencies,GET,200,nuget,Medium,SupplyChain,Paket Dependencies,Paket dependencies.,Review paket.,true
+SUP-0062,/paket.lock,GET,200,nuget,Medium,SupplyChain,Paket Lock,Paket lock file.,Verify lockfile.,true
+SUP-0063,/packages.config,GET,200,package,Critical,SupplyChain,NuGet Config,NuGet packages config.,Review packages.,true
+SUP-0064,/.nuget/NuGet.Config,GET,200,configuration,Critical,SupplyChain,NuGet Config XML,NuGet configuration XML.,Remove from web.,true
+SUP-0065,/nuget.config,GET,200,configuration,Critical,SupplyChain,NuGet Config Alt,NuGet config alt.,Remove from web.,true
+SUP-0066,/Dockerfile,GET,200,FROM,Medium,SupplyChain,Dockerfile,Docker build file.,Review Dockerfile.,true
+SUP-0067,/docker-compose.yml,GET,200,services,Critical,SupplyChain,Docker Compose,Docker compose file.,Secure compose.,true
+SUP-0068,/docker-compose.yaml,GET,200,services,Critical,SupplyChain,Docker Compose YAML,Docker compose YAML.,Secure compose.,true
+SUP-0069,/compose.yml,GET,200,services,Critical,SupplyChain,Compose File,Compose file.,Secure compose.,true
+SUP-0070,/.dockerignore,GET,200,dockerignore,Low,SupplyChain,Dockerignore,Docker ignore file.,Low risk.,true
+SUP-0071,/Dockerfile.prod,GET,200,FROM,Critical,SupplyChain,Dockerfile Prod,Production Dockerfile.,Review prod Dockerfile.,true
+SUP-0072,/Dockerfile.dev,GET,200,FROM,Medium,SupplyChain,Dockerfile Dev,Development Dockerfile.,Review dev Dockerfile.,true
+SUP-0073,/.env.docker,GET,200,ENV,Critical,SupplyChain,Docker Env,Docker environment file.,Remove from web.,true
+SUP-0074,/docker-entrypoint.sh,GET,200,#!/bin/sh,Critical,SupplyChain,Docker Entrypoint,Docker entrypoint script.,Secure entrypoint.,true
+SUP-0075,/healthcheck.sh,GET,200,#!/bin/sh,Critical,SupplyChain,Docker Healthcheck,Docker health check.,Secure healthcheck.,true
+SUP-0076,/ansible.cfg,GET,200,defaults,Critical,SupplyChain,Ansible Config,Ansible configuration.,Remove from web.,true
+SUP-0077,/ansible,GET,200,inventory,Critical,SupplyChain,Ansible Directory,Ansible directory.,Secure ansible.,false
+SUP-0078,/inventory,GET,200,hosts,Critical,SupplyChain,Ansible Inventory,Ansible inventory.,Secure inventory.,true
+SUP-0079,/inventory.ini,GET,200,hosts,Critical,SupplyChain,Ansible INI,Ansible inventory INI.,Secure inventory.,true
+SUP-0080,/hosts,GET,200,hosts,Critical,SupplyChain,Ansible Hosts,Ansible hosts file.,Secure hosts.,true
+SUP-0081,/playbook.yml,GET,200,playbook,Critical,SupplyChain,Ansible Playbook,Ansible playbook.,Secure playbook.,true
+SUP-0082,/roles,GET,200,role,Critical,SupplyChain,Ansible Roles,Ansible roles directory.,Secure roles.,false
+SUP-0083,/group_vars,GET,200,vars,Critical,SupplyChain,Group Vars,Ansible group variables.,Encrypt variables.,false
+SUP-0084,/host_vars,GET,200,vars,Critical,SupplyChain,Host Vars,Ansible host variables.,Encrypt variables.,false
+SUP-0085,/vault.yml,GET,200,$ANSIBLE_VAULT,Critical,SupplyChain,Ansible Vault,Ansible vault file.,Verify encryption.,true
+SUP-0086,/terraform.tfstate,GET,200,resources,Critical,SupplyChain,Terraform State,Terraform state file.,Secure state.,true
+SUP-0087,/terraform.tfstate.backup,GET,200,resources,Critical,SupplyChain,Terraform Backup,Terraform state backup.,Secure backups.,true
+SUP-0088,/terraform.tfvars,GET,200,variable,Critical,SupplyChain,Terraform Vars,Terraform variables.,Encrypt tfvars.,true
+SUP-0089,/.terraform,GET,200,modules,Critical,SupplyChain,Terraform Dir,Terraform directory.,Secure .terraform.,false
+SUP-0090,/main.tf,GET,200,resource,Critical,SupplyChain,Terraform Main,Terraform main file.,Review main.tf.,true
+SUP-0091,/variables.tf,GET,200,variable,Critical,SupplyChain,Terraform Vars,TF variables file.,Review variables.,true
+SUP-0092,/outputs.tf,GET,200,output,Critical,SupplyChain,Terraform Outputs,TF outputs file.,Review outputs.,true
+SUP-0093,/provider.tf,GET,200,provider,Critical,SupplyChain,Terraform Provider,TF provider file.,Review provider.,true
+SUP-0094,/backend.tf,GET,200,backend,Critical,SupplyChain,Terraform Backend,TF backend config.,Secure backend.,true
+SUP-0095,/modules,GET,200,module,Critical,SupplyChain,Terraform Modules,TF modules directory.,Secure modules.,false
+SUP-0096,/pulumi.yaml,GET,200,name,Critical,SupplyChain,Pulumi YAML,Pulumi manifest.,Review pulumi.,true
+SUP-0097,/Pulumi.yaml,GET,200,name,Critical,SupplyChain,Pulumi YAML Alt,Pulumi YAML alt.,Review Pulumi.,true
+SUP-0098,/Pulumi.dev.yaml,GET,200,config,Critical,SupplyChain,Pulumi Dev,Pulumi dev config.,Secure dev config.,true
+SUP-0099,/Pulumi.prod.yaml,GET,200,config,Critical,SupplyChain,Pulumi Prod,Pulumi prod config.,Secure prod config.,true
+SUP-0100,/pulumi,GET,200,stack,Critical,SupplyChain,Pulumi Stack,Pulumi stack file.,Secure stack.,true

@@ -1,0 +1,233 @@
+# HyperSecurity_offensivelabs - PROFESSIONAL SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# This database contains REAL vulnerability tests for authorized security assessments only
+# Unauthorized access or use is strictly prohibited
+#
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+# Total Records: 223 (Stealth DoS & Nikto-evading vectors)
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+D-0001,/api/batch,POST,200,time,High,DoS,Batch API Processing,Batch endpoint without size limits allows resource exhaustion via large payloads.,Implement request size limits and rate limiting.
+D-0002,/graphql,POST,200,errors,High,DoS,GraphQL Batching Attack,GraphQL endpoint allows deeply nested batched queries causing CPU exhaustion.,Implement query depth limiting and cost analysis.
+D-0003,/api/export/csv,GET,200,records,High,DoS,CSV Export Flood,Export endpoint triggers expensive DB queries without rate limiting.,Add rate limiting and async export queue.
+D-0004,/api/v1/search,GET,200,results,High,DoS,Search Index Scan,Unbounded search causes heavy index scanning and CPU spikes.,Implement search timeouts and result limits.
+D-0005,/api/v2/search,GET,200,results,High,DoS,Full-Text Search DoS,Full-text search without timeout causes database load.,Enforce query timeouts and max results.
+D-0006,/api/render,POST,200,template,High,DoS,Server-Side Render Flood,SSR endpoint causes CPU spikes on concurrent render requests.,Implement render queue with concurrency limits.
+D-0007,/api/convert,POST,200,conversion,High,DoS,File Conversion Abuse,File conversion endpoint consumes excessive memory for large inputs.,Set max input size and conversion timeouts.
+D-0008,/api/resize,POST,200,image,High,DoS,Image Resize Bomb,Image resizing without dimension limits causes memory exhaustion.,Enforce max dimensions and image size limits.
+D-0009,/api/thumbnail,POST,200,generated,High,DoS,Thumbnail Generation Flood,Unlimited thumbnail generation exhausts disk I/O.,Queue generation tasks and limit concurrency.
+D-0010,/api/optimize,POST,200,optimized,High,DoS,Image Optimization Abuse,Image optimizer runs out of memory for large animated images.,Set max frame count and resolution limits.
+D-0011,/api/compress,POST,200,compressed,High,DoS,Compression Bomb Decompression,Server decompresses user uploads without size limits.,Limit decompressed output size.
+D-0012,/api/decompress,POST,200,extracted,High,DoS,ZIP Bomb Extraction,Zip bombs crash extractor via exponential decompression.,Detect and block zip bombs before extraction.
+D-0013,/api/upload,POST,200,success,High,DoS,Chunked Upload Flood,Chunked upload reassembly exhausts temporary storage.,Set max total upload size per session.
+D-0014,/api/upload/multipart,POST,200,success,High,DoS,Multipart Form Flood,Many multipart parts cause excessive parsing overhead.,Limit number of multipart parts and size.
+D-0015,/api/v1/upload,POST,200,success,High,DoS,Parallel Upload Flood,Concurrent large uploads fill disk and memory.,Limit concurrent uploads per client.
+D-0016,/api/sign,POST,200,url,Medium,DoS,Custom URL Signing DoS,URL signing endpoint with expensive crypto causes CPU exhaustion.,Cache signed URLs and rate-limit generation.
+D-0017,/api/encrypt,POST,200,ciphertext,Medium,DoS,Encryption CPU Exhaustion,Expensive encryption operations on large payloads spike CPU.,Limit payload size for encryption endpoints.
+D-0018,/api/decrypt,POST,200,plaintext,Medium,DoS,Decryption Flood,Decryption with weak ciphers still causes measurable CPU cost.,Set payload size limits and rate limit.
+D-0019,/api/hash,POST,200,digest,Medium,DoS,Hash Function DoS,Expensive hash functions (bcrypt/argon2) exhaust CPU on large inputs.,Use fast hashes for non-security operations.
+D-0020,/api/verify,POST,200,valid,Medium,DoS,Signature Verification Flood,Signature verification with large keys causes CPU spikes.,Limit input size and use faster key types.
+D-0021,/api/generate-pdf,POST,200,application/pdf,High,DoS,PDF Generation Flood,PDF from HTML rendering exhausts memory on complex templates.,Set render timeout and max page count.
+D-0022,/api/generate-docx,POST,200,application/docx,High,DoS,DOCX Generation Abuse,Document generation with many embedded images fills disk.,Limit embedded resource count and size.
+D-0023,/api/generate-xlsx,POST,200,application/xlsx,High,DoS,XLSX Formula Bomb,Spreadsheet generation with many formulas causes slow processing.,Limit formula cell count and formula depth.
+D-0024,/api/print,POST,200,job,High,DoS,Print Spool Exhaustion,Print job submission without limits fills spool queue.,Limit print job size and concurrency.
+D-0025,/api/report,POST,200,report,High,DoS,Report Generation DoS,Complex report generation with many joins crashes database.,Queue reports and limit data aggregation.
+D-0026,/api/v2/report,POST,200,generated,High,DoS,Aggregation Pipeline Abuse,MongoDB aggregation pipeline with large result sets exhausts memory.,Set aggregation result limits and timeouts.
+D-0027,/api/mail/send,POST,200,queued,Medium,DoS,Email Sending Flood,Bulk email endpoint without rate limiting exhausts SMTP relays.,Rate-limit outbound emails per sender.
+D-0028,/api/sms/send,POST,200,sent,Medium,DoS,SMS API Flood,Bulk SMS sending without cost limits causes financial drain.,Set daily SMS caps and spending limits.
+D-0029,/api/push/send,POST,200,delivered,Medium,DoS,Push Notification Flood,Push notification endpoint floods FCM/APNS servers.,Batch pushes and rate-limit per device.
+D-0030,/api/webhook,POST,200,received,High,DoS,Webhook Loop Attack,Webhooks that trigger other webhooks create infinite loops.,Detect and break webhook chains.
+D-0031,/api/callback,POST,200,ok,High,DoS,Callback Reflection DoS,Callbacks that reflect to same endpoint cause self-DoS.,Implement callback depth tracking.
+D-0032,/api/stream,GET,200,event,Medium,DoS,SSE Connection Exhaustion,Event stream connections without limit exhaust server file descriptors.,Limit concurrent SSE connections per IP.
+D-0033,/api/events,GET,200,data,Medium,DoS,Event Stream Flood,Many event subscribers cause broadcast amplification.,Implement subscriber limits and backpressure.
+D-0034,/ws,GET,101,websocket,Medium,DoS,WebSocket Connection Flood,Unlimited WebSocket connections exhaust ports and memory.,Limit WS connections per IP and total.
+D-0035,/socket.io/,GET,200,EIO,Medium,DoS,Socket.IO Handshake Flood,Socket.IO upgrade handshakes consume CPU per connection.,Rate-limit socket handshakes per origin.
+D-0036,/api/v3/graphql,POST,200,errors,High,DoS,Deeply Nested GraphQL,Unlimited query nesting causes exponential resolve cost.,Enforce max query depth (recommend ≤ 7).
+D-0037,/api/v1/query,POST,200,data,High,DoS,SQL Query Pass-Through,Direct SQL query execution via API without cost limits.,Use parameterized queries with timeouts.
+D-0038,/api/analytics,POST,200,event,High,DoS,Analytics Ingestion Flood,High-volume analytics ingestion can overload write path.,Use buffered async writes with backpressure.
+D-0039,/api/track,GET,200,ok,Medium,DoS,Tracking Pixel Flood,Tracking pixel generates DB write per request under load.,Batch tracking writes asynchronously.
+D-0040,/api/collect,POST,200,received,High,DoS,Telemetry Collection Flood,Telemetry ingestion overwhelms time-series database.,Implement ingestion rate limiting and sampling.
+D-0041,/api/log,POST,200,logged,High,DoS,Log Ingestion DoS,Log shipping endpoint with large payloads fills disk.,Limit log payload size per request.
+D-0042,/api/debug,GET,200,memory,High,DoS,Debug Endpoint Exposure,Debug endpoint exposes memory stats and allows heap dumping.,Disable debug endpoints in production.
+D-0043,/api/health,GET,200,uptime,Low,DoS,Health Check Flood,Health check endpoint triggers full dependency pings.,Cache health status and use lightweight checks.
+D-0044,/api/ready,GET,200,ready,Low,DoS,Readiness Check Flood,Readiness probe triggers DB connection pool check on each call.,Use cached readiness status.
+D-0045,/api/live,GET,200,alive,Low,DoS,Liveness Check Flood,Liveness endpoint shouldn't hammer backend services.,Keep liveness checks stateless.
+D-0046,/api/export/json,GET,200,records,High,DoS,JSON Export DoS,JSON export of entire dataset serializes all records into memory.,Stream export in chunks with max rows.
+D-0047,/api/export/xml,POST,200,records,High,DoS,XML Export with XXE,XML export endpoint accepts malicious DTD references.,Disable DTD processing in XML parser.
+D-0048,/api/import/csv,POST,200,imported,High,DoS,CSV Import Flood,CSV import with many rows causes row-by-row inserts.,Batch import in transactions with limits.
+D-0049,/api/import/xml,POST,200,imported,High,DoS,XML Import with Billion Laughs,XML parser vulnerable to entity expansion DoS.,Disable XML entity expansion in parser config.
+D-0050,/api/sync,POST,200,synced,High,DoS,Data Sync Flood,Sync endpoint replays all changes causing write amplification.,Use differential sync with change limits.
+D-0051,/api/backup,GET,200,download,High,DoS,Backup Download Exhaustion,Backup downloads without auth consume all bandwidth.,Authenticate and rate-limit backup downloads.
+D-0052,/api/restore,POST,200,restored,High,DoS,Backup Restore DoS,Backup restore loads entire dataset hitting disk/memory limits.,Queue restores and validate backup size.
+D-0053,/api/migrate,POST,200,migrated,High,DoS,Data Migration Abuse,Migration endpoint runs expensive ALTER TABLE operations.,Restrict migration to admin-only with rate limits.
+D-0054,/api/aggregate,POST,200,result,High,DoS,MongoDB Aggregate DoS,Aggregation pipeline with $unwind on large arrays blows memory.,Set max document size for unwind stages.
+D-0055,/api/join,POST,200,result,High,DoS,Cross-Table Join Flood,Multi-table joins without limits cause temp table explosion.,Enforce join row limits and query timeouts.
+D-0056,/api/distinct,GET,200,values,High,DoS,DISTINCT Query Flood,DISTINCT on high-cardinality columns scans entire index.,Cache distinct results with TTL.
+D-0057,/api/count,GET,200,total,High,DoS,COUNT Query Abuse,COUNT queries without WHERE scanning full tables cause I/O spikes.,Use approximate counts from metadata.
+D-0058,/api/sort,GET,200,sorted,High,DoS,Memory Sort Exhaustion,Unbounded sort operations spill to disk and exhaust temp space.,Limit sort result set size.
+D-0059,/api/group,POST,200,grouped,High,DoS,GROUP BY Memory DoS,GROUP BY on high-cardinality fields exhausts aggregation memory.,Set max group buckets limit.
+D-0060,/api/regex,GET,200,match,High,DoS,ReDoS via API Parameter,Evil regex patterns cause catastrophic backtracking.,Set regex execution timeout and limit pattern length.
+D-0061,/api/validate,POST,200,valid,High,DoS,Regex Validation DoS,Regex validation without timeout freezes worker thread.,Use ReDoS-safe regex engines with timeouts.
+D-0062,/api/filter,POST,200,filtered,High,DoS,Filter Chain DoS,Many filter conditions generate exponentially complex queries.,Limit number of filter conditions per request.
+D-0063,/api/order,GET,200,ordered,High,DoS,Multi-Field Order DoS,Ordering on many columns causes filesort on disk.,Limit sortable columns and result size.
+D-0064,/api/geo/nearby,GET,200,results,High,DoS,Geospatial Index Scan,Geospatial queries without radius limits scan large index areas.,Enforce max radius and limit results.
+D-0065,/api/geo/within,POST,200,results,High,DoS,Polygon Scan DoS,Complex polygon queries cause expensive geometry calculations.,Simplify polygons server-side and set area limits.
+D-0066,/api/recommend,GET,200,items,High,DoS,Recommendation Engine Abuse,Recommendation queries rebuild user affinity matrices on each call.,Cache recommendations and limit neighbor count.
+D-0067,/api/predict,POST,200,prediction,High,DoS,ML Model Inference Flood,Model inference without GPU exhausts CPU for matrix multiplications.,Batch predictions and rate-limit per user.
+D-0068,/api/embed,POST,200,vector,High,DoS,Embedding Generation Flood,Text embedding generation consumes significant CPU/GPU.,Cache embeddings and limit input text length.
+D-0069,/api/classify,POST,200,category,High,DoS,Text Classification DoS,Classification models load large vocabularies into memory per call.,Use model serving with autoscaling.
+D-0070,/api/translate,POST,200,translation,High,DoS,Translation Memory Exhaustion,Translation models hold large state causing per-request memory spikes.,Stream translations and limit text length.
+D-0071,/api/transcribe,POST,200,text,High,DoS,Speech Recognition DoS,Audio transcription consumes CPU for entire audio duration.,Limit audio duration and file size.
+D-0072,/api/synthesize,POST,200,audio,High,DoS,TTS Generation Flood,TTS generation creates large WAV files filling response buffers.,Limit TTS output length and use streaming.
+D-0073,/api/detect/objects,POST,200,objects,High,DoS,Object Detection DoS,Object detection on large images uses significant GPU memory.,Downscale images before detection.
+D-0074,/api/detect/faces,POST,200,faces,High,DoS,Face Detection Abuse,Face detection cascade classifier consumes CPU per image.,Limit image resolution and faces count.
+D-0075,/api/ocr,POST,200,text,High,DoS,OCR Processing DoS,OCR on high-res images uses memory proportional to pixel count.,Limit image dimensions for OCR.
+D-0076,/api/crop,POST,200,cropped,High,DoS,Intelligent Crop DoS,AI-powered cropping runs segmentation model per request.,Cache crop coordinates and limit queue depth.
+D-0077,/api/segment,POST,200,segments,High,DoS,Image Segmentation Flood,Image segmentation models are memory-intensive per request.,Use request queuing with max concurrency.
+D-0078,/api/colorize,POST,200,colored,High,DoS,GAN Colorization DoS,GAN inference colorization consumes GPU VRAM per request.,Limit batch size and use model quantization.
+D-0079,/api/enhance,POST,200,enhanced,High,DoS,Super-Resolution DoS,Super-resolution models upscale images 4x increasing memory 16x.,Limit output resolution and input size.
+D-0080,/api/style-transfer,POST,200,stylized,High,DoS,Style Transfer DoS,VGG-based style transfer uses >1GB GPU memory per run.,Queue style transfer and limit image size.
+D-0081,/api/diffusion,POST,200,generated,High,DoS,Diffusion Model DoS,Stable diffusion inference takes 10-60s of GPU time per image.,Limit inference steps and concurrent requests.
+D-0082,/api/chat,POST,200,response,High,DoS,LLM Chat Flood,LLM chat without token limits exhausts context window.,Set max tokens and rate-limit per session.
+D-0083,/api/chat/completions,POST,200,choices,High,DoS,OpenAI-Compatible Chat Flood,Chat completion endpoint with long history consumes GPU memory.,Limit conversation history length.
+D-0084,/api/completions,POST,200,text,High,DoS,Text Completion Flood,Autoregressive generation with max_tokens=4096 uses proportional VRAM.,Enforce per-user max tokens per hour.
+D-0085,/api/embeddings,POST,200,data,High,DoS,Batch Embedding Flood,Batch embedding of many texts at once exhausts model batch memory.,Limit batch size and input lengths.
+D-0086,/api/models,GET,200,models,Low,DoS,Model Listing Exposure,Model listing reveals available inference endpoints.,Require auth for model discovery.
+D-0087,/api/usage,GET,200,usage,Low,DoS,API Usage Metrics,Usage endpoint may leak rate-limit thresholds.,Mask rate-limit values in responses.
+D-0088,/api/docs,GET,200,swagger,Low,DoS,Swagger Docs Leak,API documentation exposes internal endpoints and schemas.,Restrict docs to internal networks.
+D-0089,/api/schema,GET,200,type,Medium,DoS,GraphQL Schema Introspection,Schema introspection reveals all queries mutations and subscriptions.,Disable introspection in production.
+D-0090,/api/openapi.json,GET,200,openapi,Low,DoS,OpenAPI Spec Leak,OpenAPI spec exposes full API surface for reconnaissance.,Serve spec only to authenticated users.
+D-0091,/api/change-password,POST,200,success,Medium,DoS,Password Change Flood,Bulk password change requests exhaust auth provider rate limits.,Rate-limit password changes per user.
+D-0092,/api/reset-password,POST,200,sent,Medium,DoS,Password Reset Bomb,Password reset endpoint spams email/SMS gateways.,Require CAPTCHA for password reset.
+D-0093,/api/register,POST,201,created,High,DoS,User Registration Flood,Open registration without rate limiting creates spam accounts.,Use email verification and rate limiting.
+D-0094,/api/login,POST,200,token,High,DoS,Login Brute Force,Login endpoint without account lockout allows credential stuffing.,Implement account lockout and rate limiting.
+D-0095,/api/oauth/token,POST,200,access_token,High,DoS,OAuth Token Flood,OAuth token endpoint without client auth allows token harvesting.,Require client authentication for token grants.
+D-0096,/api/oauth/authorize,GET,200,code,Medium,DoS,OAuth Auth Code Flood,Authorization code endpoint without rate limit exhausts codes.,Rate-limit authorization requests per client.
+D-0097,/api/2fa/enable,POST,200,enabled,Medium,DoS,2FA Setup Flood,Bulk 2FA enrollment floods TOTP provisioning.,Rate-limit 2FA setup per user.
+D-0098,/api/2fa/verify,POST,200,verified,Medium,DoS,2FA Verify Brute Force,2FA verification without rate limit allows code guessing.,Lockout after 5 failed 2FA attempts.
+D-0099,/api/session/refresh,POST,200,token,High,DoS,Session Refresh Flood,Session token refresh without limits reissues JWTs infinitely.,Limit refresh token reuse window.
+D-0100,/api/session/revoke,POST,200,revoked,Medium,DoS,Session Revocation Storm,Revoking all sessions triggers DB write storm.,Batch session revocation asynchronously.
+D-0101,/api/audit/logs,GET,200,entries,High,DoS,Audit Log Query Flood,Audit log queries without date range scan entire log table.,Require date range and limit results.
+D-0102,/api/activity,GET,200,events,High,DoS,Activity Feed Flood,Activity feed rebuilds from event store without time bounds.,Paginate and cache activity feeds.
+D-0103,/api/notifications,GET,200,alerts,Medium,DoS,Notification Polling Flood,Frequent notification polling causes DB reads per request.,Use WebSocket push instead of polling.
+D-0104,/api/feed,GET,200,posts,High,DoS,News Feed Reconstruction,Feed rebuild fan-out queries hit DB on every request for active users.,Cache feeds with TTL and prefetch.
+D-0105,/api/timeline,GET,200,events,High,DoS,Timeline Query DoS,Timeline queries with many followees cause complex join chains.,Limit timeline to recent events with cursors.
+D-0106,/api/search/users,GET,200,users,Medium,DoS,User Search Enumeration,User search allows enumeration of registered usernames.,Require minimum search length and rate-limit.
+D-0107,/api/search/emails,GET,200,emails,Medium,DoS,Email Search Leak,Email search endpoint reveals registered email addresses.,Never expose email in search results.
+D-0108,/api/fuzzy,GET,200,matches,High,DoS,Fuzzy Search DoS,Fuzzy search with large edit distance causes exponential complexity.,Limit edit distance to ≤2 and query length.
+D-0109,/api/wildcard,GET,200,matches,High,DoS,Wildcard Search DoS,Wildcard prefix scans cause full index traversal.,Ban leading wildcards in search queries.
+D-0110,/api/suggest,GET,200,suggestions,Medium,DoS,Autocomplete Flood,Autocomplete with short prefixes returns too many suggestions.,Require minimum prefix length of 3 chars.
+D-0111,/api/monitor,GET,200,metrics,Medium,DoS,Prometheus Metrics Expose,/metrics endpoint exposes application and system metrics.,Protect metrics endpoint with auth.
+D-0112,/api/trace,GET,200,trace,Medium,DoS,Jaeger Trace Flood,Distributed tracing endpoint accepts unsampled traces.,Sample traces and limit ingestion rate.
+D-0113,/api/profiler,GET,200,cpu,High,DoS,Profiler Endpoint Exposed,Profiler endpoint allows CPU heap and goroutine dump.,Disable pprof in production environments.
+D-0114,/api/dump,GET,200,heap,High,DoS,Heap Dump Leak,Heap dump endpoint downloads full JVM/Node memory.,Restrict heap dump to localhost only.
+D-0115,/api/threads,GET,200,running,High,DoS,Thread Dump Leak,Thread dump reveals running threads locks and stack traces.,Disable thread dump in production.
+D-0116,/api/env,GET,200,VARIABLE,High,DoS,Environment Variables Leak,Env endpoint prints all environment variables including secrets.,Never expose env endpoint in production.
+D-0117,/api/config,GET,200,setting,High,DoS,Application Config Leak,Config endpoint reveals internal settings and feature flags.,Restrict config endpoint to admin.
+D-0118,/api/routes,GET,200,path,Medium,DoS,Route Listing Leak,Route listing endpoint reveals all registered API paths.,Disable route listing in production.
+D-0119,/api/flags,GET,200,enabled,Medium,DoS,Feature Flag Leak,Feature flags reveal upcoming unreleased features.,Rate-limit feature flag polling.
+D-0120,/api/auth0/.well-known/jwks.json,GET,200,keys,Low,DoS,JWKS Endpoint Flood,JWKS endpoint serves public keys cached poorly.,Cache JWKS response with proper Cache-Control.
+D-0121,/api/auth0/oauth/token,POST,200,access_token,High,DoS,Auth0 Custom Token Flood,Custom OAuth token endpoint creates DB-backed tokens.,Use opaque tokens with Redis TTL.
+D-0122,/api/v1/internal/health,GET,200,ok,High,DoS,Internal Health Leak,Internal health endpoint reveals backend service topology.,Move health checks to separate admin port.
+D-0123,/api/v2/bulk,POST,200,batch_id,High,DoS,Bulk Operations Flood,Bulk API processes all items in a single transaction causing lock contention.,Split bulk operations into batches with limits.
+D-0124,/api/v1/import,POST,200,importing,High,DoS,Parallel Import Flood,Concurrent imports create table lock storms and deadlocks.,Serialize imports per table with queue.
+D-0125,/api/v1/export,GET,200,exporting,High,DoS,Streaming Export Abuse,Streaming export without backpressure fills response buffers.,Implement flow control and max rows.
+D-0126,/api/slow,GET,200,processing,High,DoS,Slowloris via Read Timeout,Endpoint with long read timeout holds connections open indefinitely.,Reduce idle timeout and limit concurrent.
+D-0127,/api/poll,GET,200,pending,Medium,DoS,Long Poll Connection Exhaustion,Long-poll connections without timeout exhaust worker pool.,Use WebSockets instead of long-poll.
+D-0128,/api/v1/poll,GET,200,data,Medium,DoS,Polling Interval Abuse,Rapid polling causes handler spawn per request.,Implement minimum polling interval.
+D-0129,/api/retry,POST,200,retried,Medium,DoS,Retry Storm,Retry logic without backoff causes thundering herd.,Use exponential backoff with jitter.
+D-0130,/api/queue,POST,200,queued,Medium,DoS,Queue Injection Flood,Rapid queue injection overwhelms worker consumer rate.,Implement queue depth limits.
+D-0131,/api/dequeue,POST,200,dequeued,Medium,DoS,Dequeue Stampede,Mass dequeue operations cause lease contention.,Batch dequeue with visibility timeout.
+D-0132,/api/fanout,POST,200,dispatched,High,DoS,Event Fanout Explosion,Fanout to many subscribers causes message amplification.,Limit fanout subscribers per event.
+D-0133,/api/pubsub,POST,200,message_id,High,DoS,PubSub Message Flood,Unbounded pubsub publishing overwhelms all subscribers.,Implement per-topic publish limits.
+D-0134,/api/subscribe,POST,200,subscribed,Medium,DoS,Subscription Churn Flood,Rapid subscribe/unsubscribe cycles leak server resources.,Rate-limit subscription changes per session.
+D-0135,/api/unsubscribe,POST,200,unsubscribed,Medium,DoS,Bulk Unsubscribe Storm,Mass unsubscribe triggers DB cleanup storms.,Batch unsubscription processing.
+D-0136,/api/v2/notifications,GET,200,events,Medium,DoS,SSE Notification Exhaustion,SSE event stream without compression wastes bandwidth.,Enable compression and limit event rate.
+D-0137,/api/cache/purge,POST,200,purged,High,DoS,Cache Purge Storm,Cache purge storms trigger origin re-fetch thundering herd.,Use staggered cache invalidation.
+D-0138,/api/cache/invalidate,POST,200,invalidated,High,DoS,Cache Invalidation Flood,Many cache keys invalidated simultaneously cause DB load spike.,Batch invalidations with delayed refresh.
+D-0139,/api/cache/clear,POST,200,cleared,High,DoS,Full Cache Clear DoS,Full cache clear triggers massive DB read rebuilding.,Stagger cache warming after clear.
+D-0140,/api/cdn/purge,POST,200,purged,High,DoS,CDN Purge Queue Exhaustion,CDN purge endpoint accepts unlimited purge requests.,Rate-limit CDN purges per minute.
+D-0141,/api/cdn/invalidate,POST,200,invalidated,High,DoS,CDN Invalidation Flood,Bulk CDN invalidations trigger origin load spikes.,Batch invalidations with cooldown.
+D-0142,/api/cdn/prefetch,POST,200,prefetching,High,DoS,CDN Prefetch Amplification,Prefetching many uncached URLs simultaneously overloads origin.,Limit concurrent prefetches.
+D-0143,/api/cookie/sync,POST,200,synced,Medium,DoS,Cookie Sync Race,Cookie sync endpoints handle overlapping updates poorly.,Use compare-and-swap for cookie updates.
+D-0144,/api/session/sync,POST,200,synced,Medium,DoS,Session Sync Flood,Session sync between data centers causes replication lag.,Use local-first session strategy.
+D-0145,/api/device/register,POST,200,registered,Medium,DoS,Device Registration Flood,Device registration creates DB records without rate limit.,Rate-limit registrations per IP and account.
+D-0146,/api/device/sync,POST,200,synced,Medium,DoS,Device Sync Flood,Device sync uploads large payloads for every device.,Limit sync payload size and frequency.
+D-0147,/api/device/push,POST,200,pushed,Medium,DoS,Device Push Amplification,Push to many devices amplifies outgoing notification volume.,Batch push tokens and limit per request.
+D-0148,/api/geolocate,POST,200,location,Medium,DoS,GeoIP Lookup Flood,GeoIP database lookups hold read locks under high concurrency.,Cache geo results with TTL.
+D-0149,/api/geocode,POST,200,coordinates,High,DoS,Geocoding API Abuse,Reverse geocoding queries external APIs without rate limits.,Cache geocode results and add client limits.
+D-0150,/api/timezone,GET,200,timezone,Low,DoS,Timezone Lookup Flood,Timezone lookup per IP triggers GeoIP fallback.,Cache timezone by IP prefix.
+D-0151,/api/currency,GET,200,rate,Low,DoS,Currency Rate Polling,Rapid currency rate polling hits external exchange APIs.,Cache rates with 5-minute TTL.
+D-0152,/api/stock,GET,200,price,Low,DoS,Stock Price Polling,Stock price polling without cache hits upstream provider.,Cache prices with short TTL.
+D-0153,/api/weather,GET,200,forecast,Low,DoS,Weather API Abuse,Weather API without caching hits upstream provider hard.,Cache weather data aggressively.
+D-0154,/api/v1/jwt/decode,POST,200,payload,Medium,DoS,JWT Decode Bomb,Large JWT tokens with many claims cause decode slowdown.,Limit JWT payload size to 8KB.
+D-0155,/api/v1/jwt/verify,POST,200,verified,Medium,DoS,JWT Verify Flood,JWT verification with RS256 causes CPU spikes on verify.,Use faster algorithms like EdDSA where possible.
+D-0156,/api/v1/jwt/refresh,POST,200,refreshed,High,DoS,JWT Refresh Race,Concurrent JWT refresh requests create race conditions.,Use refresh token rotation with locking.
+D-0157,/api/v1/ssrf/proxy,GET,200,content,High,DoS,SSRF Proxy Abuse,Internal proxy endpoint allows targeting internal services.,Restrict proxy to allowlisted destinations.
+D-0158,/api/v1/fetch,GET,200,body,High,DoS,Server-Side Fetch DoS,Server-side URL fetch without timeout hangs worker.,Set fetch timeout and max response size.
+D-0159,/api/v1/proxy,GET,200,response,High,DoS,Reverse Proxy Abuse,Reverse proxy endpoint loops back to origin causing recursion.,Add X-Forwarded-For loop detection.
+D-0160,/api/v1/redirect,GET,302,Location,Medium,DoS,Open Redirect Loop,Open redirect chains create endless browser redirect loops.,Validate redirect targets against allowlist.
+D-0161,/api/v1/forward,POST,200,forwarded,High,DoS,Request Forwarding Loop,Request forwarding between internal services creates circular calls.,Set max forwarding hops limit.
+D-0162,/api/v1/tunnel,POST,200,tunneled,High,DoS,Tunnel Connection Flood,Tunnel endpoint creates persistent connections without limit.,Limit concurrent tunnels per user.
+D-0163,/api/v1/connect,POST,200,connected,High,DoS,Connect Tunnel Exhaustion,CONNECT-style tunnels exhaust ephemeral port range.,Use connection pooling with limits.
+D-0164,/api/v1/bind,POST,200,bound,High,DoS,Port Bind Exhaustion,Bind endpoint allocates ports without cleanup.,Implement bind TTL and release on disconnect.
+D-0165,/api/v1/listen,POST,200,listening,High,DoS,Listen Port Exhaustion,Listen on many ports exhausts OS socket limits.,Limit listen port count per user.
+D-0166,/api/v1/capture,POST,200,capturing,High,DoS,Packet Capture Flood,Traffic capture buffers grow without limit filling memory.,Set max capture buffer and duration.
+D-0167,/api/v1/mirror,POST,200,mirroring,High,DoS,Traffic Mirror Flood,Traffic mirroring duplicates packets causing bandwidth waste.,Rate-limit mirrored traffic per session.
+D-0168,/api/v1/replay,POST,200,replaying,High,DoS,Traffic Replay DoS,Replaying captured traffic at high speed overwhelms backend.,Limit replay speed multiplier.
+D-0169,/api/v1/load,POST,200,loaded,High,DoS,Load Generator Abuse,Load testing endpoint generates traffic to internal targets.,Restrict load generation to test environments.
+D-0170,/api/v1/stress,POST,200,stressing,High,DoS,Stress Test Endpoint,Stress test endpoint runs CPU burn loops per request.,Remove or auth-protect stress endpoints.
+D-0171,/api/v1/bench,POST,200,benchmarked,High,DoS,Benchmark Runner Abuse,Benchmark endpoint runs performance tests repeatedly.,Rate-limit benchmarks per API key.
+D-0172,/api/v1/latency,GET,200,ms,High,DoS,Latency Injector Abuse,Latency injection endpoint adds artificial delays to services.,Remove latency injection from production.
+D-0173,/api/v1/fault,POST,200,injected,High,DoS,Fault Injection DoS,Fault injection endpoint triggers chaos engineering failures.,Restrict fault injection to staging only.
+D-0174,/api/v1/chaos,POST,200,chaos,High,DoS,Chaos Engineering Abuse,Chaos endpoint kills services without recovery checks.,Require safety checks before chaos actions.
+D-0175,/api/v1/delay,POST,200,delayed,High,DoS,Delay Injection DoS,Adding artificial delays per request builds up queue backlog.,Limit delay injection to debug endpoints.
+D-0176,/api/v1/throttle,POST,200,throttled,High,DoS,Throttle Bypass,Throttle configuration endpoint allows lowering rate limits.,Protect throttle config with admin auth.
+D-0177,/api/v1/rate-limit/config,GET,200,limit,High,DoS,Rate Limit Config Leak,Rate limit configuration exposes thresholds to attackers.,Never expose rate limit internals.
+D-0178,/api/v1/circuit-breaker,POST,200,state,High,DoS,Circuit Breaker Reset,Frequent circuit breaker resets prevent failure isolation.,Add cooldown after circuit breaker trips.
+D-0179,/api/v1/bulkhead,POST,200,configured,Medium,DoS,Bulkhead Config Abuse,Changing bulkhead pool sizes disrupts isolation guarantees.,Audit bulkhead config changes.
+D-0180,/api/v1/retry/config,POST,200,configured,High,DoS,Retry Config Abuse,Reducing retry intervals amplifies retry storms.,Set minimum retry interval floor.
+D-0181,/api/v1/timeout/config,POST,200,configured,High,DoS,Timeout Config Abuse,Increasing timeouts allows slow consumers to hold resources.,Enforce maximum timeout ceiling.
+D-0182,/api/v1/connection-pool,POST,200,configured,High,DoS,Connection Pool Oversize,Oversized connection pools exhaust database connections.,Limit pool size per service.
+D-0183,/api/v1/thread-pool,POST,200,configured,High,DoS,Thread Pool Oversize,Oversized thread pools cause excessive context switching.,Cap thread pool max size.
+D-0184,/api/v1/db-pool,POST,200,configured,High,DoS,Database Pool Exhaustion,Increasing DB pool creates too many database connections.,Set hard DB connection pool limit.
+D-0185,/api/v1/redis-pool,POST,200,configured,Medium,DoS,Redis Pool Oversize,Oversized Redis connection pools exhaust redis server connections.,Limit Redis pool per service instance.
+D-0186,/api/v1/queue-depth,POST,200,configured,High,DoS,Queue Depth Explosion,Queue depth without limit causes memory exhaustion.,Set bounded queue sizes.
+D-0187,/api/v1/max-concurrent,POST,200,configured,High,DoS,Concurrency Limit Bypass,Moving concurrency limit to unlimited causes resource exhaustion.,Enforce absolute maximum concurrency.
+D-0188,/api/v1/rate-limit/bypass,POST,200,bypassed,High,DoS,Rate Limit Bypass via Header,Rate limit checks skipped for certain header values.,Validate rate limit for all requests uniformly.
+D-0189,/api/v1/auth/rate-limit,POST,200,authenticated,High,DoS,Auth Bypass Rate Limit,Authenticated users bypass rate limits entirely.,Apply rate limits regardless of auth status.
+D-0190,/api/v1/ip-whitelist,POST,200,added,High,DoS,IP Whitelist Abuse,Adding IPs to whitelist bypasses all security controls.,Require admin approval for whitelist adds.
+D-0191,/api/v1/maintenance,POST,200,enabled,High,DoS,Maintenance Mode Abuse,Toggling maintenance mode causes cascading service outages.,Restrict maintenance mode to admin only.
+D-0192,/api/v1/feature-toggle,POST,200,toggled,Medium,DoS,Feature Toggle Storm,Rapid feature toggle changes cause config reload storms.,Rate-limit feature toggle changes.
+D-0193,/api/v1/cache-strategy,POST,200,updated,Medium,DoS,Cache Strategy Abuse,Changing cache strategy purges all cached data.,Stagger cache strategy migrations.
+D-0194,/api/v1/load-balancer,POST,200,updated,High,DoS,Load Balancer Config Abuse,Load balancer config changes cause connection draining storms.,Rate-limit LB config changes.
+D-0195,/api/v1/auto-scale,POST,200,scaled,High,DoS,Auto-Scale Throttling,Rapid scale-up/down cycles cause instance churn.,Add cooldown between scaling events.
+D-0196,/api/v1/drain,POST,200,draining,Medium,DoS,Connection Drain Flood,Rapid drain/un-drain cycles drop active connections.,Add minimum drain duration.
+D-0197,/api/v1/shutdown,POST,200,shutting,High,DoS,Graceful Shutdown Abuse,Rapid shutdown/restart cycles prevent recovery.,Reject shutdown if recovery in progress.
+D-0198,/api/v1/restart,POST,200,restarting,High,DoS,Restart Loop Attack,Repeated restarts prevent service from stabilizing.,Rate-limit restart operations.
+D-0199,/api/v1/rollback,POST,200,rolled,High,DoS,Rollback Storm,Rollback chain across versions causes deployment chaos.,Limit rollback version depth.
+D-0200,/api/v1/deploy,POST,200,deploying,High,DoS,Deploy Flood,Concurrent deployments exhaust pipeline capacity.,Serialize deployments per environment.
+D-0201,/api/v1/migration/run,POST,200,running,High,DoS,Schema Migration Storm,Concurrent schema migrations cause table lock deadlocks.,Run migrations sequentially with lock timeout.
+D-0202,/api/v1/index/create,POST,200,created,High,DoS,Index Creation Flood,Creating many indexes simultaneously locks tables.,Rate-limit index creation operations.
+D-0203,/api/v1/index/drop,POST,200,dropped,High,DoS,Index Drop DoS,Dropping critical indexes causes full table scans.,Prevent dropping indexes with locks.
+D-0204,/api/v1/constraint/add,POST,200,added,Medium,DoS,Constraint Add Lock,Adding constraints scans entire tables causing read locks.,Schedule constraint validation during maintenance.
+D-0205,/api/v1/constraint/drop,POST,200,dropped,Medium,DoS,Constraint Drop Abuse,Dropping constraints allows invalid data to enter.,Audit constraint changes.
+D-0206,/api/v1/sequence/reset,POST,200,reset,High,DoS,Sequence Reset Flood,Resetting sequences causes ID collision risks.,Restrict sequence reset to superuser only.
+D-0207,/api/v1/table/truncate,POST,200,truncated,High,DoS,Table Truncation Flood,Truncating tables loses data and causes replication lag.,Require confirmation and backup before truncate.
+D-0208,/api/v1/table/drop,POST,200,dropped,High,DoS,Table Drop DoS,Dropping production tables causes complete data loss.,Prevent table drops without multi-factor auth.
+D-0209,/api/v1/database/switch,POST,200,switched,High,DoS,Database Switch Abuse,Switching database mid-query causes connection errors.,Require maintenance window for DB switch.
+D-0210,/api/v1/replica/promote,POST,200,promoted,High,DoS,Replica Promote Race,Premature replica promotion causes split-brain.,Ensure primary is truly dead before promote.
+D-0211,/api/v1/replication/stop,POST,200,stopped,High,DoS,Replication Stop DoS,Stopping replication causes data divergence.,Prevent replication stop without failover.
+D-0212,/api/v1/snapshot/create,POST,200,created,High,DoS,Snapshot Creation Flood,Many snapshots fill disk and cause write pauses.,Limit snapshot retention count.
+D-0213,/api/v1/snapshot/restore,POST,200,restored,High,DoS,Snapshot Restore Abuse,Restoring snapshots overwrites current data.,Require verification before restore.
+D-0214,/api/v1/vacuum,POST,200,vacuumed,High,DoS,Vacuum DoS,Full vacuum locks tables for extended periods.,Use autovacuum with proper tuning.
+D-0215,/api/v1/analyze,POST,200,analyzed,High,DoS,Statistics Analyze Storm,ANALYZE on all tables creates I/O storm.,Schedule analyze during low traffic.
+D-0216,/api/v1/reindex,POST,200,reindexed,High,DoS,Reindex Lock Storm,Reindexing all indexes concurrently locks tables.,Reindex one index at a time.
+D-0217,/api/v1/cluster,POST,200,clustered,High,DoS,Cluster Table DoS,CLUSTER rewrites entire table locking it exclusively.,Schedule cluster operations during maintenance.
+D-0218,/api/v1/partition/create,POST,200,created,Medium,DoS,Partition Creation Flood,Creating many partitions causes catalog bloat.,Limit partition count per table.
+D-0219,/api/v1/partition/drop,POST,200,dropped,Medium,DoS,Partition Drop Storm,Dropping partitions triggers cascade locks.,Drop partitions in detached mode first.
+D-0220,/api/v1/partition/attach,POST,200,attached,Medium,DoS,Partition Attach Lock,Attaching partitions requires exclusive lock on parent.,Use non-blocking attach if possible.
+D-0221,/api/v1/partition/detach,POST,200,detached,Medium,DoS,Partition Detach Storm,Detaching many partitions causes metadata churn.,Detach partitions in batches.
+D-0222,/api/v1/compaction/run,POST,200,compacted,High,DoS,Table Compaction Storm,Compacting all tables creates I/O and CPU spikes.,Stagger compaction across tables.
+D-0223,/api/v1/repack,POST,200,repacked,High,DoS,Table Repack Abuse,Repacking rewrites tables consuming disk space.,Schedule repack with free space monitoring.

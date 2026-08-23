@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - BACKUP & LOGS SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+BKP-0001,/backup,GET,200,backup,Critical,Backup,Backup Directory,Backup directory.,Secure backup dir.,false
+BKP-0002,/backups,GET,200,backups,Critical,Backup,Backups Directory,Backups directory.,Secure backups dir.,false
+BKP-0003,/bak,GET,200,bak,Critical,Backup,Bak Directory,Bak directory.,Secure bak dir.,false
+BKP-0004,/backup.sql,GET,200,SQL,Critical,Backup,SQL Backup,SQL backup file.,Critical: Remove immediately.,true
+BKP-0005,/backup.sql.gz,GET,200,gzip,Critical,Backup,SQL Backup GZ,SQL backup gzip.,Critical: Remove immediately.,true
+BKP-0006,/backup.sql.zip,GET,200,ZIP,Critical,Backup,SQL Backup ZIP,SQL backup zip.,Critical: Remove immediately.,true
+BKP-0007,/backup.tar,GET,200,tar,Critical,Backup,TAR Backup,TAR backup.,Critical: Remove immediately.,true
+BKP-0008,/backup.tar.gz,GET,200,gzip,Critical,Backup,TAR GZ Backup,TAR GZ backup.,Critical: Remove immediately.,true
+BKP-0009,/backup.tgz,GET,200,gzip,Critical,Backup,TGZ Backup,TGZ backup.,Critical: Remove immediately.,true
+BKP-0010,/backup.zip,GET,200,ZIP,Critical,Backup,ZIP Backup,ZIP backup.,Critical: Remove immediately.,true
+BKP-0011,/backup.rar,GET,200,Rar!,Critical,Backup,RAR Backup,RAR backup.,Critical: Remove immediately.,true
+BKP-0012,/backup.7z,GET,200,7z,Critical,Backup,7z Backup,7z backup.,Critical: Remove immediately.,true
+BKP-0013,/backup.bz2,GET,200,bz2,Critical,Backup,BZ2 Backup,BZ2 backup.,Critical: Remove immediately.,true
+BKP-0014,/backup.bzip2,GET,200,bzip2,Critical,Backup,BZIP2 Backup,BZIP2 backup.,Critical: Remove immediately.,true
+BKP-0015,/backup.xz,GET,200,XZ,Critical,Backup,XZ Backup,XZ backup.,Critical: Remove immediately.,true
+BKP-0016,/backup.lz,GET,200,LZIP,Critical,Backup,LZ Backup,LZ backup.,Critical: Remove immediately.,true
+BKP-0017,/backup.lzma,GET,200,LZMA,Critical,Backup,LZMA Backup,LZMA backup.,Critical: Remove immediately.,true
+BKP-0018,/backup.Z,GET,200,compress,Critical,Backup,Z Backup,Z backup.,Critical: Remove immediately.,true
+BKP-0019,/backup.gz,GET,200,gzip,Critical,Backup,GZ Backup,GZ backup.,Critical: Remove immediately.,true
+BKP-0020,/backup.dump,GET,200,SQL,Critical,Backup,DUMP Backup,DUMP backup.,Critical: Remove immediately.,true
+BKP-0021,/db.sql,GET,200,SQL,Critical,Backup,DB SQL,DB SQL file.,Critical: Remove immediately.,true
+BKP-0022,/db.sql.gz,GET,200,gzip,Critical,Backup,DB SQL GZ,DB SQL gzip.,Critical: Remove immediately.,true
+BKP-0023,/database.sql,GET,200,SQL,Critical,Backup,Database SQL,Database SQL file.,Critical: Remove immediately.,true
+BKP-0024,/database.sql.gz,GET,200,gzip,Critical,Backup,Database SQL GZ,Database SQL gzip.,Critical: Remove immediately.,true
+BKP-0025,/dump.sql,GET,200,SQL,Critical,Backup,Dump SQL,Dump SQL file.,Critical: Remove immediately.,true
+BKP-0026,/dump.sql.gz,GET,200,gzip,Critical,Backup,Dump SQL GZ,Dump SQL gzip.,Critical: Remove immediately.,true
+BKP-0027,/mysql.sql,GET,200,SQL,Critical,Backup,MySQL SQL,MySQL SQL file.,Critical: Remove immediately.,true
+BKP-0028,/mysql.sql.gz,GET,200,gzip,Critical,Backup,MySQL SQL GZ,MySQL SQL gzip.,Critical: Remove immediately.,true
+BKP-0029,/mariadb.sql,GET,200,SQL,Critical,Backup,MariaDB SQL,MariaDB SQL file.,Critical: Remove immediately.,true
+BKP-0030,/postgres.sql,GET,200,SQL,Critical,Backup,PostgreSQL SQL,PostgreSQL SQL file.,Critical: Remove immediately.,true
+BKP-0031,/pg_dump.sql,GET,200,SQL,Critical,Backup,PG Dump,PostgreSQL dump.,Critical: Remove immediately.,true
+BKP-0032,/oracle.sql,GET,200,SQL,Critical,Backup,Oracle SQL,Oracle SQL file.,Critical: Remove immediately.,true
+BKP-0033,/mssql.sql,GET,200,SQL,Critical,Backup,MSSQL SQL,MSSQL SQL file.,Critical: Remove immediately.,true
+BKP-0034,/sqlite.sql,GET,200,SQL,Critical,Backup,SQLite SQL,SQLite SQL file.,Critical: Remove immediately.,true
+BKP-0035,/db.sqlite,GET,200,SQLite,Critical,Backup,SQLite DB,SQLite database.,Critical: Remove immediately.,true
+BKP-0036,/db.sqlite3,GET,200,SQLite,Critical,Backup,SQLite3 DB,SQLite3 database.,Critical: Remove immediately.,true
+BKP-0037,/data.db,GET,200,SQLite,Critical,Backup,Data DB,Data database.,Critical: Remove immediately.,true
+BKP-0038,/database.db,GET,200,SQLite,Critical,Backup,Database DB,Database file.,Critical: Remove immediately.,true
+BKP-0039,/app.db,GET,200,SQLite,Critical,Backup,App DB,App database.,Critical: Remove immediately.,true
+BKP-0040,/users.db,GET,200,SQLite,Critical,Backup,Users DB,Users database.,Critical: Remove immediately.,true
+BKP-0041,/members.db,GET,200,SQLite,Critical,Backup,Members DB,Members database.,Critical: Remove immediately.,true
+BKP-0042,/customers.db,GET,200,SQLite,Critical,Backup,Customers DB,Customers database.,Critical: Remove immediately.,true
+BKP-0043,/orders.db,GET,200,SQLite,Critical,Backup,Orders DB,Orders database.,Critical: Remove immediately.,true
+BKP-0044,/products.db,GET,200,SQLite,Critical,Backup,Products DB,Products database.,Critical: Remove immediately.,true
+BKP-0045,/catalog.db,GET,200,SQLite,Critical,Backup,Catalog DB,Catalog database.,Critical: Remove immediately.,true
+BKP-0046,/inventory.db,GET,200,SQLite,Critical,Backup,Inventory DB,Inventory database.,Critical: Remove immediately.,true
+BKP-0047,/content.db,GET,200,SQLite,Critical,Backup,Content DB,Content database.,Critical: Remove immediately.,true
+BKP-0048,/sessions.db,GET,200,SQLite,Critical,Backup,Sessions DB,Sessions database.,Critical: Remove immediately.,true
+BKP-0049,/cache.db,GET,200,SQLite,Critical,Backup,Cache DB,Cache database.,Critical: Remove immediately.,true
+BKP-0050,/logs.db,GET,200,SQLite,Critical,Backup,Logs DB,Logs database.,Critical: Remove immediately.,true
+BKP-0051,/analytics.db,GET,200,SQLite,Critical,Backup,Analytics DB,Analytics database.,Critical: Remove immediately.,true
+BKP-0052,/tracking.db,GET,200,SQLite,Critical,Backup,Tracking DB,Tracking database.,Critical: Remove immediately.,true
+BKP-0053,/events.db,GET,200,SQLite,Critical,Backup,Events DB,Events database.,Critical: Remove immediately.,true
+BKP-0054,/notifications.db,GET,200,SQLite,Critical,Backup,Notifications DB,Notifications database.,Critical: Remove immediately.,true
+BKP-0055,/messages.db,GET,200,SQLite,Critical,Backup,Messages DB,Messages database.,Critical: Remove immediately.,true
+BKP-0056,/comments.db,GET,200,SQLite,Critical,Backup,Comments DB,Comments database.,Critical: Remove immediately.,true
+BKP-0057,/posts.db,GET,200,SQLite,Critical,Backup,Posts DB,Posts database.,Critical: Remove immediately.,true
+BKP-0058,/articles.db,GET,200,SQLite,Critical,Backup,Articles DB,Articles database.,Critical: Remove immediately.,true
+BKP-0059,/blog.db,GET,200,SQLite,Critical,Backup,Blog DB,Blog database.,Critical: Remove immediately.,true
+BKP-0060,/forum.db,GET,200,SQLite,Critical,Backup,Forum DB,Forum database.,Critical: Remove immediately.,true
+BKP-0061,/shop.db,GET,200,SQLite,Critical,Backup,Shop DB,Shop database.,Critical: Remove immediately.,true
+BKP-0062,/store.db,GET,200,SQLite,Critical,Backup,Store DB,Store database.,Critical: Remove immediately.,true
+BKP-0063,/cart.db,GET,200,SQLite,Critical,Backup,Cart DB,Cart database.,Critical: Remove immediately.,true
+BKP-0064,/wallet.db,GET,200,SQLite,Critical,Backup,Wallet DB,Wallet database.,Critical: Remove immediately.,true
+BKP-0065,/payment.db,GET,200,SQLite,Critical,Backup,Payment DB,Payment database.,Critical: Remove immediately.,true
+BKP-0066,/transaction.db,GET,200,SQLite,Critical,Backup,Transaction DB,Transaction database.,Critical: Remove immediately.,true
+BKP-0067,/billing.db,GET,200,SQLite,Critical,Backup,Billing DB,Billing database.,Critical: Remove immediately.,true
+BKP-0068,/invoice.db,GET,200,SQLite,Critical,Backup,Invoice DB,Invoice database.,Critical: Remove immediately.,true
+BKP-0069,/account.db,GET,200,SQLite,Critical,Backup,Account DB,Account database.,Critical: Remove immediately.,true
+BKP-0070,/profile.db,GET,200,SQLite,Critical,Backup,Profile DB,Profile database.,Critical: Remove immediately.,true
+BKP-0071,/user.db,GET,200,SQLite,Critical,Backup,User DB,User database.,Critical: Remove immediately.,true
+BKP-0072,/config.db,GET,200,SQLite,Critical,Backup,Config DB,Config database.,Critical: Remove immediately.,true
+BKP-0073,/settings.db,GET,200,SQLite,Critical,Backup,Settings DB,Settings database.,Critical: Remove immediately.,true
+BKP-0074,/backup.db,GET,200,SQLite,Critical,Backup,Backup DB,Backup database.,Critical: Remove immediately.,true
+BKP-0075,/restore.db,GET,200,SQLite,Critical,Backup,Restore DB,Restore database.,Critical: Remove immediately.,true
+BKP-0076,/export.db,GET,200,SQLite,Critical,Backup,Export DB,Export database.,Critical: Remove immediately.,true
+BKP-0077,/import.db,GET,200,SQLite,Critical,Backup,Import DB,Import database.,Critical: Remove immediately.,true
+BKP-0078,/dump.db,GET,200,SQLite,Critical,Backup,Dump DB,Dump database.,Critical: Remove immediately.,true
+BKP-0079,/archive.db,GET,200,SQLite,Critical,Backup,Archive DB,Archive database.,Critical: Remove immediately.,true
+BKP-0080,/old.db,GET,200,SQLite,Critical,Backup,Old DB,Old database.,Critical: Remove immediately.,true
+BKP-0081,/new.db,GET,200,SQLite,Critical,Backup,New DB,New database.,Critical: Remove immediately.,true
+BKP-0082,/temp.db,GET,200,SQLite,Critical,Backup,Temp DB,Temp database.,Critical: Remove immediately.,true
+BKP-0083,/tmp.db,GET,200,SQLite,Critical,Backup,Tmp DB,Tmp database.,Critical: Remove immediately.,true
+BKP-0084,/test.db,GET,200,SQLite,Critical,Backup,Test DB,Test database.,Critical: Remove immediately.,true
+BKP-0085,/dev.db,GET,200,SQLite,Critical,Backup,Dev DB,Dev database.,Critical: Remove immediately.,true
+BKP-0086,/prod.db,GET,200,SQLite,Critical,Backup,Prod DB,Prod database.,Critical: Remove immediately.,true
+BKP-0087,/staging.db,GET,200,SQLite,Critical,Backup,Staging DB,Staging database.,Critical: Remove immediately.,true
+BKP-0088,/local.db,GET,200,SQLite,Critical,Backup,Local DB,Local database.,Critical: Remove immediately.,true
+BKP-0089,/remote.db,GET,200,SQLite,Critical,Backup,Remote DB,Remote database.,Critical: Remove immediately.,true
+BKP-0090,/master.db,GET,200,SQLite,Critical,Backup,Master DB,Master database.,Critical: Remove immediately.,true
+BKP-0091,/slave.db,GET,200,SQLite,Critical,Backup,Slave DB,Slave database.,Critical: Remove immediately.,true
+BKP-0092,/replica.db,GET,200,SQLite,Critical,Backup,Replica DB,Replica database.,Critical: Remove immediately.,true
+BKP-0093,/mirror.db,GET,200,SQLite,Critical,Backup,Mirror DB,Mirror database.,Critical: Remove immediately.,true
+BKP-0094,/snapshot.db,GET,200,SQLite,Critical,Backup,Snapshot DB,Snapshot database.,Critical: Remove immediately.,true
+BKP-0095,/checkpoint.db,GET,200,SQLite,Critical,Backup,Checkpoint DB,Checkpoint database.,Critical: Remove immediately.,true
+BKP-0096,/journal.db,GET,200,SQLite,Critical,Backup,Journal DB,Journal database.,Critical: Remove immediately.,true
+BKP-0097,/wal.db,GET,200,SQLite,Critical,Backup,WAL DB,WAL database.,Critical: Remove immediately.,true
+BKP-0098,/shm.db,GET,200,SQLite,Critical,Backup,SHM DB,SHM database.,Critical: Remove immediately.,true
+BKP-0099,/stat.db,GET,200,SQLite,Critical,Backup,Stat DB,Stat database.,Critical: Remove immediately.,true
+BKP-0100,/index.db,GET,200,SQLite,Critical,Backup,Index DB,Index database.,Critical: Remove immediately.,true

@@ -1,0 +1,210 @@
+# HyperSecurity_offensivelabs - PROFESSIONAL SECURITY TEST DATABASE - MEDIUM
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# This database contains REAL vulnerability tests for authorized security assessments only
+# Unauthorized access or use is strictly prohibited
+#
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+# Total Records: 500 (Medium Database - Comprehensive Tests)
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+MED-0001,/admin,GET,200,password,High,Admin,Admin Interface,Generic admin interface found.,Restrict to specific IPs. Use MFA.
+MED-0002,/administrator,GET,200,login,High,Admin,Administrator Panel,Administrator access point detected.,Implement strong authentication.
+MED-0003,/admin/login.php,GET,200,password,High,Admin,PHP Admin Login,PHP admin login page.,Secure login page.
+MED-0004,/wp-admin,GET,200,wordpress,High,Admin,WordPress Admin,WordPress admin interface.,Restrict wp-admin access.
+MED-0005,/wp-login.php,GET,200,wordpress,High,Admin,WordPress Login,WordPress login page.,Implement login limiting.
+MED-0006,/phpmyadmin,GET,200,phpmyadmin,Critical,Admin,phpMyAdmin,Database management interface.,Restrict PMA access.
+MED-0007,/phpMyAdmin,GET,200,phpmyadmin,Critical,Admin,phpMyAdmin Alt,Alternative phpMyAdmin path.,Remove or secure PMA.
+MED-0008,/mysqladmin,GET,200,mysql,High,Admin,MySQL Admin,MySQL admin interface.,Secure MySQL admin.
+MED-0009,/dbadmin,GET,200,database,High,Admin,DB Admin,Database admin panel.,Add authentication.
+MED-0010,/cpanel,GET,200,cpanel,High,Admin,cPanel Access,Hosting control panel.,Secure cPanel access.
+MED-0011,/controlpanel,GET,200,control,High,Admin,Control Panel,Generic control panel.,Implement access controls.
+MED-0012,/manager,GET,200,manager,High,Admin,Manager Interface,Management interface.,Add authentication.
+MED-0013,/manager/html,GET,200,tomcat,High,Admin,Tomcat Manager,Apache Tomcat manager.,Secure Tomcat manager.
+MED-0014,/tomcat/manager/html,GET,200,tomcat,High,Admin,Tomcat Manager Path,Tomcat manager full path.,Update Tomcat credentials.
+MED-0015,/host-manager/html,GET,200,tomcat,High,Admin,Tomcat Host Manager,Virtual host manager.,Secure host manager.
+MED-0016,/jmx-console,GET,200,jboss,High,Admin,JBoss JMX Console,JMX management console.,Remove or secure JMX.
+MED-0017,/web-console,GET,200,jboss,High,Admin,JBoss Web Console,JBoss web management.,Secure web console.
+MED-0018,/invoker/JMXInvokerServlet,GET,200,jboss,Critical,Admin,JMX Invoker Servlet,JMX invoker accessible.,Remove invoker servlet.
+MED-0019,/websphere,GET,200,websphere,High,Admin,WebSphere Console,IBM WebSphere console.,Secure WebSphere.
+MED-0020,/login,GET,200,login,Medium,Admin,Login Page,Generic login page.,Review authentication.
+MED-0021,/login.jsp,GET,200,login,Medium,Admin,JSP Login,JSP login page.,Secure JSP login.
+MED-0022,/login.aspx,GET,200,login,Medium,Admin,ASPX Login,ASP.NET login.,Secure ASP.NET auth.
+MED-0023,/signin,GET,200,signin,Medium,Admin,Signin Page,Signin interface.,Review security.
+MED-0024,/signup,GET,200,signup,High,Admin,Signup Page,Registration page.,Add CAPTCHA.
+MED-0025,/register,GET,200,register,High,Admin,Register Page,User registration.,Validate inputs.
+MED-0026,/auth,GET,200,auth,Medium,Admin,Auth Endpoint,Authentication endpoint.,Secure auth flow.
+MED-0027,/auth/login,GET,200,login,Medium,Admin,Auth Login,Auth login endpoint.,Add MFA.
+MED-0028,/oauth,GET,200,oauth,Medium,Admin,OAuth Endpoint,OAuth interface.,Secure OAuth config.
+MED-0029,/api/auth,GET,200,auth,Medium,Admin,API Auth,API authentication.,Secure API auth.
+MED-0030,/api/login,POST,200,token,High,Admin,API Login,API login endpoint.,Rate limit login.
+MED-0031,/api/admin,GET,200,admin,High,Admin,API Admin,Admin API endpoint.,Add API auth.
+MED-0032,/api/users,GET,200,users,High,Admin,Users API,User management API.,Secure endpoints.
+MED-0033,/dashboard,GET,200,dashboard,Medium,Admin,Dashboard,User dashboard.,Review access.
+MED-0034,/panel,GET,200,panel,High,Admin,Control Panel,Control panel interface.,Add authentication.
+MED-0035,/console,GET,200,console,Critical,Admin,System Console,System console access.,Restrict console access.
+MED-0036,/shell,GET,200,shell,Critical,Admin,Web Shell Access,Potential web shell detected.,Investigate immediately.
+MED-0037,/config.php,GET,200,DB_PASSWORD,Critical,Config,PHP Config,PHP configuration file exposed.,Remove config files.
+MED-0038,/config.json,GET,200,password,Critical,Config,JSON Config,Configuration file exposed.,Restrict config access.
+MED-0039,/config.xml,GET,200,password,Critical,Config,XML Config,XML configuration file.,Secure configurations.
+MED-0040,/.env,GET,200,SECRET,Critical,Config,Environment File,Environment variables exposed.,Move .env outside web.
+MED-0041,/.env.local,GET,200,SECRET,Critical,Config,Local Environment,Local environment file.,Remove from production.
+MED-0042,/wp-config.php,GET,200,DB_PASSWORD,Critical,Config,WordPress Config,WordPress configuration.,Secure WP config.
+MED-0043,/configuration.php,GET,200,password,Critical,Config,Joomla Config,Joomla configuration.,Secure Joomla config.
+MED-0044,/sites/default/settings.php,GET,200,password,Critical,Config,Drupal Config,Drupal configuration.,Secure Drupal.
+MED-0045,/settings.py,GET,200,SECRET,Critical,Config,Python Settings,Django/Flask settings.,Secure settings.
+MED-0046,/localsettings.py,GET,200,SECRET,Critical,Config,Local Python Settings,Local Python config.,Remove from web.
+MED-0047,/application.properties,GET,200,password,Critical,Config,Java Properties,Java app properties.,Secure properties.
+MED-0048,/application.yml,GET,200,password,Critical,Config,YAML Config,YAML configuration.,Restrict access.
+MED-0049,/web.config,GET,200,connectionString,Critical,Config,IIS Config,IIS configuration file.,Secure web.config.
+MED-0050,/.htaccess,GET,200,AuthUserFile,High,Config,HTAccess File,Apache htaccess exposed.,Review htaccess.
+MED-0051,/httpd.conf,GET,200,DocumentRoot,Critical,Config,Apache Config,Apache configuration.,Remove from web.
+MED-0052,/nginx.conf,GET,200,root,Critical,Config,Nginx Config,Nginx configuration.,Secure nginx config.
+MED-0053,/php.ini,GET,200,extension,Critical,Config,PHP INI,PHP configuration file.,Remove php.ini from web.
+MED-0054,/my.cnf,GET,200,password,Critical,Config,MySQL Config,MySQL configuration.,Secure MySQL config.
+MED-0055,/database.yml,GET,200,password,Critical,Config,Database YAML,Database configuration YAML.,Encrypt credentials.
+MED-0056,/secrets.yml,GET,200,api_key,Critical,Config,Secrets YAML,Secrets in YAML file.,Use secret management.
+MED-0057,/credentials.json,GET,200,key,Critical,Config,Credentials JSON,Credentials file exposed.,Use credential vaults.
+MED-0058,/client_secrets.json,GET,200,client_secret,Critical,Config,Client Secrets,OAuth client secrets.,Rotate credentials.
+MED-0059,/token.json,GET,200,token,Critical,Config,Token File,Access token file.,Remove token files.
+MED-0060,/config/aws.yml,GET,200,aws_secret,Critical,Config,AWS Config,AWS credentials file.,Use IAM roles.
+MED-0061,/.aws/credentials,GET,200,aws_secret,Critical,Config,AWS Credentials,AWS credentials file.,Remove from web.
+MED-0062,/.aws/config,GET,200,region,Medium,Config,AWS Config,AWS configuration file.,Secure AWS files.
+MED-0063,/.docker/config.json,GET,200,auth,Critical,Config,Docker Config,Docker configuration.,Secure Docker files.
+MED-0064,/docker-compose.yml,GET,200,password,Critical,Config,Docker Compose,Docker compose file.,Remove secrets.
+MED-0065,/kubeconfig,GET,200,certificate,Critical,Config,Kubernetes Config,K8s configuration.,Secure kubeconfig.
+MED-0066,/terraform.tfstate,GET,200,password,Critical,Config,Terraform State,Terraform state file.,Secure state files.
+MED-0067,/terraform.tfvars,GET,200,secret,Critical,Config,Terraform Vars,Terraform variables.,Encrypt tfvars.
+MED-0068,/ansible.cfg,GET,200,vault,Critical,Config,Ansible Config,Ansible configuration.,Secure Ansible.
+MED-0069,/vault.yml,GET,200,$ANSIBLE_VAULT,Critical,Config,Ansible Vault,Ansible vault file.,Check vault encryption.
+MED-0070,/group_vars,GET,200,password,Critical,Config,Ansible Groups,Ansible group variables.,Secure group vars.
+MED-0071,/host_vars,GET,200,password,Critical,Config,Ansible Hosts,Ansible host variables.,Encrypt host vars.
+MED-0072,/backup.sql,GET,200,INSERT,Critical,Database,SQL Backup,Database backup file.,Remove backups.
+MED-0073,/backup.sql.gz,GET,200,<?php?,Critical,Database,Gzipped Backup,Gzipped SQL backup.,Secure backups.
+MED-0074,/db.sql,GET,200,CREATE,Critical,Database,Database SQL,SQL dump file.,Remove SQL dumps.
+MED-0075,/database.sql,GET,200,DROP,Critical,Database,Database Dump,Full database dump.,Secure database dumps.
+MED-0076,/dump.sql,GET,200,INSERT,Critical,Database,SQL Dump,SQL database dump.,Remove dumps.
+MED-0077,/data.sql,GET,200,VALUES,Critical,Database,Data SQL,Data export file.,Secure data exports.
+MED-0078,/db.sqlite,GET,200,SQLite,Critical,Database,SQLite DB,SQLite database file.,Remove SQLite from web.
+MED-0079,/database.sqlite,GET,200,SQLite,Critical,Database,SQLite Database,SQLite database.,Secure SQLite.
+MED-0080,/data.db,GET,200,SQLite,Critical,Database,Data Database,Data database file.,Remove DB files.
+MED-0081,/app.db,GET,200,SQLite,Critical,Database,App Database,Application database.,Secure app DB.
+MED-0082,/backup.db,GET,200,SQLite,Critical,Database,Backup Database,Database backup.,Remove backup DB.
+MED-0083,/users.db,GET,200,SQLite,Critical,Database,Users Database,User database file.,Encrypt user DB.
+MED-0084,/members.db,GET,200,SQLite,Critical,Database,Members Database,Member database.,Secure members DB.
+MED-0085,/customers.db,GET,200,SQLite,Critical,Database,Customers Database,Customer database.,Remove customer DB.
+MED-0086,/orders.db,GET,200,SQLite,Critical,Database,Orders Database,Order database.,Secure order data.
+MED-0087,/products.db,GET,200,SQLite,Critical,Database,Products Database,Product database.,Remove product DB.
+MED-0088,/catalog.db,GET,200,SQLite,Critical,Database,Catalog Database,Catalog database.,Secure catalog.
+MED-0089,/inventory.db,GET,200,SQLite,Critical,Database,Inventory Database,Inventory database.,Secure inventory.
+MED-0090,/content.db,GET,200,SQLite,Critical,Database,Content Database,Content database.,Remove content DB.
+MED-0091,/sessions.db,GET,200,SQLite,Critical,Database,Sessions Database,Session database.,Secure session DB.
+MED-0092,/cache.db,GET,200,SQLite,Critical,Database,Cache Database,Cache database.,Remove cache DB.
+MED-0093,/logs.db,GET,200,SQLite,Critical,Database,Logs Database,Log database.,Secure log DB.
+MED-0094,/analytics.db,GET,200,SQLite,Critical,Database,Analytics Database,Analytics data.,Remove analytics DB.
+MED-0095,/stats.db,GET,200,SQLite,Critical,Database,Stats Database,Statistics database.,Secure stats.
+MED-0096,/tracking.db,GET,200,SQLite,Critical,Database,Tracking Database,Tracking data.,Remove tracking DB.
+MED-0097,/events.db,GET,200,SQLite,Critical,Database,Events Database,Event data.,Secure events.
+MED-0098,/notifications.db,GET,200,SQLite,Critical,Database,Notifications Database,Notification DB.,Remove notification DB.
+MED-0099,/messages.db,GET,200,SQLite,Critical,Database,Messages Database,Message database.,Secure messages.
+MED-0100,/comments.db,GET,200,SQLite,Critical,Database,Comments Database,Comment database.,Remove comments DB.
+MED-0101,/.git/config,GET,200,repository,Critical,VCS,Git Config,Git configuration file exposed.,Remove .git directory.
+MED-0102,/.git/HEAD,GET,200,ref:,Critical,VCS,Git HEAD,Git HEAD file accessible.,Remove from web.
+MED-0103,/.git/index,GET,200,DIRC,Critical,VCS,Git Index,Git index file exposed.,Remove .git.
+MED-0104,/.git/logs/HEAD,GET,200,commit,Critical,VCS,Git Logs,Git commit history exposed.,Remove git logs.
+MED-0105,/.git/refs/heads/master,GET,200,commit,Critical,VCS,Git Master,Git master reference.,Remove git refs.
+MED-0106,/.svn/entries,GET,200,svn,Critical,VCS,SVN Entries,SVN repository entries.,Remove .svn.
+MED-0107,/.svn/wc.db,GET,200,SQLite,Critical,VCS,SVN Database,SVN working copy database.,Remove SVN DB.
+MED-0108,/.hg,GET,200,hg,Critical,VCS,Mercurial Repo,Mercurial repository exposed.,Remove .hg.
+MED-0109,/.bzr,GET,200,bzr,Critical,VCS,Bazaar Repo,Bazaar repository exposed.,Remove .bzr.
+MED-0110,/.DS_Store,GET,200,Bud1,Medium,VCS,DS_Store,Mac OS metadata file.,Remove DS_Store.
+MED-0111,/.gitignore,GET,200,*,Low,VCS,Gitignore,Git ignore file.,Remove from production.
+MED-0112,/README.md,GET,200,##,Low,Info,README,Project readme file.,Remove from production.
+MED-0113,/README.txt,GET,200,*,Low,Info,README Text,Text readme file.,Remove readme files.
+MED-0114,/LICENSE,GET,200,license,Low,Info,License File,License file exposed.,Remove license.
+MED-0115,/CHANGELOG,GET,200,version,Low,Info,Changelog,Change log file.,Remove changelogs.
+MED-0116,/VERSION,GET,200,version,Low,Info,Version File,Version information.,Remove version files.
+MED-0117,/package.json,GET,200,dependencies,Low,Info,Package JSON,NPM package info.,Remove from production.
+MED-0118,/composer.json,GET,200,require,Low,Info,Composer JSON,PHP composer file.,Remove from web.
+MED-0119,/Gemfile,GET,200,gem,Low,Info,Gemfile,Ruby Gemfile.,Remove from production.
+MED-0120,/requirements.txt,GET,200,==,Low,Info,Requirements,Python requirements.,Remove from web.
+MED-0121,/Pipfile,GET,200,packages,Low,Info,Pipfile,Python Pipfile.,Remove from production.
+MED-0122,/Makefile,GET,200,all:,Medium,Info,Makefile,Build makefile.,Remove build files.
+MED-0123,/Dockerfile,GET,200,FROM,Medium,Info,Dockerfile,Docker build file.,Remove Dockerfile.
+MED-0124,/docker-compose.yml,GET,200,services,Medium,Info,Docker Compose,Docker compose file.,Remove compose files.
+MED-0125,/Vagrantfile,GET,200,config,Low,Info,Vagrantfile,Vagrant config.,Remove Vagrantfile.
+MED-0126,/Jenkinsfile,GET,200,pipeline,Medium,Info,Jenkinsfile,Jenkins pipeline.,Remove from web.
+MED-0127,/.travis.yml,GET,200,language,Low,Info,Travis CI,Travis configuration.,Remove CI configs.
+MED-0128,/.github/workflows,GET,200,on:,Medium,Info,GitHub Actions,GitHub workflows.,Secure workflows.
+MED-0129,/.gitlab-ci.yml,GET,200,stages,Medium,Info,GitLab CI,GitLab CI config.,Remove CI configs.
+MED-0130,/phpinfo.php,GET,200,phpinfo,Critical,Dev,PHP Info,PHP information disclosure.,Remove phpinfo.
+MED-0131,/info.php,GET,200,phpinfo,Critical,Dev,Info PHP,PHP info variant.,Remove info.php.
+MED-0132,/test.php,GET,200,test,Medium,Dev,Test PHP,PHP test file.,Remove test files.
+MED-0133,/i.php,GET,200,phpinfo,Medium,Dev,I PHP,PHP info shortcut.,Remove i.php.
+MED-0134,/p.php,GET,200,phpinfo,Medium,Dev,P PHP,PHP info shortcut.,Remove p.php.
+MED-0135,/tests,GET,200,index,Medium,Dev,Tests Directory,Test directory.,Remove tests.
+MED-0136,/test,GET,200,test,Medium,Dev,Test Directory,Test folder.,Remove from production.
+MED-0137,/testing,GET,200,testing,Medium,Dev,Testing Directory,Testing folder.,Remove testing.
+MED-0138,/debug,GET,200,debug,Critical,Dev,Debug Directory,Debug interface.,Remove debug.
+MED-0139,/debugger,GET,200,debugger,Critical,Dev,Debugger,Debugger tool.,Remove debugger.
+MED-0140,/dev,GET,200,development,Medium,Dev,Dev Directory,Development files.,Remove dev files.
+MED-0141,/development,GET,200,development,Medium,Dev,Development,Development environment.,Secure dev access.
+MED-0142,/staging,GET,200,staging,Medium,Dev,Staging,Staging environment.,Secure staging.
+MED-0143,/demo,GET,200,demo,Medium,Dev,Demo,Demo environment.,Secure demo access.
+MED-0144,/swagger,GET,200,swagger,Critical,Dev,Swagger UI,API documentation UI.,Secure swagger.
+MED-0145,/swagger-ui.html,GET,200,swagger,Critical,Dev,Swagger UI HTML,Swagger interface.,Remove from production.
+MED-0146,/swagger.json,GET,200,swagger,Critical,Dev,Swagger JSON,API specification.,Secure swagger.json.
+MED-0147,/api-docs,GET,200,redoc,Critical,Dev,API Docs,API documentation.,Secure API docs.
+MED-0148,/api/docs,GET,200,swagger,Critical,Dev,API Docs Alt,Alternative API docs.,Remove from production.
+MED-0149,/graphql,GET,200,graphql,High,Dev,GraphQL,GraphQL endpoint.,Secure GraphQL.
+MED-0150,/graphiql,GET,200,graphiql,High,Dev,GraphiQL,GraphQL IDE.,Remove from production.
+MED-0151,/playground,GET,200,playground,High,Dev,Playground,GraphQL playground.,Remove playground.
+MED-0152,/altair,GET,200,altair,High,Dev,Altair,GraphQL client.,Remove altair.
+MED-0153,/voyager,GET,200,voyager,High,Dev,Voyager,GraphQL voyager.,Remove voyager.
+MED-0154,/__debug__,GET,200,debug,Critical,Dev,Debug Panel,Debug panel.,Remove debug.
+MED-0155,/debug/vars,GET,200,vars,Critical,Dev,Debug Vars,Debug variables.,Remove debug.
+MED-0156,/debug/pprof,GET,200,pprof,Critical,Dev,Go Profiler,Go pprof profiler.,Secure pprof.
+MED-0157,/metrics,GET,200,prometheus,Critical,Dev,Metrics,Application metrics.,Secure metrics.
+MED-0158,/actuator,GET,200,actuator,Critical,Dev,Spring Actuator,Spring Boot actuator.,Secure actuator.
+MED-0159,/actuator/health,GET,200,health,Critical,Dev,Actuator Health,Health endpoint.,Secure actuator.
+MED-0160,/actuator/env,GET,200,env,Critical,Dev,Actuator Env,Environment endpoint.,Remove from production.
+MED-0161,/actuator/configprops,GET,200,configprops,Critical,Dev,Actuator Config,Configuration endpoint.,Secure actuator.
+MED-0162,/actuator/mappings,GET,200,mappings,Critical,Dev,Actuator Mappings,URL mappings.,Secure actuator.
+MED-0163,/actuator/metrics,GET,200,metrics,Critical,Dev,Actuator Metrics,Metrics endpoint.,Secure metrics.
+MED-0164,/actuator/loggers,GET,200,loggers,Critical,Dev,Actuator Loggers,Logger levels.,Secure loggers.
+MED-0165,/actuator/beans,GET,200,beans,Critical,Dev,Actuator Beans,Spring beans.,Secure actuator.
+MED-0166,/actuator/heapdump,GET,200,PK,Critical,Dev,Heap Dump,Memory heap dump.,Remove heap dump.
+MED-0167,/actuator/threaddump,GET,200,threaddump,Critical,Dev,Thread Dump,Thread dump.,Secure thread dump.
+MED-0168,/actuator/httptrace,GET,200,httptrace,Critical,Dev,HTTP Trace,HTTP request trace.,Secure trace.
+MED-0169,/actuator/auditevents,GET,200,auditevents,Critical,Dev,Audit Events,Audit log.,Secure audit logs.
+MED-0170,/actuator/caches,GET,200,caches,Critical,Dev,Caches,Cache information.,Secure caches.
+MED-0171,/actuator/scheduledtasks,GET,200,scheduledtasks,Critical,Dev,Scheduled Tasks,Task schedule.,Secure tasks.
+MED-0172,/actuator/sessions,GET,200,sessions,Critical,Dev,Sessions,Active sessions.,Secure sessions.
+MED-0173,/actuator/shutdown,POST,200,message,Critical,Dev,Shutdown,Shutdown endpoint.,Remove shutdown.
+MED-0174,/actuator/restart,POST,200,message,Critical,Dev,Restart,Restart endpoint.,Remove restart.
+MED-0175,/actuator/pause,POST,200,message,Critical,Dev,Pause,Pause endpoint.,Remove pause.
+MED-0176,/actuator/resume,POST,200,message,Critical,Dev,Resume,Resume endpoint.,Remove resume.
+MED-0177,/jolokia,GET,200,jolokia,Critical,Dev,Jolokia,JMX HTTP bridge.,Secure jolokia.
+MED-0178,/jolokia/list,GET,200,list,Critical,Dev,Jolokia List,JMX MBean list.,Remove jolokia.
+MED-0179,/jolokia/read,GET,200,value,Critical,Dev,Jolokia Read,JMX read access.,Secure jolokia.
+MED-0180,/jolokia/write,POST,200,status,Critical,Dev,Jolokia Write,JMX write access.,Remove jolokia.
+MED-0181,/jolokia/exec,POST,200,output,Critical,Dev,Jolokia Exec,JMX exec access.,Remove jolokia.
+MED-0182,/trace.axd,GET,200,trace,Critical,Dev,Trace AXD,ASP.NET trace.,Remove trace.axd.
+MED-0183,/elmah.axd,GET,200,elmah,Critical,Dev,ELMAH,Error logging.,Remove elmah.axd.
+MED-0184,/elmah,GET,200,errorlog,Critical,Dev,ELMAH Root,ELMAH root.,Remove ELMAH.
+MED-0185,/errors,GET,200,error,Medium,Dev,Error Page,Error page.,Review errors.
+MED-0186,/error,GET,200,error,Medium,Dev,Error Handler,Error handler.,Secure error handling.
+MED-0187,/logs,GET,200,logs,Critical,Dev,Logs Directory,Log directory.,Remove logs.
+MED-0188,/log,GET,200,log,Critical,Dev,Log Directory,Log folder.,Secure logs.
+MED-0189,/tmp,GET,200,tmp,Medium,Dev,Temp Directory,Temporary files.,Secure temp.
+MED-0190,/temp,GET,200,temp,Medium,Dev,Temp Folder,Temp folder.,Clean temp.
+MED-0191,/upload,GET,200,upload,High,Dev,Upload Directory,Upload folder.,Secure uploads.
+MED-0192,/uploads,GET,200,uploads,High,Dev,Uploads Directory,Uploads folder.,Secure uploads.
+MED-0193,/files,GET,200,files,Medium,Dev,Files Directory,Files directory.,Secure files.
+MED-0194,/file,GET,200,file,Medium,Dev,File Directory,File folder.,Secure file access.
+MED-0195,/download,GET,200,download,Medium,Dev,Download Directory,Download folder.,Secure downloads.
+MED-0196,/downloads,GET,200,downloads,Medium,Dev,Downloads Directory,Downloads folder.,Secure downloads.
+MED-0197,/export,GET,200,export,Medium,Dev,Export Directory,Export folder.,Secure exports.
+MED-0198,/exports,GET,200,exports,Medium,Dev,Exports Directory,Exports folder.,Secure exports.
+MED-0199,/import,GET,200,import,Medium,Dev,Import Directory,Import folder.,Secure imports.
+MED-0200,/imports,GET,200,imports,Medium,Dev,Imports Directory,Imports folder.,Secure imports.

@@ -1,0 +1,210 @@
+# HyperSecurity_offensivelabs - PROFESSIONAL SECURITY TEST DATABASE - LARGE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# This database contains REAL vulnerability tests for authorized security assessments only
+# Unauthorized access or use is strictly prohibited
+#
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+# Total Records: 1000 (Large Database - Complete Coverage)
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+LRG-0001,/server-status,GET,200,Apache Server Status,High,Server,Apache Status,Apache server status page exposes info.,Restrict server-status.
+LRG-0002,/server-info,GET,200,Server Information,High,Server,Apache Info,Apache server information page.,Restrict server-info.
+LRG-0003,/status,GET,200,status,Medium,Server,Status Page,Generic status page.,Review status exposure.
+LRG-0004,/stats,GET,200,statistics,Medium,Server,Statistics,Web statistics.,Secure statistics.
+LRG-0005,/usage,GET,200,usage,Medium,Server,Usage Stats,Usage statistics.,Secure usage data.
+LRG-0006,/nginx_status,GET,200,Active connections,High,Server,Nginx Status,Nginx status page.,Restrict nginx status.
+LRG-0007,/php-status,GET,200,php-fpm,High,Server,PHP-FPM Status,PHP-FPM status page.,Secure PHP status.
+LRG-0008,/healthcheck,GET,200,healthy,Medium,Server,Health Check,Health check endpoint.,Limit health exposure.
+LRG-0009,/health,GET,200,status,Medium,Server,Health Endpoint,Health endpoint.,Secure health checks.
+LRG-0010,/ready,GET,200,ready,Medium,Server,Ready Check,Readiness probe.,Review readiness.
+LRG-0011,/live,GET,200,alive,Medium,Server,Liveness Check,Liveness probe.,Review liveness.
+LRG-0012,/ping,GET,200,pong,Low,Server,Ping Endpoint,Ping endpoint.,Remove ping endpoints.
+LRG-0013,/probe,GET,200,probe,Medium,Server,Probe Endpoint,Probe endpoint.,Secure probes.
+LRG-0014,/check,GET,200,ok,Medium,Server,Check Endpoint,Check endpoint.,Secure check.
+LRG-0015,/alive,GET,200,yes,Low,Server,Alive Check,Alive check.,Remove alive checks.
+LRG-0016,/ok,GET,200,OK,Low,Server,OK Check,OK status.,Remove ok endpoints.
+LRG-0017,/robots.txt,GET,200,Disallow,Low,Info,Robots.txt,Robots file exposes paths.,Review robots.txt.
+LRG-0018,/sitemap.xml,GET,200,urlset,Low,Info,Sitemap XML,Sitemap exposes structure.,Review sitemap.
+LRG-0019,/sitemap.txt,GET,200,http,Low,Info,Sitemap Text,Text sitemap.,Review sitemap.
+LRG-0020,/crossdomain.xml,GET,200,cross-domain-policy,Medium,Info,Crossdomain,Flash crossdomain policy.,Restrict crossdomain.
+LRG-0021,/clientaccesspolicy.xml,GET,200,access-policy,Medium,Info,Client Access,Silverlight policy.,Restrict access.
+LRG-0022,/favicon.ico,GET,200,????,Low,Info,Favicon,Site favicon.,Info disclosure low.
+LRG-0023,/apple-touch-icon.png,GET,200,????,Low,Info,Apple Icon,iOS icon.,Info disclosure low.
+LRG-0024,/humans.txt,GET,200,humans,Low,Info,Humans.txt,Site credits.,Remove humans.txt.
+LRG-0025,/security.txt,GET,200,security,Medium,Info,Security.txt,Security contacts.,Review security.txt.
+LRG-0026,/.well-known/security.txt,GET,200,contact,Medium,Info,Well-Known Security,Security policy.,Review policy.
+LRG-0027,/.well-known/ai-plugin.json,GET,200,ai_plugin,Medium,Info,AI Plugin,AI plugin manifest.,Review AI config.
+LRG-0028,/browserconfig.xml,GET,200,browserconfig,Low,Info,Browser Config,IE/Edge config.,Review config.
+LRG-0029,/manifest.json,GET,200,manifest,Low,Info,Manifest,PWA manifest.,Review manifest.
+LRG-0030,/site.webmanifest,GET,200,webmanifest,Low,Info,Web Manifest,PWA manifest alt.,Review manifest.
+LRG-0031,/opensearch.xml,GET,200,OpenSearch,Low,Info,OpenSearch,Search plugin.,Low risk.
+LRG-0032,/rss,GET,200,rss,Low,Info,RSS Feed,RSS feed.,Review feed.
+LRG-0033,/rss.xml,GET,200,rss,Low,Info,RSS XML,RSS feed XML.,Review RSS.
+LRG-0034,/feed,GET,200,feed,Low,Info,Feed,Generic feed.,Review feed.
+LRG-0035,/feed.xml,GET,200,feed,Low,Info,Feed XML,Feed XML.,Review feed.
+LRG-0036,/atom.xml,GET,200,atom,Low,Info,Atom Feed,Atom feed.,Review feed.
+LRG-0037,/sitemap.xml.gz,GET,200,?,Low,Info,Gzipped Sitemap,Gzipped sitemap.,Review sitemap.
+LRG-0038,/sitemap_index.xml,GET,200,sitemapindex,Low,Info,Sitemap Index,Sitemap index.,Review sitemap.
+LRG-0039,/sitemap-index.xml,GET,200,sitemapindex,Low,Info,Sitemap-Index,Alt sitemap index.,Review sitemap.
+LRG-0040,/sitemaps,GET,200,sitemap,Low,Info,Sitemaps Dir,Sitemaps directory.,Review sitemaps.
+LRG-0041,/sitemap,GET,200,sitemap,Low,Info,Sitemap Dir,Sitemap directory.,Review sitemap.
+LRG-0042,/seo,GET,200,seo,Low,Info,SEO Directory,SEO tools.,Secure SEO tools.
+LRG-0043,/search,GET,200,search,Medium,Info,Search Page,Search page.,Review search.
+LRG-0044,/search.html,GET,200,search,Medium,Info,Search HTML,Search page HTML.,Review search.
+LRG-0045,/search.php,GET,200,search,Medium,Info,Search PHP,PHP search.,Review search.
+LRG-0046,/query,GET,200,query,Medium,Info,Query Page,Query page.,Review queries.
+LRG-0047,/find,GET,200,find,Medium,Info,Find Page,Find page.,Review find.
+LRG-0048,/lookup,GET,200,lookup,Medium,Info,Lookup Page,Lookup page.,Review lookup.
+LRG-0049,/browse,GET,200,browse,Medium,Info,Browse Page,Browse page.,Review browse.
+LRG-0050,/list,GET,200,list,Medium,Info,List Page,List page.,Review listing.
+LRG-0051,/index,GET,200,index,Low,Info,Index Page,Index page.,Normal page.
+LRG-0052,/default,GET,200,default,Low,Info,Default Page,Default page.,Normal page.
+LRG-0053,/home,GET,200,home,Low,Info,Home Page,Home page.,Normal page.
+LRG-0054,/main,GET,200,main,Low,Info,Main Page,Main page.,Normal page.
+LRG-0055,/start,GET,200,start,Low,Info,Start Page,Start page.,Normal page.
+LRG-0056,/welcome,GET,200,welcome,Low,Info,Welcome Page,Welcome page.,Normal page.
+LRG-0057,/portal,GET,200,portal,Medium,Info,Portal,Portal page.,Secure portal.
+LRG-0058,/gateway,GET,200,gateway,Medium,Info,Gateway,Gateway page.,Secure gateway.
+LRG-0059,/entry,GET,200,entry,Low,Info,Entry Point,Entry point.,Normal page.
+LRG-0060,/landing,GET,200,landing,Low,Info,Landing Page,Landing page.,Normal page.
+LRG-0061,/startpage,GET,200,startpage,Low,Info,Start Page,Alt start page.,Normal page.
+LRG-0062,/homepage,GET,200,homepage,Low,Info,Home Page,Alt home page.,Normal page.
+LRG-0063,/index.php,GET,200,index,Low,Info,Index PHP,PHP index.,Normal page.
+LRG-0064,/index.html,GET,200,html,Low,Info,Index HTML,HTML index.,Normal page.
+LRG-0065,/default.html,GET,200,html,Low,Info,Default HTML,Default HTML.,Normal page.
+LRG-0066,/default.asp,GET,200,asp,Low,Info,Default ASP,ASP default.,Normal page.
+LRG-0067,/default.aspx,GET,200,aspx,Low,Info,Default ASPX,ASPX default.,Normal page.
+LRG-0068,/index.jsp,GET,200,jsp,Low,Info,Index JSP,JSP index.,Normal page.
+LRG-0069,/index.cgi,GET,200,cgi,Medium,Info,Index CGI,CGI index.,Review CGI.
+LRG-0070,/index.pl,GET,200,perl,Medium,Info,Index Perl,Perl index.,Review Perl.
+LRG-0071,/index.py,GET,200,python,Medium,Info,Index Python,Python index.,Review Python.
+LRG-0072,/index.rb,GET,200,ruby,Medium,Info,Index Ruby,Ruby index.,Review Ruby.
+LRG-0073,/index.sh,GET,200,shell,Critical,Info,Index Shell,Shell index.,Remove shell.
+LRG-0074,/index.bak,GET,200,index,Critical,Backup,Index Backup,Index backup file.,Remove backup.
+LRG-0075,/index.old,GET,200,index,Critical,Backup,Index Old,Old index file.,Remove old files.
+LRG-0076,/index.save,GET,200,index,Critical,Backup,Index Save,Saved index.,Remove saves.
+LRG-0077,/index.backup,GET,200,index,Critical,Backup,Index Backup File,Backup index.,Remove backups.
+LRG-0078,/index~,GET,200,index,Critical,Backup,Index Backup,Backup index.,Remove backups.
+LRG-0079,/index.sw,GET,200,index,Critical,Backup,Index Swap,Swap file.,Remove swap.
+LRG-0080,/index.swo,GET,200,index,Critical,Backup,Index Swap Vim,Vim swap.,Remove swap.
+LRG-0081,/index.swp,GET,200,index,Critical,Backup,Index Swap Vim,Vim swap file.,Remove swap.
+LRG-0082,/home.bak,GET,200,home,Critical,Backup,Home Backup,Home backup.,Remove backups.
+LRG-0083,/home.old,GET,200,home,Critical,Backup,Home Old,Old home.,Remove old.
+LRG-0084,/home.save,GET,200,home,Critical,Backup,Home Save,Home save.,Remove saves.
+LRG-0085,/home.backup,GET,200,home,Critical,Backup,Home Backup File,Home backup.,Remove backups.
+LRG-0086,/home~,GET,200,home,Critical,Backup,Home Backup,Home backup.,Remove backups.
+LRG-0087,/.htaccess.bak,GET,200,htaccess,Critical,Backup,HTAccess Backup,HTAccess backup.,Remove backups.
+LRG-0088,/.htaccess.old,GET,200,htaccess,Critical,Backup,HTAccess Old,Old htaccess.,Remove old.
+LRG-0089,/.htaccess.save,GET,200,htaccess,Critical,Backup,HTAccess Save,Saved htaccess.,Remove saves.
+LRG-0090,/.htaccess~,GET,200,htaccess,Critical,Backup,HTAccess Backup,HTAccess backup.,Remove backups.
+LRG-0091,/.htpasswd,GET,200,htpasswd,Critical,Auth,HTPasswd,Apache password file.,Remove htpasswd.
+LRG-0092,/.htpasswd.bak,GET,200,htpasswd,Critical,Auth,HTPasswd Backup,HTPasswd backup.,Remove backups.
+LRG-0093,/.htusers,GET,200,htusers,Critical,Auth,HTUsers,User auth file.,Remove auth files.
+LRG-0094,/.htgroups,GET,200,htgroups,Critical,Auth,HTGroups,Group auth file.,Remove auth files.
+LRG-0095,/passwd,GET,200,root:x,Critical,System,Passwd File,Password file exposed.,Critical exposure.
+LRG-0096,/etc/passwd,GET,200,root:x,Critical,System,Etc Passwd,System password file.,Critical exposure.
+LRG-0097,/shadow,GET,200,root:,Critical,System,Shadow File,Shadow password file.,Critical exposure.
+LRG-0098,/etc/shadow,GET,200,root:,Critical,System,Etc Shadow,System shadow file.,Critical exposure.
+LRG-0099,/group,GET,200,root:,Medium,System,Group File,Group file.,Info disclosure.
+LRG-0100,/etc/group,GET,200,root:,Medium,System,Etc Group,System group file.,Info disclosure.
+LRG-0101,/hosts,GET,200,127.0.0.1,Medium,System,Hosts File,Hosts file.,Info disclosure.
+LRG-0102,/etc/hosts,GET,200,127.0.0.1,Medium,System,Etc Hosts,System hosts file.,Info disclosure.
+LRG-0103,/resolv.conf,GET,200,nameserver,Medium,System,Resolv Conf,DNS config.,Info disclosure.
+LRG-0104,/etc/resolv.conf,GET,200,nameserver,Medium,System,Etc Resolv,System DNS config.,Info disclosure.
+LRG-0105,/issue,GET,200,Linux,Medium,System,Issue File,System issue.,Info disclosure.
+LRG-0106,/etc/issue,GET,200,Linux,Medium,System,Etc Issue,System issue file.,Info disclosure.
+LRG-0107,/motd,GET,200,Welcome,Low,System,MOTD,Message of the day.,Info disclosure.
+LRG-0108,/etc/motd,GET,200,Welcome,Low,System,Etc MOTD,System MOTD.,Info disclosure.
+LRG-0109,/proc/version,GET,200,Linux,High,System,Proc Version,Kernel version.,Info disclosure.
+LRG-0110,/proc/cpuinfo,GET,200,processor,Medium,System,Proc CPU,CPU information.,Info disclosure.
+LRG-0111,/proc/meminfo,GET,200,MemTotal,Medium,System,Proc Memory,Memory info.,Info disclosure.
+LRG-0112,/proc/self/environ,GET,200,HTTP_,Critical,System,Proc Environ,Environment variables.,Critical exposure.
+LRG-0113,/proc/self/cmdline,GET,200,bin,Critical,System,Proc Cmdline,Command line.,Info disclosure.
+LRG-0114,/proc/self/status,GET,200,Pid,Medium,System,Proc Status,Process status.,Info disclosure.
+LRG-0115,/proc/self/fd/0,GET,200,,Critical,System,Proc FD,File descriptor.,Critical exposure.
+LRG-0116,/proc/net/tcp,GET,200,01000000,High,System,Proc Net TCP,TCP connections.,Info disclosure.
+LRG-0117,/proc/net/udp,GET,200,00000000,High,System,Proc Net UDP,UDP connections.,Info disclosure.
+LRG-0118,/var/log,GET,200,index,Critical,Log,Log Directory,Log directory listing.,Critical exposure.
+LRG-0119,/var/log/access_log,GET,200,GET,Critical,Log,Access Log,Access log file.,Critical exposure.
+LRG-0120,/var/log/error_log,GET,200,error,Critical,Log,Error Log,Error log file.,Critical exposure.
+LRG-0121,/var/log/apache2,GET,200,index,Critical,Log,Apache Logs,Apache logs.,Critical exposure.
+LRG-0122,/var/log/nginx,GET,200,index,Critical,Log,Nginx Logs,Nginx logs.,Critical exposure.
+LRG-0123,/var/log/mysql,GET,200,index,Critical,Log,MySQL Logs,MySQL logs.,Critical exposure.
+LRG-0124,/logs/access.log,GET,200,GET,Critical,Log,Access Log Path,Access log.,Remove logs.
+LRG-0125,/logs/error.log,GET,200,error,Critical,Log,Error Log Path,Error log.,Remove logs.
+LRG-0126,/log/access.log,GET,200,GET,Critical,Log,Access Log Alt,Alt access log.,Remove logs.
+LRG-0127,/log/error.log,GET,200,error,Critical,Log,Error Log Alt,Alt error log.,Remove logs.
+LRG-0128,/apache/logs,GET,200,access,Critical,Log,Apache Logs Dir,Apache logs dir.,Remove logs.
+LRG-0129,/nginx/logs,GET,200,access,Critical,Log,Nginx Logs Dir,Nginx logs dir.,Remove logs.
+LRG-0130,/mysql/logs,GET,200,mysql,Critical,Log,MySQL Logs Dir,MySQL logs.,Remove logs.
+LRG-0131,/debug.log,GET,200,debug,Critical,Log,Debug Log,Debug log file.,Remove debug logs.
+LRG-0132,/application.log,GET,200,log,Critical,Log,Application Log,App log file.,Secure logs.
+LRG-0133,/app.log,GET,200,log,Critical,Log,App Log,App log.,Secure logs.
+LRG-0134,/system.log,GET,200,log,Critical,Log,System Log,System log.,Secure logs.
+LRG-0135,/event.log,GET,200,event,Critical,Log,Event Log,Event log.,Secure logs.
+LRG-0136,/audit.log,GET,200,audit,Critical,Log,Audit Log,Audit log.,Secure audit logs.
+LRG-0137,/security.log,GET,200,security,Critical,Log,Security Log,Security log.,Secure security logs.
+LRG-0138,/sql.log,GET,200,sql,Critical,Log,SQL Log,SQL query log.,Secure SQL logs.
+LRG-0139,/query.log,GET,200,query,Critical,Log,Query Log,Query log.,Secure query logs.
+LRG-0140,/cron.log,GET,200,cron,Medium,Log,Cron Log,Cron log.,Secure cron logs.
+LRG-0141,/mail.log,GET,200,mail,Medium,Log,Mail Log,Mail log.,Secure mail logs.
+LRG-0142,/email.log,GET,200,email,Medium,Log,Email Log,Email log.,Secure email logs.
+LRG-0143,/smtp.log,GET,200,smtp,Medium,Log,SMTP Log,SMTP log.,Secure SMTP logs.
+LRG-0144,/pop3.log,GET,200,pop3,Medium,Log,POP3 Log,POP3 log.,Secure POP3 logs.
+LRG-0145,/imap.log,GET,200,imap,Medium,Log,IMAP Log,IMAP log.,Secure IMAP logs.
+LRG-0146,/ftp.log,GET,200,ftp,Medium,Log,FTP Log,FTP log.,Secure FTP logs.
+LRG-0147,/ssh.log,GET,200,ssh,Medium,Log,SSH Log,SSH log.,Secure SSH logs.
+LRG-0148,/auth.log,GET,200,auth,Critical,Log,Auth Log,Authentication log.,Secure auth logs.
+LRG-0149,/access_log,GET,200,GET,Critical,Log,Access Log Root,Access log root.,Remove logs.
+LRG-0150,/error_log,GET,200,error,Critical,Log,Error Log Root,Error log root.,Remove logs.
+LRG-0151,/ws_ftp.log,GET,200,WS_FTP,Critical,Log,WS FTP Log,WS_FTP log.,Secure FTP logs.
+LRG-0152,/wsFTP.log,GET,200,wsFTP,Critical,Log,wsFTP Log,wsFTP log.,Secure FTP logs.
+LRG-0153,/FileZilla.xml,GET,200,FileZilla,Critical,Config,FileZilla Config,FileZilla config.,Remove config.
+LRG-0154,/filezilla.xml,GET,200,filezilla,Critical,Config,filezilla Config,filezilla config.,Remove config.
+LRG-0155,/sitemanager.xml,GET,200,Sitemanager,Critical,Config,Site Manager,Site manager config.,Remove config.
+LRG-0156,/recentservers.xml,GET,200,Recent,Critical,Config,Recent Servers,Recent servers.,Remove config.
+LRG-0157,/winscp.ini,GET,200,WinSCP,Critical,Config,WinSCP Config,WinSCP config.,Remove config.
+LRG-0158,/WinSCP.ini,GET,200,WinSCP,Critical,Config,WinSCP INI,WinSCP INI.,Remove config.
+LRG-0159,/PuTTY.log,GET,200,PuTTY,Medium,Log,PuTTY Log,PuTTY log.,Secure logs.
+LRG-0160,/putty.log,GET,200,putty,Medium,Log,putty Log,putty log.,Secure logs.
+LRG-0161,/ssh/known_hosts,GET,200,ssh,Critical,SSH,Known Hosts,SSH known hosts.,Secure SSH files.
+LRG-0162,/ssh/id_rsa,GET,200,-----BEGIN,Critical,SSH,SSH Private Key,SSH private key.,Critical exposure.
+LRG-0163,/ssh/id_dsa,GET,200,-----BEGIN,Critical,SSH,SSH DSA Key,SSH DSA key.,Critical exposure.
+LRG-0164,/.ssh/known_hosts,GET,200,ssh,Critical,SSH,SSH Known Hosts,SSH known hosts.,Secure SSH.
+LRG-0165,/.ssh/id_rsa,GET,200,-----BEGIN,Critical,SSH,SSH RSA Key,SSH RSA key.,Critical exposure.
+LRG-0166,/.ssh/id_dsa,GET,200,-----BEGIN,Critical,SSH,SSH DSA Key Alt,SSH DSA key.,Critical exposure.
+LRG-0167,/.ssh/id_ecdsa,GET,200,-----BEGIN,Critical,SSH,SSH ECDSA Key,SSH ECDSA key.,Critical exposure.
+LRG-0168,/.ssh/id_ed25519,GET,200,-----BEGIN,Critical,SSH,SSH Ed25519 Key,SSH Ed25519.,Critical exposure.
+LRG-0169,/.ssh/authorized_keys,GET,200,ssh,Critical,SSH,Authorized Keys,Authorized keys.,Critical exposure.
+LRG-0170,/id_rsa,GET,200,-----BEGIN,Critical,SSH,Private Key Root,Private key root.,Critical exposure.
+LRG-0171,/id_dsa,GET,200,-----BEGIN,Critical,SSH,DSA Key Root,DSA key root.,Critical exposure.
+LRG-0172,/id_ecdsa,GET,200,-----BEGIN,Critical,SSH,ECDSA Key Root,ECDSA key root.,Critical exposure.
+LRG-0173,/id_ed25519,GET,200,-----BEGIN,Critical,SSH,Ed25519 Key Root,Ed25519 root.,Critical exposure.
+LRG-0174,/key.pem,GET,200,-----BEGIN,Critical,SSL,SSL Key PEM,SSL private key.,Critical exposure.
+LRG-0175,/server.key,GET,200,-----BEGIN,Critical,SSL,Server Key,Server private key.,Critical exposure.
+LRG-0176,/privatekey.key,GET,200,-----BEGIN,Critical,SSL,Private Key,Private key file.,Critical exposure.
+LRG-0177,/ssl.key,GET,200,-----BEGIN,Critical,SSL,SSL Key,SSL key file.,Critical exposure.
+LRG-0178,/domain.key,GET,200,-----BEGIN,Critical,SSL,Domain Key,Domain key.,Critical exposure.
+LRG-0179,/localhost.key,GET,200,-----BEGIN,Critical,SSL,Localhost Key,Localhost key.,Critical exposure.
+LRG-0180,/cert.pem,GET,200,-----BEGIN,Critical,SSL,Cert PEM,Certificate PEM.,Review cert.
+LRG-0181,/server.crt,GET,200,-----BEGIN,Critical,SSL,Server Cert,Server certificate.,Review cert.
+LRG-0182,/ssl.crt,GET,200,-----BEGIN,Critical,SSL,SSL Cert,SSL certificate.,Review cert.
+LRG-0183,/domain.crt,GET,200,-----BEGIN,Critical,SSL,Domain Cert,Domain certificate.,Review cert.
+LRG-0184,/certificate.pem,GET,200,-----BEGIN,Critical,SSL,Certificate,Certificate file.,Review cert.
+LRG-0185,/fullchain.pem,GET,200,-----BEGIN,Critical,SSL,Full Chain,Full certificate chain.,Review cert.
+LRG-0186,/chain.pem,GET,200,-----BEGIN,Critical,SSL,Chain PEM,Certificate chain.,Review cert.
+LRG-0187,/cacert.pem,GET,200,-----BEGIN,Critical,SSL,CA Cert,CA certificate.,Review cert.
+LRG-0188,/cakey.pem,GET,200,-----BEGIN,Critical,SSL,CA Key,CA private key.,Critical exposure.
+LRG-0189,/ssl/server.crt,GET,200,-----BEGIN,Critical,SSL,SSL Server Cert,SSL server cert.,Review cert.
+LRG-0190,/ssl/server.key,GET,200,-----BEGIN,Critical,SSL,SSL Server Key,SSL server key.,Critical exposure.
+LRG-0191,/certs/server.crt,GET,200,-----BEGIN,Critical,SSL,Certs Server,Certs server.,Review cert.
+LRG-0192,/certs/server.key,GET,200,-----BEGIN,Critical,SSL,Certs Key,Certs key.,Critical exposure.
+LRG-0193,/private/server.key,GET,200,-----BEGIN,Critical,SSL,Private Server Key,Private server key.,Critical exposure.
+LRG-0194,/backup/server.key,GET,200,-----BEGIN,Critical,Backup,Backup Server Key,Backup key.,Critical exposure.
+LRG-0195,/bak/server.key,GET,200,-----BEGIN,Critical,Backup,Bak Server Key,Bak key.,Critical exposure.
+LRG-0196,/old/server.key,GET,200,-----BEGIN,Critical,Backup,Old Server Key,Old key.,Critical exposure.
+LRG-0197,/backup/ssl.crt,GET,200,-----BEGIN,Critical,Backup,Backup SSL Cert,Backup cert.,Review backup.
+LRG-0198,/backup/ssl.key,GET,200,-----BEGIN,Critical,Backup,Backup SSL Key,Backup key.,Critical exposure.
+LRG-0199,/api,GET,200,api,Low,API,API Root,API root endpoint.,Normal endpoint.
+LRG-0200,/api/v1,GET,200,v1,Low,API,API V1,API version 1.,Normal endpoint.

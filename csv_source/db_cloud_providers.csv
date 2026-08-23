@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - CLOUD PROVIDERS SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+CLD-0001,/latest/meta-data,GET,200,ami-id,Critical,Cloud,AWS Metadata,AWS instance metadata service.,IMDSv2 required.,false
+CLD-0002,/latest/user-data,GET,200,#!/bin/bash,Critical,Cloud,AWS User Data,AWS user data script.,Critical: Encrypt user data.,true
+CLD-0003,/latest/dynamic/instance-identity/document,GET,200,accountId,Critical,Cloud,AWS Identity Doc,Instance identity document.,Secure metadata.,true
+CLD-0004,/latest/meta-data/iam/security-credentials,GET,200,AccessKeyId,Critical,Cloud,AWS IAM Creds,EC2 IAM credentials.,Critical: Use IMDSv2 immediately.,true
+CLD-0005,/latest/meta-data/iam/security-credentials/role-name,GET,200,SecretAccessKey,Critical,Cloud,AWS Role Creds,Specific role credentials.,Rotate credentials now.,true
+CLD-0006,/latest/meta-data/public-keys,GET,200,openssh-key,Critical,Cloud,AWS Public Keys,Instance public keys.,Secure metadata access.,true
+CLD-0007,/latest/meta-data/public-keys/0/openssh-key,GET,200,ssh-rsa,Critical,Cloud,AWS SSH Key,SSH public key.,Secure key metadata.,true
+CLD-0008,/latest/meta-data/hostname,GET,200,hostname,Medium,Cloud,AWS Hostname,Instance hostname.,Limit metadata access.,false
+CLD-0009,/latest/meta-data/local-hostname,GET,200,local-hostname,Medium,Cloud,AWS Local Hostname,Local hostname.,Limit metadata access.,false
+CLD-0010,/latest/meta-data/local-ipv4,GET,200,10.,Medium,Cloud,AWS Local IP,Local IPv4 address.,Secure metadata.,false
+CLD-0011,/latest/meta-data/public-hostname,GET,200,ec2,Medium,Cloud,AWS Public Hostname,Public hostname.,Limit metadata.,false
+CLD-0012,/latest/meta-data/public-ipv4,GET,200,public-ip,Medium,Cloud,AWS Public IP,Public IPv4 address.,Secure metadata.,false
+CLD-0013,/latest/meta-data/mac,GET,200,mac,Medium,Cloud,AWS MAC Address,MAC address info.,Limit metadata.,false
+CLD-0014,/latest/meta-data/network/interfaces/macs,GET,200,macs,Critical,Cloud,AWS Network MACs,Network interface MACs.,Secure metadata.,false
+CLD-0015,/latest/meta-data/placement/availability-zone,GET,200,availability-zone,Medium,Cloud,AWS AZ,Availability zone info.,Limit metadata.,false
+CLD-0016,/latest/meta-data/placement/region,GET,200,region,Medium,Cloud,AWS Region,AWS region info.,Secure metadata.,false
+CLD-0017,/latest/meta-data/instance-id,GET,200,i-,Medium,Cloud,AWS Instance ID,EC2 instance ID.,Limit metadata.,false
+CLD-0018,/latest/meta-data/instance-type,GET,200,t3.,Medium,Cloud,AWS Instance Type,Instance type info.,Limit metadata.,false
+CLD-0019,/latest/meta-data/ami-id,GET,200,ami-,Medium,Cloud,AWS AMI ID,AMI identifier.,Secure metadata.,false
+CLD-0020,/latest/meta-data/block-device-mapping,GET,200,block-device-mapping,Medium,Cloud,AWS Block Devices,Block device mapping.,Limit metadata.,false
+CLD-0021,/latest/meta-data/metrics/vhostmd,GET,200,vhostmd,Medium,Cloud,AWS Metrics,Instance metrics.,Secure metrics.,false
+CLD-0022,/latest/meta-data/services/domain,GET,200,amazonaws.com,Low,Cloud,AWS Domain,AWS service domain.,Low risk.,false
+CLD-0023,/latest/meta-data/services/partition,GET,200,aws,Low,Cloud,AWS Partition,AWS partition info.,Low risk.,false
+CLD-0024,/latest/api/token,PUT,200,token,Critical,Cloud,AWS IMDSv2 Token,IMDSv2 token endpoint.,Enable IMDSv2 only.,false
+CLD-0025,/.aws/config,GET,200,region,Critical,Cloud,AWS Config,AWS CLI configuration.,Remove from web root.,true
+CLD-0026,/.aws/credentials,GET,200,aws_access_key_id,Critical,Cloud,AWS Credentials,AWS credentials file.,Critical: Remove immediately.,true
+CLD-0027,/aws/config,GET,200,region,Critical,Cloud,AWS Config Alt,AWS config alternate path.,Remove config files.,true
+CLD-0028,/aws/credentials,GET,200,aws_secret_access_key,Critical,Cloud,AWS Creds Alt,AWS credentials alt path.,Critical: Secure immediately.,true
+CLD-0029,/s3cmd.ini,GET,200,access_key,Critical,Cloud,S3cmd Config,S3cmd configuration.,Remove config.,true
+CLD-0030,/.s3cfg,GET,200,access_key,Critical,Cloud,S3cfg File,S3cfg configuration.,Remove from web.,true
+CLD-0031,/s3/config.ini,GET,200,aws_access_key_id,Critical,Cloud,S3 Config,S3 configuration file.,Secure S3 config.,true
+CLD-0032,/s3_credentials.json,GET,200,accessKeyId,Critical,Cloud,S3 Credentials,S3 credentials JSON.,Remove credentials.,true
+CLD-0033,/boto.cfg,GET,200,aws_access_key_id,Critical,Cloud,Boto Config,Boto configuration.,Remove boto config.,true
+CLD-0034,/ boto.config,GET,200,credentials,Critical,Cloud,Boto Config Alt,Boto alt config.,Remove config.,true
+CLD-0035,/credentials/aws,GET,200,secret,Critical,Cloud,AWS Creds Path,AWS credentials path.,Secure credentials.,true
+CLD-0036,/config/aws.yml,GET,200,aws_secret,Critical,Cloud,AWS YAML Config,AWS YAML configuration.,Encrypt credentials.,true
+CLD-0037,/config/aws.json,GET,200,accessKey,Critical,Cloud,AWS JSON Config,AWS JSON configuration.,Remove secrets.,true
+CLD-0038,/etc/aws/credentials,GET,200,aws_access_key_id,Critical,Cloud,Etc AWS Creds,System AWS credentials.,Secure system files.,true
+CLD-0039,/root/.aws/credentials,GET,200,aws_secret_access_key,Critical,Cloud,Root AWS Creds,Root AWS credentials.,Critical: Secure root.,true
+CLD-0040,/home/ubuntu/.aws/credentials,GET,200,aws_access_key_id,Critical,Cloud,Ubuntu AWS Creds,Ubuntu user AWS credentials.,Secure user creds.,true
+CLD-0041,/home/ec2-user/.aws/credentials,GET,200,aws_secret_access_key,Critical,Cloud,EC2 AWS Creds,EC2 user credentials.,Secure EC2 user.,true
+CLD-0042,/var/www/.aws/credentials,GET,200,aws_access_key_id,Critical,Cloud,WWW AWS Creds,Web server AWS credentials.,Remove from web.,true
+CLD-0043,/opt/aws/credentials,GET,200,aws_secret_access_key,Critical,Cloud,Opt AWS Creds,Opt directory AWS credentials.,Secure opt files.,true
+CLD-0044,/tmp/aws/credentials,GET,200,aws_access_key_id,Critical,Cloud,Tmp AWS Creds,Temp AWS credentials.,Remove temp files.,true
+CLD-0045,/backup/aws/credentials,GET,200,aws_secret_access_key,Critical,Cloud,Backup AWS Creds,Backup AWS credentials.,Secure backups.,true
+CLD-0046,/metadata.google.internal/computeMetadata/v1,GET,200,project,Critical,Cloud,GCP Metadata,GCP metadata service.,Require metadata headers.,false
+CLD-0047,/computeMetadata/v1,GET,200,instance,Critical,Cloud,GCP Meta Alt,GCP metadata alternate.,Require headers.,false
+CLD-0048,/computeMetadata/v1/instance/service-accounts,GET,200,email,Critical,Cloud,GCP Service Accounts,GCP service accounts.,Secure metadata.,false
+CLD-0049,/computeMetadata/v1/instance/service-accounts/default/token,GET,200,access_token,Critical,Cloud,GCP Access Token,GCP access token.,Critical: Secure immediately.,true
+CLD-0050,/computeMetadata/v1/project/project-id,GET,200,project-id,Medium,Cloud,GCP Project ID,GCP project identifier.,Limit metadata.,false
+CLD-0051,/computeMetadata/v1/instance/hostname,GET,200,hostname,Medium,Cloud,GCP Hostname,Instance hostname.,Limit metadata.,false
+CLD-0052,/computeMetadata/v1/instance/zone,GET,200,zone,Medium,Cloud,GCP Zone,Instance zone.,Limit metadata.,false
+CLD-0053,/computeMetadata/v1/instance/name,GET,200,name,Medium,Cloud,GCP Name,Instance name.,Limit metadata.,false
+CLD-0054,/computeMetadata/v1/instance/network-interfaces,GET,200,network,Critical,Cloud,GCP Network,GCP network info.,Secure metadata.,false
+CLD-0055,/computeMetadata/v1/instance/disks,GET,200,disks,Medium,Cloud,GCP Disks,Disk information.,Limit metadata.,false
+CLD-0056,/computeMetadata/v1/instance/image,GET,200,image,Medium,Cloud,GCP Image,Image information.,Secure metadata.,false
+CLD-0057,/computeMetadata/v1/instance/machine-type,GET,200,machine-type,Medium,Cloud,GCP Machine Type,Machine type info.,Limit metadata.,false
+CLD-0058,/computeMetadata/v1/instance/tags,GET,200,tags,Medium,Cloud,GCP Tags,Instance tags.,Secure tags.,false
+CLD-0059,/computeMetadata/v1/instance/attributes,GET,200,attributes,Critical,Cloud,GCP Attributes,Instance attributes.,Secure attributes.,false
+CLD-0060,/.config/gcloud/credentials.db,GET,200,SQLite,Critical,Cloud,GCloud Creds,GCloud credentials DB.,Remove from web.,true
+CLD-0061,/.config/gcloud/legacy_credentials,GET,200,credentials,Critical,Cloud,GCloud Legacy,GCloud legacy creds.,Secure gcloud.,true
+CLD-0062,/.config/gcloud/access_tokens.db,GET,200,SQLite,Critical,Cloud,GCloud Tokens,GCloud tokens DB.,Remove tokens DB.,true
+CLD-0063,/config/gcloud/credentials.json,GET,200,client_id,Critical,Cloud,GCloud JSON,GCloud JSON credentials.,Secure gcloud.,true
+CLD-0064,/credentials/gcp.json,GET,200,private_key,Critical,Cloud,GCP JSON Creds,GCP service account JSON.,Critical: Remove immediately.,true
+CLD-0065,/service-account.json,GET,200,service_account,Critical,Cloud,GCP SA JSON,GCP service account file.,Remove SA files.,true
+CLD-0066,/gcp-credentials.json,GET,200,type,Critical,Cloud,GCP Creds JSON,GCP credentials alternate.,Secure credentials.,true
+CLD-0067,/google-credentials.json,GET,200,client_email,Critical,Cloud,Google Creds JSON,Google credentials.,Remove from web.,true
+CLD-0068,/appengine/config.py,GET,200,appengine,Critical,Cloud,AppEngine Config,AppEngine configuration.,Secure AppEngine.,true
+CLD-0069,/app.yaml,GET,200,application,Critical,Cloud,AppEngine YAML,AppEngine app.yaml.,Remove from production.,true
+CLD-0070,/app.yml,GET,200,runtime,Critical,Cloud,AppEngine YML,AppEngine YAML alt.,Secure AppEngine.,true
+CLD-0071,/cron.yaml,GET,200,cron,Critical,Cloud,AppEngine Cron,AppEngine cron config.,Remove cron config.,true
+CLD-0072,/dispatch.yaml,GET,200,dispatch,Critical,Cloud,AppEngine Dispatch,AppEngine dispatch.,Secure dispatch.,true
+CLD-0073,/index.yaml,GET,200,index,Critical,Cloud,AppEngine Index,AppEngine index config.,Remove index config.,true
+CLD-0074,/queue.yaml,GET,200,queue,Critical,Cloud,AppEngine Queue,AppEngine queue config.,Secure queue config.,true
+CLD-0075,/169.254.169.254/metadata/v1,GET,200,id,Critical,Cloud,DigitalOcean Meta,DO metadata service.,Secure metadata.,false
+CLD-0076,/metadata/v1.json,GET,200,droplet_id,Critical,Cloud,DO Meta JSON,DO metadata JSON.,Secure DO metadata.,false
+CLD-0077,/metadata/v1/id,GET,200,droplet-id,Medium,Cloud,DO ID,DO droplet ID.,Limit metadata.,false
+CLD-0078,/metadata/v1/hostname,GET,200,hostname,Medium,Cloud,DO Hostname,DO hostname.,Limit metadata.,false
+CLD-0079,/metadata/v1/user-data,GET,200,user-data,Critical,Cloud,DO User Data,DO user data.,Critical: Encrypt data.,true
+CLD-0080,/metadata/v1/vendor-data,GET,200,vendor-data,Medium,Cloud,DO Vendor Data,DO vendor data.,Secure metadata.,false
+CLD-0081,/metadata/v1/public-keys,GET,200,ssh-rsa,Critical,Cloud,DO SSH Keys,DO public keys.,Secure keys.,true
+CLD-0082,/metadata/v1/region,GET,200,region,Medium,Cloud,DO Region,DO region info.,Limit metadata.,false
+CLD-0083,/metadata/v1/dns,GET,200,dns,Medium,Cloud,DO DNS,DO DNS info.,Secure metadata.,false
+CLD-0084,/metadata/v1/interfaces,GET,200,interfaces,Critical,Cloud,DO Interfaces,DO network interfaces.,Secure metadata.,false
+CLD-0085,/metadata/v1/floating_ip,GET,200,floating_ip,Medium,Cloud,DO Floating IP,DO floating IP.,Limit metadata.,false
+CLD-0086,/metadata/v1/tags,GET,200,tags,Medium,Cloud,DO Tags,DO droplet tags.,Secure metadata.,false
+CLD-0087,/metadata/v1/features,GET,200,features,Medium,Cloud,DO Features,DO droplet features.,Limit metadata.,false
+CLD-0088,/metadata/azure,GET,200,compute,Critical,Cloud,Azure Metadata,Azure metadata endpoint.,Secure metadata.,false
+CLD-0089,/metadata/instance/compute,GET,200,azEnvironment,Critical,Cloud,Azure Compute,Azure compute metadata.,Require metadata headers.,false
+CLD-0090,/metadata/instance/network,GET,200,interface,Critical,Cloud,Azure Network,Azure network metadata.,Secure metadata.,false
+CLD-0091,/metadata/identity/oauth2/token,GET,200,access_token,Critical,Cloud,Azure Token,Azure access token.,Critical: Secure token.,true
+CLD-0092,/metadata/attested/document,GET,200,signature,Critical,Cloud,Azure Attested,Azure attested document.,Secure attestation.,true
+CLD-0093,/metadata/instance/scheduledevents,GET,200,DocumentIncarnation,Critical,Cloud,Azure Events,Azure scheduled events.,Secure events.,false
+CLD-0094,/.azure/credentials,GET,200,clientId,Critical,Cloud,Azure Creds,Azure credentials file.,Remove from web.,true
+CLD-0095,/.azure/accessTokens.json,GET,200,token,Critical,Cloud,Azure Tokens,Azure tokens file.,Secure tokens.,true
+CLD-0096,/azure/credentials.json,GET,200,servicePrincipal,Critical,Cloud,Azure Creds JSON,Azure credentials JSON.,Critical: Remove.,true
+CLD-0097,/config/azure.yml,GET,200,azure,Critical,Cloud,Azure YAML,Azure YAML config.,Encrypt secrets.,true
+CLD-0098,/spn.json,GET,200,appId,Critical,Cloud,Azure SPN,Azure service principal.,Remove SPN files.,true
+CLD-0099,/arm-template.json,GET,200,resources,Critical,Cloud,ARM Template,Azure ARM template.,Secure templates.,true
+CLD-0100,/azuredeploy.json,GET,200,parameters,Critical,Cloud,Azure Deploy,Azure deployment template.,Remove templates.,true

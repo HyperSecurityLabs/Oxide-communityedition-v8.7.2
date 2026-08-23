@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - DATABASES & INFRASTRUCTURE SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+DBI-0001,/phpmyadmin,GET,200,phpMyAdmin,Critical,Databases,phpMyAdmin,MySQL management tool.,Secure or remove PMA.,false
+DBI-0002,/phpMyAdmin,GET,200,phpMyAdmin,Critical,Databases,phpMyAdmin Alt,Alternative PMA path.,Remove PMA.,false
+DBI-0003,/pma,GET,200,phpMyAdmin,Critical,Databases,PMA Shortcut,PMA shortcut path.,Remove PMA.,false
+DBI-0004,/myadmin,GET,200,phpMyAdmin,Critical,Databases,MyAdmin,MyAdmin path.,Remove PMA.,false
+DBI-0005,/mysqladmin,GET,200,MySQL,Critical,Databases,MySQL Admin,MySQL admin tool.,Secure admin tool.,false
+DBI-0006,/mysql-admin,GET,200,MySQL,Critical,Databases,MySQL Admin Alt,MySQL admin alternate.,Secure admin.,false
+DBI-0007,/adminer,GET,200,Adminer,Critical,Databases,Adminer,Database management tool.,Secure Adminer.,false
+DBI-0008,/adminer.php,GET,200,Adminer,Critical,Databases,Adminer PHP,Adminer PHP file.,Remove Adminer.,false
+DBI-0009,/dbadmin,GET,200,dbadmin,Critical,Databases,DB Admin,Database admin panel.,Secure DB admin.,false
+DBI-0010,/databaseadmin,GET,200,database,Critical,Databases,Database Admin,Database admin interface.,Secure interface.,false
+DBI-0011,/pgadmin,GET,200,pgAdmin,Critical,Databases,pgAdmin,PostgreSQL admin tool.,Secure pgAdmin.,false
+DBI-0012,/pgadmin4,GET,200,pgAdmin,Critical,Databases,pgAdmin4,pgAdmin4 interface.,Secure pgAdmin4.,false
+DBI-0013,/phppgadmin,GET,200,phpPgAdmin,Critical,Databases,phpPgAdmin,PostgreSQL web admin.,Secure or remove.,false
+DBI-0014,/mongo-express,GET,200,Mongo Express,Critical,Databases,Mongo Express,MongoDB web admin.,Remove immediately.,false
+DBI-0015,/mongodb,GET,200,MongoDB,Critical,Databases,MongoDB Interface,MongoDB web interface.,Secure MongoDB.,false
+DBI-0016,/mongo,GET,200,mongo,Critical,Databases,Mongo Interface,Mongo web interface.,Remove interface.,false
+DBI-0017,/rockmongo,GET,200,RockMongo,Critical,Databases,RockMongo,MongoDB admin tool.,Secure RockMongo.,false
+DBI-0018,/admin/mongo,GET,200,mongo,Critical,Databases,Mongo Admin,Mongo admin panel.,Secure panel.,false
+DBI-0019,/redis,GET,200,redis,Critical,Databases,Redis Interface,Redis web interface.,Secure Redis web.,false
+DBI-0020,/phpredisadmin,GET,200,Redis,Critical,Databases,phpRedisAdmin,Redis admin tool.,Remove or secure.,false
+DBI-0021,/elasticsearch,GET,200,elasticsearch,Critical,Databases,Elasticsearch,ES cluster info.,Secure Elasticsearch.,false
+DBI-0022,/es,GET,200,cluster_name,Critical,Databases,ES Short,ES short path.,Secure ES.,false
+DBI-0023,/kibana,GET,200,kibana,Critical,Databases,Kibana,Kibana dashboard.,Secure Kibana.,false
+DBI-0024,/app/kibana,GET,200,kibana,Critical,Databases,Kibana App,Kibana app path.,Secure Kibana.,false
+DBI-0025,/couchdb,GET,200,couchdb,Critical,Databases,CouchDB,CouchDB interface.,Secure CouchDB.,false
+DBI-0026,/_utils,GET,200,fauxton,Critical,Databases,CouchDB Fauxton,CouchDB admin.,Secure Fauxton.,false
+DBI-0027,/cassandra,GET,200,cassandra,Critical,Databases,Cassandra,Cassandra interface.,Secure Cassandra.,false
+DBI-0028,/neo4j,GET,200,neo4j,Critical,Databases,Neo4j,Neo4j browser.,Secure Neo4j.,false
+DBI-0029,/browser,GET,200,neo4j,Critical,Databases,Neo4j Browser,Neo4j web browser.,Remove from web.,false
+DBI-0030,/influxdb,GET,200,influxdb,Critical,Databases,InfluxDB,InfluxDB interface.,Secure InfluxDB.,false
+DBI-0031,/chronograf,GET,200,chronograf,Critical,Databases,Chronograf,InfluxDB dashboard.,Secure Chronograf.,false
+DBI-0032,/prometheus,GET,200,prometheus,Critical,Databases,Prometheus,Prometheus dashboard.,Secure Prometheus.,false
+DBI-0033,/prometheus/graph,GET,200,graph,Critical,Databases,Prometheus Graph,Prometheus graph.,Secure access.,false
+DBI-0034,/alertmanager,GET,200,alertmanager,Critical,Databases,Alertmanager,Prometheus alerts.,Secure Alertmanager.,false
+DBI-0035,/grafana,GET,200,grafana,Critical,Databases,Grafana,Grafana dashboard.,Secure Grafana.,false
+DBI-0036,/grafana/login,GET,200,login,Critical,Databases,Grafana Login,Grafana login page.,Change default creds.,false
+DBI-0037,/graphite,GET,200,graphite,Critical,Databases,Graphite,Graphite dashboard.,Secure Graphite.,false
+DBI-0038,/composum,GET,200,composum,Critical,Databases,Composum,Composum console.,Secure Composum.,false
+DBI-0039,/solr,GET,200,Apache Solr,Critical,Databases,Apache Solr,Solr admin interface.,Secure Solr.,false
+DBI-0040,/solr/admin,GET,200,admin,Critical,Databases,Solr Admin,Solr admin panel.,Secure admin panel.,false
+DBI-0041,/solr/select,GET,200,response,Critical,Databases,Solr Select,Solr query endpoint.,Secure Solr query.,false
+DBI-0042,/api/solr,GET,200,solr,Critical,Databases,Solr API,Solr API endpoint.,Secure Solr API.,false
+DBI-0043,/nifi,GET,200,NiFi,Critical,Databases,Apache NiFi,NiFi data flow.,Secure NiFi.,false
+DBI-0044,/datadog,GET,200,datadog,Critical,Databases,Datadog,Datadog dashboard.,Secure Datadog.,false
+DBI-0045,/newrelic,GET,200,newrelic,Critical,Databases,New Relic,New Relic dashboard.,Secure New Relic.,false
+DBI-0046,/splunk,GET,200,splunk,Critical,Databases,Splunk,Splunk interface.,Secure Splunk.,false
+DBI-0047,/en-US/account/login,GET,200,splunk,Critical,Databases,Splunk Login,Splunk login page.,Secure login.,false
+DBI-0048,/appsearch,GET,200,search,Critical,Databases,App Search,Enterprise search.,Secure search.,false
+DBI-0049,/enterprise,GET,200,enterprise,Critical,Databases,Enterprise,Splunk enterprise.,Secure enterprise.,false
+DBI-0050,/nagios,GET,200,nagios,Critical,Databases,Nagios,Nagios monitoring.,Secure Nagios.,false
+DBI-0051,/nagiosxi,GET,200,nagiosxi,Critical,Databases,Nagios XI,Nagios XI panel.,Secure Nagios XI.,false
+DBI-0052,/cacti,GET,200,cacti,Critical,Databases,Cacti,Cacti monitoring.,Secure Cacti.,false
+DBI-0053,/zabbix,GET,200,zabbix,Critical,Databases,Zabbix,Zabbix monitoring.,Secure Zabbix.,false
+DBI-0054,/zabbix/api_jsonrpc.php,POST,200,jsonrpc,Critical,Databases,Zabbix API,Zabbix JSON-RPC API.,Secure Zabbix API.,false
+DBI-0055,/icinga,GET,200,icinga,Critical,Databases,Icinga,Icinga monitoring.,Secure Icinga.,false
+DBI-0056,/icingaweb2,GET,200,icingaweb,Critical,Databases,IcingaWeb2,Icinga web 2.,Secure IcingaWeb.,false
+DBI-0057,/ centreon,GET,200,centreon,Critical,Databases,Centreon,Centreon monitoring.,Secure Centreon.,false
+DBI-0058,/munin,GET,200,munin,Critical,Databases,Munin,Munin monitoring.,Secure Munin.,false
+DBI-0059,/opennms,GET,200,opennms,Critical,Databases,OpenNMS,OpenNMS monitoring.,Secure OpenNMS.,false
+DBI-0060,/librenms,GET,200,librenms,Critical,Databases,LibreNMS,LibreNMS monitoring.,Secure LibreNMS.,false
+DBI-0061,/ Observium,GET,200,Observium,Critical,Databases,Observium,Observium monitoring.,Secure Observium.,false
+DBI-0062,/check_mk,GET,200,check_mk,Critical,Databases,Check_MK,Check_MK monitoring.,Secure Check_MK.,false
+DBI-0063,/netdata,GET,200,netdata,Critical,Databases,Netdata,Netdata monitoring.,Secure Netdata.,false
+DBI-0064,/app/netdata,GET,200,netdata,Critical,Databases,Netdata App,Netdata app path.,Secure Netdata.,false
+DBI-0065,/status,GET,200,Active connections,Critical,Databases,Nginx Status,Nginx status page.,Secure status.,false
+DBI-0066,/server-status,GET,200,Apache Status,Critical,Databases,Apache Status,Apache server status.,Restrict access.,false
+DBI-0067,/balancer-manager,GET,200,LoadBalancer,Critical,Databases,Load Balancer Manager,Apache load balancer.,Secure manager.,false
+DBI-0068,/proxy,GET,200,proxy,Critical,Databases,Proxy,Proxy interface.,Secure proxy.,false
+DBI-0069,/haproxy,GET,200,haproxy,Critical,Databases,HAProxy Stats,HAProxy statistics.,Secure HAProxy.,false
+DBI-0070,/haproxy-stats,GET,200,statistics,Critical,Databases,HAProxy Stats Alt,HAProxy stats alt.,Secure stats.,false
+DBI-0071,/stats,GET,200,HAProxy,Critical,Databases,Stats,HAProxy stats short.,Secure stats.,false
+DBI-0072,/admin,GET,200,HAProxy,Critical,Databases,HAProxy Admin,HAProxy admin.,Secure admin.,false
+DBI-0073,/traefik,GET,200,traefik,Critical,Databases,Traefik,Traefik dashboard.,Secure Traefik.,false
+DBI-0074,/traefik/dashboard,GET,200,dashboard,Critical,Databases,Traefik Dashboard,Traefik dashboard UI.,Remove from prod.,false
+DBI-0075,/api/providers,GET,200,providers,Critical,Databases,Traefik API,Traefik API.,Secure Traefik API.,false
+DBI-0076,/kong,GET,200,kong,Critical,Databases,Kong,Kong admin API.,Secure Kong.,false
+DBI-0077,/kong/admin,GET,200,admin,Critical,Databases,Kong Admin,Kong admin panel.,Secure admin panel.,false
+DBI-0078,/admin-api,GET,200,kong,Critical,Databases,Kong Admin API,Kong API endpoint.,Secure API.,false
+DBI-0079,/consul,GET,200,consul,Critical,Databases,Consul,Consul UI.,Secure Consul.,false
+DBI-0080,/consul/ui,GET,200,consul,Critical,Databases,Consul UI Path,Consul UI path.,Secure Consul UI.,false
+DBI-0081,/v1/status/leader,GET,200,leader,Critical,Databases,Consul Leader,Consul leader status.,Secure Consul API.,false
+DBI-0082,/v1/catalog/nodes,GET,200,nodes,Critical,Databases,Consul Nodes,Consul nodes list.,Secure Consul.,false
+DBI-0083,/v1/catalog/services,GET,200,services,Critical,Databases,Consul Services,Consul services.,Secure services.,false
+DBI-0084,/vault,GET,200,vault,Critical,Databases,Vault,HashiCorp Vault.,Secure Vault.,false
+DBI-0085,/ui/vault,GET,200,vault,Critical,Databases,Vault UI,Vault UI path.,Secure Vault UI.,false
+DBI-0086,/v1/sys/seal-status,GET,200,sealed,Critical,Databases,Vault Seal,Vault seal status.,Secure Vault API.,false
+DBI-0087,/v1/sys/health,GET,200,initialized,Critical,Databases,Vault Health,Vault health.,Secure health endpoint.,false
+DBI-0088,/nomad,GET,200,nomad,Critical,Databases,Nomad,HashiCorp Nomad.,Secure Nomad.,false
+DBI-0089,/nomad/ui,GET,200,nomad,Critical,Databases,Nomad UI,Nomad UI.,Secure Nomad UI.,false
+DBI-0090,/v1/status/leader,GET,200,leader,Critical,Databases,Nomad Leader,Nomad leader.,Secure Nomad API.,false
+DBI-0091,/v1/jobs,GET,200,jobs,Critical,Databases,Nomad Jobs,Nomad jobs list.,Secure jobs.,false
+DBI-0092,/v1/nodes,GET,200,nodes,Critical,Databases,Nomad Nodes,Nomad nodes.,Secure nodes.,false
+DBI-0093,/rabbitmq,GET,200,rabbitmq,Critical,Databases,RabbitMQ,RabbitMQ management.,Secure RabbitMQ.,false
+DBI-0094,/rabbitmq/api,GET,200,rabbitmq,Critical,Databases,RabbitMQ API,RabbitMQ API.,Secure API.,false
+DBI-0095,/api/overview,GET,200,message_stats,Critical,Databases,RabbitMQ Overview,RabbitMQ overview.,Secure overview.,false
+DBI-0096,/api/connections,GET,200,connections,Critical,Databases,RabbitMQ Connections,Connections list.,Secure connections.,false
+DBI-0097,/api/channels,GET,200,channels,Critical,Databases,RabbitMQ Channels,Channels list.,Secure channels.,false
+DBI-0098,/api/queues,GET,200,queues,Critical,Databases,RabbitMQ Queues,Queues list.,Secure queues.,false
+DBI-0099,/api/exchanges,GET,200,exchanges,Critical,Databases,RabbitMQ Exchanges,Exchanges list.,Secure exchanges.,false
+DBI-0100,/api/users,GET,200,users,Critical,Databases,RabbitMQ Users,Users list.,Secure users.,false

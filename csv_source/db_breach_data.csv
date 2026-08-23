@@ -1,0 +1,110 @@
+# HyperSecurity_offensivelabs - PROFESSIONAL SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# This database contains REAL vulnerability tests for authorized security assessments only
+# Unauthorized access or use is strictly prohibited
+#
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+# Total Records: 100 (Breach & Data Leak Vectors)
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+BR-0001,/.git/config,GET,200,repository,Critical,Breach,Git Config Exposure,.git/config exposes remote origin URLs with embedded credentials.,Remove .git directories from production web root.
+BR-0002,/.git/HEAD,GET,200,ref,Critical,Breach,Git HEAD Leak,.git/HEAD reveals current branch and confirms git exposure.,Block .git paths in web server config.
+BR-0003,/.git/index,GET,200,DIRC,Critical,Breach,Git Index Download,.git/index downloads entire staging area metadata.,Deny access to .git/* paths.
+BR-0004,/.git/packed-refs,GET,200,ref,Critical,Breach,Git Packed Refs,packed-refs exposes all branch and tag references.,Restrict .git directory access.
+BR-0005,/.git/logs/HEAD,GET,200,commit,Critical,Breach,Git Log Leak,Git logs reveal commit history author names and emails.,Remove git metadata from production.
+BR-0006,/.svn/entries,GET,200,svn,Critical,Breach,SVN Entries Leak,Subversion entries file reveals repository structure and revision info.,Remove .svn directories from web root.
+BR-0007,/.svn/wc.db,GET,200,repository,Critical,Breach,SVN WC DB Leak,SVN working copy database leaks entire project structure.,Delete .svn folders from deployment.
+BR-0008,/.hg/store/00manifest.i,GET,200,manifest,Critical,Breach,Mercurial Manifest Leak,Mercurial store manifest reveals repository file listings.,Remove .hg directories from production.
+BR-0009,/server-status,GET,200,Server,Medium,Breach,Apache Server Status,Apache server-status shows active connections and request details.,Restrict server-status to localhost.
+BR-0010,/server-info,GET,200,Server,Medium,Breach,Apache Server Info,Apache server-info reveals module configuration and directives.,Disable mod_info in production.
+BR-0011,/phpinfo.php,GET,200,PHP Credits,Critical,Breach,PHP Info Exposure,phpinfo() dumps all PHP configuration environment and headers.,Remove phpinfo files from production.
+BR-0012,/info.php,GET,200,PHP Version,Critical,Breach,PHP Info Leak,info.php exposes PHP configuration including database credentials.,Delete info.php from document root.
+BR-0013,/test.php,GET,200,PHP,Medium,Breach,PHP Test Script,Default PHP test script may reveal server information.,Remove test scripts from production.
+BR-0014,/wp-config.php.bak,GET,200,DB_NAME,Critical,Breach,WordPress Config Backup,Backup of wp-config.php exposes database credentials.,Store backups outside web root.
+BR-0015,/wp-config.php~,GET,200,DB_NAME,Critical,Breach,WordPress Config Copy,Editor backup of wp-config.php contains database passwords.,Prevent editor backups in web root.
+BR-0016,/wp-config.php.save,GET,200,DB_NAME,Critical,Breach,WordPress Config Save,Save file of wp-config exposes database credentials.,Remove save copies after editing.
+BR-0017,/.env,GET,200,APP_KEY,Critical,Breach,Environment File Exposure,.env file exposes database credentials API keys and secrets.,Move .env outside document root.
+BR-0018,/.env.local,GET,200,APP_KEY,Critical,Breach,Local Env Exposure,.env.local overrides production settings with debug credentials.,Exclude .env* from web root.
+BR-0019,/.env.production,GET,200,APP_KEY,Critical,Breach,Production Env Leak,.env.production exposes live credentials and tokens.,Never store .env in web-accessible directory.
+BR-0020,/.env.backup,GET,200,APP_KEY,Critical,Breach,Env Backup Leak,.env.backup contains plaintext secrets and API tokens.,Store environment backups in secure storage.
+BR-0021,/config/database.yml,GET,200,production,Critical,Breach,Rails Database Config,Rails database.yml exposes production DB credentials.,Restrict config directory access.
+BR-0022,/config/secrets.yml,GET,200,secret_key,Critical,Breach,Rails Secrets Leak,Rails secrets.yml exposes secret_key_base for session signing.,Move secrets to environment variables.
+BR-0023,/config/credentials.yml.enc,GET,200,key,Critical,Breach,Rails Credentials Leak,Rails credentials encrypted file is downloadable.,Store credentials outside public path.
+BR-0024,/app/config/parameters.yml,GET,200,database,Critical,Breach,Symfony Parameters Leak,Symfony parameters.yml exposes database credentials.,Move parameters.yml outside web root.
+BR-0025,/app/etc/env.php,GET,200,db,Critical,Breach,Magento Env Leak,Magento env.php exposes database and cache credentials.,Restrict app/etc/ directory.
+BR-0026,/configuration.php,GET,200,host,Critical,Breach,Joomla Config Leak,Joomla configuration.php reveals database credentials.,Move configuration.php outside public html.
+BR-0027,/sites/default/settings.php,GET,200,database,Critical,Breach,Drupal Settings Exposed,Drupal settings.php reveals database credentials and salt.,Protect sites/default directory.
+BR-0028,/sites/default/default.settings.php,GET,200,database,Critical,Breach,Drupal Default Settings,Drupal default.settings.php can reveal configuration patterns.,Remove default settings files after install.
+BR-0029,/storage/logs/laravel.log,GET,200,stack,Critical,Breach,Laravel Log Exposure,Laravel logs contain SQL queries with bound parameters.,Store logs outside public directory.
+BR-0030,/storage/logs/laravel-*.log,GET,200,DEBUG,Critical,Breach,Laravel Debug Log,Laravel debug logs contain stack traces with env values.,Disable APP_DEBUG in production.
+BR-0031,/var/log/syslog,GET,200,CRON,Critical,Breach,System Log Exposure,System logs contain authentication attempts and errors.,Restrict log file access.
+BR-0032,/var/log/auth.log,GET,200,Failed,Critical,Breach,Auth Log Leak,System auth logs contain failed login IPs and usernames.,Protect auth logs from web access.
+BR-0033,/var/log/apache2/access.log,GET,200,GET,Critical,Breach,Apache Access Log Leak,Apache access logs reveal query parameters and tokens.,Store logs outside document root.
+BR-0034,/var/log/apache2/error.log,GET,200,Error,Critical,Breach,Apache Error Log Leak,Apache error logs may contain script paths and stack traces.,Move Apache logs to non-web directory.
+BR-0035,/var/log/nginx/access.log,GET,200,GET,Critical,Breach,Nginx Access Log Leak,Nginx access logs expose URL parameters including auth tokens.,Store Nginx logs outside web root.
+BR-0036,/var/log/nginx/error.log,GET,200,Error,Critical,Breach,Nginx Error Log Leak,Nginx error logs may reveal application paths and config.,Secure Nginx log directory.
+BR-0037,/var/log/mysql/error.log,GET,200,Error,Critical,Breach,MySQL Error Log Leak,MySQL error logs contain query errors and potential data.,Restrict MySQL log access.
+BR-0038,/var/log/mysql/mysql-slow.log,GET,200,Query_time,Critical,Breach,MySQL Slow Query Log,Slow query log reveals database queries with parameters.,Store database logs outside web root.
+BR-0039,/dump.sql,GET,200,INSERT,Critical,Breach,Database Dump Exposure,Full database dump contains all tables including user credentials.,Never store database dumps in web root.
+BR-0040,/db.sql,GET,200,CREATE,Critical,Breach,DB Dump Leak,Database SQL dump contains table structures and data.,Store backups in secure offsite location.
+BR-0041,/database.sql,GET,200,INSERT,Critical,Breach,Database SQL Export,SQL export of database may include password hashes.,Use encrypted backups stored externally.
+BR-0042,/backup.sql,GET,200,INSERT,Critical,Breach,Backup SQL File,Backup SQL file contains complete database with PII.,Encrypt and secure database backups.
+BR-0043,/mysqldump.sql,GET,200,INSERT,Critical,Breach,MySQL Dump Exposure,MySQL dump contains user tables with credential hashes.,Automate secure backup deletion.
+BR-0044,/pgdump.sql,GET,200,INSERT,Critical,Breach,PostgreSQL Dump,PostgreSQL dump reveals schema and table contents.,Use pg_dump with encrypted output.
+BR-0045,/mongo/dump.bson,GET,200,BSON,Critical,Breach,MongoDB BSON Dump,MongoDB BSON dump contains all collections and documents.,Secure database export files.
+BR-0046,/data/dump.json,GET,200,email,Critical,Breach,JSON Data Dump,JSON data dump contains user PII and credentials.,Never export data to world-readable locations.
+BR-0047,/export/users.csv,GET,200,email,Critical,Breach,User Export CSV,CSV export of users exposes emails names and roles.,Authenticate and audit all data exports.
+BR-0048,/customers.csv,GET,200,email,Critical,Breach,Customer Data Dump,Customer CSV export contains address phone and order history.,Require admin approval for data exports.
+BR-0049,/orders.json,GET,200,customer,Critical,Breach,Order Data Leak,Order data export reveals customer purchase history.,Mask PII in order exports.
+BR-0050,/api/logs/error,GET,200,stack,High,Breach,API Error Log API,Error logging API stores stack traces with query data.,Sanitize error logs before storage.
+BR-0051,/api/logs/debug,GET,200,DEBUG,High,Breach,Debug Log Endpoint,Debug log endpoint reveals application internals.,Disable debug logging in production.
+BR-0052,/api/logs/access,GET,200,ip,High,Breach,Access Log API,Access log API exposes IPs user agents and paths.,Restrict log API access to internal.
+BR-0053,/api/logs/audit,GET,200,user,High,Breach,Audit Log API,Audit log API reveals user actions and timestamps.,Rate-limit and authenticate audit access.
+BR-0054,/api/logs/performance,GET,200,response_time,High,Breach,Performance Log API,Performance logs reveal slow endpoints and query times.,Aggregate perf data without identifying info.
+BR-0055,/api/v1/export/pii,GET,200,email,High,Breach,PII Export Endpoint,PII export endpoint leaks personally identifiable information.,Implement strict PII access controls.
+BR-0056,/api/v1/export/contacts,GET,200,email,High,Breach,Contact Export API,Contact export reveals user address books.,Rate-limit contact exports per user.
+BR-0057,/api/v1/export/messages,GET,200,content,High,Breach,Message Export API,Message export reveals private conversation content.,Encrypt message exports end-to-end.
+BR-0058,/api/v1/export/payments,GET,200,card,High,Breach,Payment Export API,Payment export leaks card tokens and transaction history.,Mask payment method details in exports.
+BR-0059,/api/v1/export/addresses,GET,200,street,High,Breach,Address Export API,Address export reveals customer physical locations.,Require business justification for address exports.
+BR-0060,/api/v1/export/phones,GET,200,phone,High,Breach,Phone Export API,Phone number export enables mass contact harvesting.,Two-factor auth for phone exports.
+BR-0061,/api/v1/users/batch,GET,200,email,High,Breach,Batch User API,Batch user endpoint returns user profiles in bulk.,Limit batch size and require admin scope.
+BR-0062,/api/v1/users/enum,GET,200,exists,High,Breach,User Enumeration API,User enumeration via email existence check allows data gathering.,Return consistent response for existing and non-existing users.
+BR-0063,/api/v1/users/search,GET,200,email,High,Breach,User Search Leak,User search reveals registered users and profile info.,Restrict search to authenticated users only.
+BR-0064,/api/v1/users/emails,GET,200,@,High,Breach,Email Harvesting API,Email list endpoint enables bulk email harvesting.,Never expose email lists via API.
+BR-0065,/api/v1/users/export,GET,200,csv,High,Breach,User CSV Export,User CSV export contains all profile fields.,Audit and limit user data exports.
+BR-0066,/api/v1/admin/users,GET,200,email,High,Breach,Admin User Listing,Admin user list reveals all registered accounts.,Require elevated role for user listing.
+BR-0067,/api/v1/admin/logs,GET,200,action,High,Breach,Admin Audit Log,Admin audit log exposes sensitive admin actions.,Mask sensitive fields in audit log.
+BR-0068,/api/v1/admin/config,GET,200,setting,High,Breach,Admin Config Leak,Admin config exposes feature flags and system settings.,Restrict config view to superadmin.
+BR-0069,/api/v1/admin/secrets,GET,200,key,High,Breach,Admin Secrets Leak,Admin secrets endpoint exposes API keys and tokens.,Never expose raw secrets via API.
+BR-0070,/api/v1/admin/credentials,GET,200,password,High,Breach,Admin Credentials Leak,Credential listing reveals service account passwords.,Use vault for credential management.
+BR-0071,/api/v1/admin/keys,GET,200,api_key,High,Breach,API Key Listing,API key listing exposes all application keys.,Mask API keys in list responses.
+BR-0072,/api/v1/admin/tokens,GET,200,access,High,Breach,Token Listing Leak,Token listing reveals active session tokens.,Invalidate exposed tokens immediately.
+BR-0073,/api/v1/admin/permissions,GET,200,role,High,Breach,Permission Matrix Leak,Permission matrix reveals role hierarchy and access levels.,Restrict permission view to security admin.
+BR-0074,/api/v1/admin/audit,GET,200,changed,High,Breach,Audit Trail Exposed,Audit trail reveals exactly who changed what.,Protect audit log integrity via append-only.
+BR-0075,/api/v1/analytics/users,GET,200,active,High,Breach,User Analytics Leak,User analytics reveal DAU MAU and retention metrics.,Anonymize analytics aggregations.
+BR-0076,/api/v1/analytics/revenue,GET,200,amount,High,Breach,Revenue Analytics Leak,Revenue analytics expose financial performance.,Restrict financial data access.
+BR-0077,/api/v1/analytics/conversion,GET,200,rate,High,Breach,Conversion Analytics Leak,Conversion analytics reveal business performance indicators.,Aggregate with minimum user thresholds.
+BR-0078,/api/v1/analytics/geography,GET,200,city,High,Breach,Geo Analytics Leak,Geographic analytics reveal user location distribution.,Anonymize location at city level.
+BR-0079,/api/v1/analytics/devices,GET,200,device,Medium,Breach,Device Analytics Leak,Device analytics reveal user agent and platform data.,Aggregate device data with minimum counts.
+BR-0080,/api/v1/analytics/referrers,GET,200,domain,Medium,Breach,Referrer Analytics Leak,Referrer analytics reveal business partner traffic.,Anonymize low-traffic referrers.
+BR-0081,/api/v1/analytics/events,GET,200,event,Medium,Breach,Event Analytics Leak,Event analytics expose user interaction patterns.,Rate-limit analytics API access.
+BR-0082,/api/v1/analytics/funnels,GET,200,step,High,Breach,Funnel Analytics Leak,Funnel analytics reveal conversion drop-off points.,Restrict funnel analysis to marketing team.
+BR-0083,/api/v1/analytics/cohorts,GET,200,cohort,High,Breach,Cohort Analytics Leak,Cohort analysis reveals user retention patterns.,Anonymize small cohorts.
+BR-0084,/api/v1/analytics/sessions,GET,200,session,High,Breach,Session Analytics Leak,Session analytics expose average session duration and depth.,Mask individual session data.
+BR-0085,/api/v1/analytics/pageviews,GET,200,path,Medium,Breach,Pageview Analytics Leak,Pageview analytics leak unpopular internal pages.,Minimize pageview data retention.
+BR-0086,/api/v1/analytics/exports,GET,200,csv,High,Breach,Analytics Export Leak,Analytics export contains full raw event data.,Anonymize exports by default.
+BR-0087,/api/v1/analytics/raw,GET,200,event,High,Breach,Raw Analytics Access,Raw event data access reveals individual user behavior.,Require strict justification for raw data.
+BR-0088,/api/v1/ab-testing,GET,200,variant,Medium,Breach,AB Test Exposure,AB test assignments reveal experiment details.,Hide experiment names from client.
+BR-0089,/api/v1/feature-flags,GET,200,enabled,Medium,Breach,Feature Flag Exposure,Feature flags reveal upcoming features and strategies.,Rate-limit flag polling.
+BR-0090,/api/v1/rollout,GET,200,percentage,Medium,Breach,Rollout Percentage Leak,Rollout percentages reveal feature release strategy.,Obfuscate rollout percentages.
+BR-0091,/api/v1/canary,GET,200,canary,Medium,Breach,Canary Deploy Leak,Canary deployment info reveals testing strategy.,Hide canary version headers.
+BR-0092,/api/v1/experiments,GET,200,experiment,Medium,Breach,Experiment Config Leak,Experiment configs reveal user segmentation logic.,Encrypt experiment config payloads.
+BR-0093,/api/v1/personalization,GET,200,profile,High,Breach,Personalization Profile,Personalization endpoint returns rich user profile.,Limit personalization data fields.
+BR-0094,/api/v1/recommendations,GET,200,item,Medium,Breach,Recommendation History,Recommendation history reveals user browsing patterns.,Anonymize recommendation training data.
+BR-0095,/api/v1/search/history,GET,200,query,High,Breach,Search History Leak,Search history reveals user intent and interests.,Shorten search history retention.
+BR-0096,/api/v1/browsing/history,GET,200,url,High,Breach,Browsing History Leak,Browsing history reveals page-level user activity.,Encrypt browsing history at rest.
+BR-0097,/api/v1/location/history,GET,200,lat,High,Breach,Location History Leak,Location history reveals user physical movement patterns.,Require explicit consent for location data.
+BR-0098,/api/v1/purchase/history,GET,200,amount,High,Breach,Purchase History Leak,Purchase history reveals spending habits and payment methods.,Mask purchase amounts in lists.
+BR-0099,/api/v1/communication/log,GET,200,message,High,Breach,Communication Log Leak,Communication log reveals emails calls and messages.,Encrypt communication metadata.
+BR-0100,/api/v1/support/tickets,GET,200,subject,High,Breach,Support Ticket Leak,Support tickets reveal user issues and account details.,Sanitize ticket data in API responses.

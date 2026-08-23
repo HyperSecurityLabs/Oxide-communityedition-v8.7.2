@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - ADDITIONAL SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+ADD-0001,/cgi-bin/test.cgi,GET,200,,Medium,Cgi,Test CGI,Default CGI test script.,Remove test scripts.,false
+ADD-0002,/cgi-bin/printenv,GET,200,DOCUMENT_ROOT,Medium,Cgi,Printenv CGI,Environment printer CGI.,Remove debug CGIs.,false
+ADD-0003,/cgi-bin/php,GET,200,<?php,Critical,Cgi,PHP CGI,PHP CGI binary.,Update PHP.,false
+ADD-0004,/cgi-bin/php5,GET,200,<?php,Critical,Cgi,PHP5 CGI,PHP5 CGI binary.,Update PHP5.,false
+ADD-0005,/cgi-bin/php-cgi,GET,200,<?php,Critical,Cgi,PHP-CGI,PHP-CGI binary.,Update PHP-CGI.,false
+ADD-0006,/cgi-bin/perl,GET,200,perl,Critical,Cgi,Perl CGI,Perl interpreter.,Remove from CGI.,false
+ADD-0007,/cgi-bin/python,GET,200,python,Critical,Cgi,Python CGI,Python interpreter.,Remove from CGI.,false
+ADD-0008,/cgi-bin/bash,GET,200,bash,Critical,Cgi,Bash CGI,Bash shell.,Never allow bash in CGI.,false
+ADD-0009,/cgi-bin/sh,GET,200,sh,Critical,Cgi,Shell CGI,Shell interpreter.,Never allow sh in CGI.,false
+ADD-0010,/cgi-bin/test.sh,GET,200,#!/bin/sh,Critical,Cgi,Test Shell,Shell script in CGI.,Remove shell scripts.,false
+ADD-0011,/cgi-bin/test.pl,GET,200,#!/usr/bin/perl,Critical,Cgi,Test Perl,Perl script in CGI.,Review Perl scripts.,false
+ADD-0012,/cgi-bin/test.py,GET,200,#!/usr/bin/python,Critical,Cgi,Test Python,Python script in CGI.,Review Python scripts.,false
+ADD-0013,/cgi-bin/admin.cgi,GET,200,admin,High,Cgi,Admin CGI,Admin CGI script.,Secure admin CGI.,false
+ADD-0014,/cgi-bin/login.cgi,GET,200,login,High,Cgi,Login CGI,Login CGI script.,Secure login CGI.,false
+ADD-0015,/cgi-bin/upload.cgi,GET,200,upload,Critical,Cgi,Upload CGI,Upload CGI script.,Validate uploads.,false
+ADD-0016,/cgi-bin/formmail.cgi,GET,200,formmail,High,Cgi,FormMail CGI,FormMail script.,Update FormMail.,false
+ADD-0017,/cgi-bin/awstats.pl,GET,200,awstats,Critical,Cgi,AWStats CGI,AWStats script.,Update AWStats.,false
+ADD-0018,/cgi-bin/awstats/awstats.pl,GET,200,awstats,Critical,Cgi,AWStats Path,AWStats alternate path.,Update AWStats.,false
+ADD-0019,/cgi-bin/count.cgi,GET,200,count,Low,Cgi,Count CGI,Hit counter CGI.,Review counters.,false
+ADD-0020,/cgi-bin/counter.cgi,GET,200,counter,Low,Cgi,Counter CGI,Counter CGI script.,Review counters.,false
+ADD-0021,/cgi-bin/guestbook.cgi,GET,200,guestbook,Medium,Cgi,Guestbook CGI,Guestbook script.,Review guestbook.,false
+ADD-0022,/cgi-bin/whois.cgi,GET,200,whois,Medium,Cgi,Whois CGI,Whois lookup CGI.,Review whois.,false
+ADD-0023,/cgi-bin/search.cgi,GET,200,search,Medium,Cgi,Search CGI,Search CGI script.,Review search.,false
+ADD-0024,/cgi-bin/mail.cgi,GET,200,mail,High,Cgi,Mail CGI,Mail CGI script.,Review mail CGI.,false
+ADD-0025,/cgi-bin/feedback.cgi,GET,200,feedback,Medium,Cgi,Feedback CGI,Feedback CGI script.,Review feedback.,false
+ADD-0026,/cgi-bin/contact.cgi,GET,200,contact,Medium,Cgi,Contact CGI,Contact CGI script.,Review contact.,false
+ADD-0027,/cgi-bin/order.cgi,GET,200,order,High,Cgi,Order CGI,Order CGI script.,Secure order CGI.,false
+ADD-0028,/cgi-bin/cart.cgi,GET,200,cart,High,Cgi,Cart CGI,Shopping cart CGI.,Secure cart CGI.,false
+ADD-0029,/cgi-bin/checkout.cgi,GET,200,checkout,Critical,Cgi,Checkout CGI,Checkout CGI script.,Secure checkout.,false
+ADD-0030,/cgi-bin/payment.cgi,GET,200,payment,Critical,Cgi,Payment CGI,Payment CGI script.,PCI compliance.,false
+ADD-0031,/cgi-bin/gateway.cgi,GET,200,gateway,Critical,Cgi,Gateway CGI,Payment gateway CGI.,Secure gateway.,false
+ADD-0032,/cgi-bin/process.cgi,GET,200,process,High,Cgi,Process CGI,Form processor CGI.,Review processor.,false
+ADD-0033,/cgi-bin/submit.cgi,GET,200,submit,High,Cgi,Submit CGI,Form submit CGI.,Review submit.,false
+ADD-0034,/cgi-bin/handler.cgi,GET,200,handler,High,Cgi,Handler CGI,Generic handler CGI.,Review handler.,false
+ADD-0035,/cgi-bin/wrapper.cgi,GET,200,wrapper,Critical,Cgi,Wrapper CGI,Wrapper CGI script.,Review wrapper.,false
+ADD-0036,/cgi-bin/proxy.cgi,GET,200,proxy,Critical,Cgi,Proxy CGI,Proxy CGI script.,Remove proxy CGI.,false
+ADD-0037,/cgi-bin/redirect.cgi,GET,200,redirect,Medium,Cgi,Redirect CGI,Redirect CGI script.,Validate redirects.,false
+ADD-0038,/cgi-bin/jump.cgi,GET,200,jump,Medium,Cgi,Jump CGI,URL jump CGI.,Validate jumps.,false
+ADD-0039,/cgi-bin/click.cgi,GET,200,click,Medium,Cgi,Click CGI,Click tracker CGI.,Review click tracker.,false
+ADD-0040,/cgi-bin/track.cgi,GET,200,track,Medium,Cgi,Track CGI,Tracking CGI script.,Review tracking.,false
+ADD-0041,/cgi-bin/stats.cgi,GET,200,stats,Medium,Cgi,Stats CGI,Statistics CGI script.,Review stats.,false
+ADD-0042,/cgi-bin/counter.pl,GET,200,counter,Low,Cgi,Counter Perl,Perl counter script.,Review counter.,false
+ADD-0043,/cgi-bin/printenv.pl,GET,200,printenv,Medium,Cgi,Printenv Perl,Perl printenv script.,Remove debug scripts.,false
+ADD-0044,/cgi-bin/test-cgi,GET,200,test-cgi,Medium,Cgi,Test-CGI,Test CGI script.,Remove test scripts.,false
+ADD-0045,/cgi-bin/nph-test.cgi,GET,200,nph-test,Medium,Cgi,NPH Test,NPH test script.,Remove NPH scripts.,false
+ADD-0046,/scripts/perl.exe,GET,200,perl.exe,Critical,Cgi,Perl.exe IIS,IIS Perl executable.,Remove from IIS.,false
+ADD-0047,/scripts/cmd.exe,GET,200,cmd.exe,Critical,Cgi,CMD.exe IIS,IIS CMD executable.,Critical: Remove immediately.,false
+ADD-0048,/scripts/command.com,GET,200,command.com,Critical,Cgi,Command.com IIS,IIS command.com.,Critical: Remove immediately.,false
+ADD-0049,/scripts/wguest.exe,GET,200,wguest.exe,Critical,Cgi,WGuest.exe IIS,IIS wguest.exe.,Remove from IIS.,false
+ADD-0050,/scripts/rguest.exe,GET,200,rguest.exe,Critical,Cgi,RGuest.exe IIS,IIS rguest.exe.,Remove from IIS.,false
+ADD-0051,/scripts/c32.exe,GET,200,c32.exe,Critical,Cgi,C32.exe IIS,IIS c32.exe.,Remove from IIS.,false
+ADD-0052,/scripts/s32.exe,GET,200,s32.exe,Critical,Cgi,S32.exe IIS,IIS s32.exe.,Remove from IIS.,false
+ADD-0053,/scripts/echo.exe,GET,200,echo.exe,Critical,Cgi,Echo.exe IIS,IIS echo.exe.,Remove from IIS.,false
+ADD-0054,/scripts/echo.bat,GET,200,echo.bat,Critical,Cgi,Echo.bat IIS,IIS echo.bat.,Remove from IIS.,false
+ADD-0055,/phppath/php,GET,200,<?php,Critical,Cgi,PHP Path,PHP alternate path.,Update PHP.,false
+ADD-0056,/cgi-bin/php4,GET,200,<?php,Critical,Cgi,PHP4 CGI,PHP4 CGI binary.,Upgrade to PHP 8.,false
+ADD-0057,/cgi-bin/php7,GET,200,<?php,Medium,Cgi,PHP7 CGI,PHP7 CGI binary.,Verify PHP7 config.,false
+ADD-0058,/cgi-bin/php8,GET,200,<?php,Medium,Cgi,PHP8 CGI,PHP8 CGI binary.,Verify PHP8 config.,false
+ADD-0059,/cgi-bin/php.ini,GET,200,php.ini,Critical,Cgi,PHP.ini CGI,PHP config in CGI.,Remove from CGI.,true
+ADD-0060,/cgi-bin/.htaccess,GET,200,.htaccess,Medium,Cgi,CGI HTAccess,CGI htaccess file.,Review htaccess.,true
+ADD-0061,/cgi-bin/.htpasswd,GET,200,.htpasswd,Critical,Cgi,CGI HTPasswd,CGI password file.,Remove password file.,true
+ADD-0062,/cgi-bin/data,GET,200,data,Critical,Cgi,CGI Data,CGI data directory.,Secure data dir.,false
+ADD-0063,/cgi-bin/logs,GET,200,logs,Critical,Cgi,CGI Logs,CGI logs directory.,Remove logs dir.,false
+ADD-0064,/cgi-bin/temp,GET,200,temp,Critical,Cgi,CGI Temp,CGI temp directory.,Remove temp dir.,false
+ADD-0065,/cgi-bin/tmp,GET,200,tmp,Critical,Cgi,CGI Tmp,CGI tmp directory.,Remove tmp dir.,false
+ADD-0066,/cgi-bin/cache,GET,200,cache,Critical,Cgi,CGI Cache,CGI cache directory.,Secure cache dir.,false
+ADD-0067,/cgi-bin/sessions,GET,200,sessions,Critical,Cgi,CGI Sessions,CGI sessions directory.,Secure sessions dir.,false
+ADD-0068,/cgi-bin/uploads,GET,200,uploads,Critical,Cgi,CGI Uploads,CGI uploads directory.,Secure uploads dir.,false
+ADD-0069,/cgi-bin/files,GET,200,files,Critical,Cgi,CGI Files,CGI files directory.,Secure files dir.,false
+ADD-0070,/cgi-bin/images,GET,200,images,Medium,Cgi,CGI Images,CGI images directory.,Low risk.,false
+ADD-0071,/cgi-bin/docs,GET,200,docs,Critical,Cgi,CGI Docs,CGI docs directory.,Secure docs dir.,false
+ADD-0072,/cgi-bin/config,GET,200,config,Critical,Cgi,CGI Config,CGI config directory.,Remove config dir.,false
+ADD-0073,/cgi-bin/backup,GET,200,backup,Critical,Cgi,CGI Backup,CGI backup directory.,Remove backup dir.,false
+ADD-0074,/cgi-bin/old,GET,200,old,Critical,Cgi,CGI Old,CGI old directory.,Remove old dir.,false
+ADD-0075,/cgi-bin/backup.old,GET,200,backup.old,Critical,Cgi,CGI Backup Old,CGI backup old.,Remove backup old.,false
+ADD-0076,/cgi-bin/source,GET,200,source,Critical,Cgi,CGI Source,CGI source directory.,Remove source dir.,false
+ADD-0077,/cgi-bin/src,GET,200,src,Critical,Cgi,CGI Src,CGI src directory.,Remove src dir.,false
+ADD-0078,/cgi-bin/dev,GET,200,dev,Critical,Cgi,CGI Dev,CGI dev directory.,Remove dev dir.,false
+ADD-0079,/cgi-bin/devel,GET,200,devel,Critical,Cgi,CGI Devel,CGI devel directory.,Remove devel dir.,false
+ADD-0080,/cgi-bin/test,GET,200,test,Critical,Cgi,CGI Test,CGI test directory.,Remove test dir.,false
+ADD-0081,/cgi-bin/testing,GET,200,testing,Critical,Cgi,CGI Testing,CGI testing directory.,Remove testing dir.,false
+ADD-0082,/cgi-bin/staging,GET,200,staging,Critical,Cgi,CGI Staging,CGI staging directory.,Remove staging dir.,false
+ADD-0083,/cgi-bin/production,GET,200,production,Critical,Cgi,CGI Production,CGI production directory.,Secure production dir.,false
+ADD-0084,/cgi-bin/local,GET,200,local,Critical,Cgi,CGI Local,CGI local directory.,Remove local dir.,false
+ADD-0085,/cgi-bin/remote,GET,200,remote,Critical,Cgi,CGI Remote,CGI remote directory.,Remove remote dir.,false
+ADD-0086,/cgi-bin/private,GET,200,private,Critical,Cgi,CGI Private,CGI private directory.,Remove private dir.,false
+ADD-0087,/cgi-bin/public,GET,200,public,Medium,Cgi,CGI Public,CGI public directory.,Low risk.,false
+ADD-0088,/cgi-bin/internal,GET,200,internal,Critical,Cgi,CGI Internal,CGI internal directory.,Remove internal dir.,false
+ADD-0089,/cgi-bin/external,GET,200,external,Medium,Cgi,CGI External,CGI external directory.,Low risk.,false
+ADD-0090,/cgi-bin/system,GET,200,system,Critical,Cgi,CGI System,CGI system directory.,Remove system dir.,false
+ADD-0091,/cgi-bin/sys,GET,200,sys,Critical,Cgi,CGI Sys,CGI sys directory.,Remove sys dir.,false
+ADD-0092,/cgi-bin/etc,GET,200,etc,Critical,Cgi,CGI Etc,CGI etc directory.,Remove etc dir.,false
+ADD-0093,/cgi-bin/var,GET,200,var,Critical,Cgi,CGI Var,CGI var directory.,Remove var dir.,false
+ADD-0094,/cgi-bin/usr,GET,200,usr,Critical,Cgi,CGI Usr,CGI usr directory.,Remove usr dir.,false
+ADD-0095,/cgi-bin/bin,GET,200,bin,Critical,Cgi,CGI Bin,CGI bin directory.,Remove bin dir.,false
+ADD-0096,/cgi-bin/sbin,GET,200,sbin,Critical,Cgi,CGI Sbin,CGI sbin directory.,Remove sbin dir.,false
+ADD-0097,/cgi-bin/lib,GET,200,lib,Critical,Cgi,CGI Lib,CGI lib directory.,Remove lib dir.,false
+ADD-0098,/cgi-bin/lib64,GET,200,lib64,Critical,Cgi,CGI Lib64,CGI lib64 directory.,Remove lib64 dir.,false
+ADD-0099,/cgi-bin/include,GET,200,include,Critical,Cgi,CGI Include,CGI include directory.,Remove include dir.,false
+ADD-0100,/cgi-bin/share,GET,200,share,Critical,Cgi,CGI Share,CGI share directory.,Remove share dir.,false

@@ -1,0 +1,110 @@
+# HyperSecurity_offensivelabs - PROFESSIONAL SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# This database contains REAL vulnerability tests for authorized security assessments only
+# Unauthorized access or use is strictly prohibited
+#
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+# Total Records: 500 (Small Database - Essential Tests)
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation
+CGI-0001,/cgi-bin/test.cgi,GET,200,,Medium,Cgi,Test CGI Script,Default CGI test script found. May expose system information.,Remove test scripts from production.
+CGI-0002,/cgi-bin/printenv,GET,200,DOCUMENT_ROOT,Medium,Cgi,Printenv Script,Apache printenv script exposes environment variables.,Remove default CGI scripts.
+CGI-0003,/cgi-bin/bash,GET,200,root:x,Critical,Cgi,Shellshock CVE-2014-6271,Bash CGI vulnerable to Shellshock. Remote code execution possible.,Update bash immediately.
+CGI-0004,/cgi-bin/sh,GET,200,root:x,Critical,Cgi,Shellshock SH,Shell CGI vulnerable to Shellshock attack.,Update shell and remove from CGI.
+CGI-0005,/cgi-bin/php,GET,200,<?php,Critical,Cgi,PHP-CGI CVE-2012-1823,PHP-CGI argument injection allows RCE.,Update PHP. Use PHP-FPM.
+CGI-0006,/cgi-bin/php5,GET,200,<?php,Critical,Cgi,PHP5 CGI RCE,PHP5 CGI vulnerable to argument injection.,Update to latest PHP.
+CGI-0007,/cgi-bin/php.cgi,GET,200,<?php,Critical,Cgi,PHP CGI Binary,PHP CGI binary with known vulnerabilities.,Use mod_php or PHP-FPM.
+CGI-0008,/cgi-bin/php-cgi,GET,200,<?php,Critical,Cgi,PHP-CGI Binary,PHP-CGI detected with RCE potential.,Remove PHP-CGI immediately.
+CGI-0009,/cgi-bin/awstats.pl,GET,200,root:x,Critical,Cgi,AWStats Config Injection,AWStats vulnerable to config injection.,Update AWStats.
+CGI-0010,/cgi-bin/awstats/awstats.pl,GET,200,root:x,Critical,Cgi,AWStats Path Traversal,AWStats path traversal vulnerability.,Update AWStats permissions.
+CGI-0011,/cgi-bin/formmail.cgi,GET,200,sent,High,Cgi,FormMail Open Relay,FormMail allows open mail relay.,Update FormMail.
+CGI-0012,/cgi-bin/FormMail.cgi,GET,200,sent,High,Cgi,FormMail Variant,FormMail variant with vulnerabilities.,Remove FormMail.
+CGI-0013,/cgi-bin/formmail.pl,GET,200,sent,High,Cgi,FormMail Perl,Perl FormMail with security issues.,Use secure form handlers.
+CGI-0014,/cgi-bin/webdist.cgi,GET,200,root:x,Critical,Cgi,Webdist Buffer Overflow,Webdist CGI buffer overflow.,Remove webdist.cgi.
+CGI-0015,/cgi-bin/Count.cgi,GET,200,root:x,Critical,Cgi,Count.cgi CVE-1999-0021,Count.cgi buffer overflow.,Remove Count.cgi.
+CGI-0016,/cgi-bin/counter.cgi,GET,200,root:x,Critical,Cgi,Counter CGI Overflow,Counter CGI overflow vulnerability.,Apply patches.
+CGI-0017,/cgi-bin/nph-test-cgi,GET,200,SERVER_SOFTWARE,Medium,Cgi,NPH Test CGI,Non-parsed header test script.,Remove test scripts.
+CGI-0018,/cgi-bin/nph-publish,GET,200,200 OK,Medium,Cgi,NPH Publish,NPH publish script accessible.,Remove NPH scripts.
+CGI-0019,/cgi-bin/nph-showlogs,GET,200,log,High,Cgi,NPH Show Logs,NPH script exposes server logs.,Remove log viewers.
+CGI-0020,/cgi-bin/info2www,GET,200,root:x,Critical,Cgi,Info2WWW CVE-1999-0039,Info2WWW command injection.,Remove info2www.
+CGI-0021,/cgi-bin/faxsurvey,GET,200,root:x,Critical,Cgi,FaxSurvey CVE-1999-0040,FaxSurvey command execution.,Remove faxsurvey.cgi.
+CGI-0022,/cgi-bin/htmlscript,GET,200,root:x,Critical,Cgi,HTMLScript CVE-1999-0041,HTMLScript file inclusion.,Update htmlscript.
+CGI-0023,/cgi-bin/jj,GET,200,root:x,Critical,Cgi,JJ CGI CVE-1999-0042,JJ CGI arbitrary file access.,Remove jj.cgi.
+CGI-0024,/cgi-bin/wrap,GET,200,root:x,Critical,Cgi,Wrap CGI CVE-1999-0043,Wrap CGI command execution.,Remove wrap.cgi.
+CGI-0025,/cgi-bin/majordomo,GET,200,root:x,Critical,Cgi,Majordomo CVE-1999-0201,Majordomo arbitrary command execution.,Update Majordomo.
+CGI-0026,/cgi-bin/guestbook.cgi,GET,200,root:x,Critical,Cgi,Guestbook CVE-1999-0037,Guestbook command injection.,Use modern guestbook.
+CGI-0027,/cgi-bin/rguestbook,GET,200,root:x,Critical,Cgi,RGuestbook Vulnerability,RGuestbook command execution.,Remove rguestbook.
+CGI-0028,/cgi-bin/csnews.cgi,GET,200,root:x,Critical,Cgi,CSNews CGI Injection,CSNews command injection.,Remove csnews.cgi.
+CGI-0029,/cgi-bin/pollit.cgi,GET,200,root:x,Critical,Cgi,Poll-it CVE-2001-0021,Poll-it command execution.,Update poll-it.
+CGI-0030,/cgi-bin/anyform,GET,200,root:x,Critical,Cgi,AnyForm CVE-1999-0067,AnyForm command injection.,Remove anyform.cgi.
+CGI-0031,/cgi-bin/simpleback.cgi,GET,200,root:x,Critical,Cgi,SimpleBack CGI,SimpleBack command execution.,Remove simpleback.cgi.
+CGI-0032,/scripts/perl.exe,GET,200,root:x,Critical,Cgi,Perl.exe IIS,IIS perl.exe allows RCE.,Remove perl.exe.
+CGI-0033,/scripts/cmd.exe,GET,200,Directory,Critical,Cgi,CMD.exe IIS,IIS cmd.exe allows Windows RCE.,Remove cmd.exe.
+CGI-0034,/cgi-bin/test.bat,GET,200,Directory,High,Cgi,Test BAT CGI,BAT file allows command execution.,Remove BAT files.
+CGI-0035,/cgi-bin/printenv.cgi,GET,200,DOCUMENT_ROOT,Medium,Cgi,Printenv.cgi,Environment variable printer.,Remove debug scripts.
+CGI-0036,/cgi-bin/test-cgi,GET,200,DOCUMENT_ROOT,Medium,Cgi,Test-CGI Script,Apache test script.,Remove test-cgi.
+CGI-0037,/cgi-bin/admin.cgi,GET,200,,High,Cgi,Admin CGI Script,Admin CGI without authentication.,Add authentication.
+CGI-0038,/cgi-bin/admin.pl,GET,200,,High,Cgi,Admin Perl Script,Perl admin script.,Secure admin access.
+CGI-0039,/cgi-bin/admin.py,GET,200,,High,Cgi,Admin Python Script,Python admin CGI.,Add authentication.
+CGI-0040,/cgi-bin/login.cgi,GET,200,password,High,Cgi,Login CGI Script,Login CGI found.,Review security.
+CGI-0041,/cgi-bin/logout.cgi,GET,200,,Medium,Cgi,Logout CGI Script,Logout mechanism.,Review sessions.
+CGI-0042,/cgi-bin/register.cgi,GET,200,,High,Cgi,Register CGI Script,Registration CGI.,Add CAPTCHA.
+CGI-0043,/cgi-bin/signup.cgi,GET,200,,High,Cgi,Signup CGI Script,Signup script.,Validate inputs.
+CGI-0044,/cgi-bin/user.cgi,GET,200,admin,High,Cgi,User CGI Script,User management CGI.,Add authorization.
+CGI-0045,/cgi-bin/account.cgi,GET,200,,High,Cgi,Account CGI Script,Account management.,Add authentication.
+CGI-0046,/cgi-bin/profile.cgi,GET,200,,Medium,Cgi,Profile CGI Script,Profile CGI.,Review visibility.
+CGI-0047,/cgi-bin/password.cgi,GET,200,password,Critical,Cgi,Password CGI Script,Password management detected.,Secure password handling.
+CGI-0048,/cgi-bin/db.cgi,GET,200,error,High,Cgi,Database CGI Script,Database CGI allows SQLi.,Use parameterized queries.
+CGI-0049,/cgi-bin/database.cgi,GET,200,error,High,Cgi,Database Interface CGI,Direct database CGI.,Add access controls.
+CGI-0050,/cgi-bin/sql.cgi,GET,200,error,Critical,Cgi,SQL CGI Script,SQL query interface.,Remove SQL interface.
+CGI-0051,/cgi-bin/query.cgi,GET,200,error,High,Cgi,Query CGI Script,Query interface.,Restrict queries.
+CGI-0052,/cgi-bin/upload.cgi,GET,200,,Critical,Cgi,Upload CGI Script,File upload CGI.,Validate uploads.
+CGI-0053,/cgi-bin/upload.pl,GET,200,,Critical,Cgi,Upload Perl Script,Perl upload script.,Secure uploads.
+CGI-0054,/cgi-bin/upload.py,GET,200,,Critical,Cgi,Upload Python Script,Python upload CGI.,Validate uploads.
+CGI-0055,/cgi-bin/fileupload.cgi,GET,200,,Critical,Cgi,File Upload CGI,Upload interface.,Add authentication.
+CGI-0056,/cgi-bin/attach.cgi,GET,200,,High,Cgi,Attachment CGI Script,Attachment handler.,Scan attachments.
+CGI-0057,/cgi-bin/shop.cgi,GET,200,,High,Cgi,Shop CGI Script,E-commerce CGI.,Review security.
+CGI-0058,/cgi-bin/cart.cgi,GET,200,,High,Cgi,Shopping Cart CGI,Shopping cart.,Validate pricing.
+CGI-0059,/cgi-bin/checkout.cgi,GET,200,,Critical,Cgi,Checkout CGI Script,Checkout process.,Use PCI compliance.
+CGI-0060,/cgi-bin/order.cgi,GET,200,,High,Cgi,Order CGI Script,Order processing.,Validate orders.
+CGI-0061,/cgi-bin/payment.cgi,GET,200,,Critical,Cgi,Payment CGI Script,Payment CGI.,Use secure gateways.
+CGI-0062,/cgi-bin/store.cgi,GET,200,,Medium,Cgi,Store CGI Script,Online store.,Review security.
+CGI-0063,/cgi-bin/buy.cgi,GET,200,,High,Cgi,Buy CGI Script,Purchase CGI.,Validate transactions.
+CGI-0064,/cgi-bin/search.cgi,GET,200,root:x,Critical,Cgi,Search CGI Script,Search CGI command injection.,Sanitize inputs.
+CGI-0065,/cgi-bin/search.pl,GET,200,,Medium,Cgi,Search Perl Script,Search interface.,Rate limit.
+CGI-0066,/cgi-bin/search.py,GET,200,,Medium,Cgi,Search Python Script,Python search.,Validate params.
+CGI-0067,/cgi-bin/find.cgi,GET,200,root:x,Critical,Cgi,Find CGI Script,Find CGI path traversal.,Sanitize paths.
+CGI-0068,/cgi-bin/lookup.cgi,GET,200,root:x,Critical,Cgi,Lookup CGI Script,Lookup CGI data exposure.,Add controls.
+CGI-0069,/cgi-bin/mail.cgi,GET,200,root:x,Critical,Cgi,Mail CGI Script,Mail CGI header injection.,Validate email.
+CGI-0070,/cgi-bin/mail.pl,GET,200,,Medium,Cgi,Mail Perl Script,Mail script.,Rate limit.
+CGI-0071,/cgi-bin/mailform.cgi,GET,200,,High,Cgi,Mail Form CGI,Mail form.,Validate inputs.
+CGI-0072,/cgi-bin/sendmail.cgi,GET,200,sent,High,Cgi,Sendmail CGI Script,Direct sendmail interface.,Use mail libraries.
+CGI-0073,/cgi-bin/email.cgi,GET,200,,Medium,Cgi,Email CGI Script,Email handler.,Validate email.
+CGI-0074,/cgi-bin/feedback.cgi,GET,200,,Medium,Cgi,Feedback CGI Script,Feedback form.,Add CAPTCHA.
+CGI-0075,/cgi-bin/contact.cgi,GET,200,,Medium,Cgi,Contact CGI Script,Contact form.,Validate inputs.
+CGI-0076,/cgi-bin/guestbook.cgi,GET,200,,Medium,Cgi,Guestbook CGI Script,Guestbook detected.,Sanitize entries.
+CGI-0077,/cgi-bin/gbook.cgi,GET,200,,Medium,Cgi,GBook CGI Script,GBook guestbook.,Check XSS.
+CGI-0078,/cgi-bin/forum.cgi,GET,200,,High,Cgi,Forum CGI Script,Forum CGI.,Secure forum.
+CGI-0079,/cgi-bin/board.cgi,GET,200,,High,Cgi,Board CGI Script,Message board.,Review permissions.
+CGI-0080,/cgi-bin/comments.cgi,GET,200,,Medium,Cgi,Comments CGI Script,Comment system.,Moderate comments.
+CGI-0081,/cgi-bin/calendar.cgi,GET,200,,Medium,Cgi,Calendar CGI Script,Calendar app.,Check injection.
+CGI-0082,/cgi-bin/events.cgi,GET,200,,Medium,Cgi,Events CGI Script,Event management.,Validate inputs.
+CGI-0083,/cgi-bin/booking.cgi,GET,200,,High,Cgi,Booking CGI Script,Booking system.,Implement limits.
+CGI-0084,/cgi-bin/scheduler.cgi,GET,200,,Medium,Cgi,Scheduler CGI Script,Task scheduler.,Secure access.
+CGI-0085,/cgi-bin/stats.cgi,GET,200,,Medium,Cgi,Stats CGI Script,Statistics CGI.,Add authentication.
+CGI-0086,/cgi-bin/statistics.cgi,GET,200,,Medium,Cgi,Statistics CGI Script,Stats interface.,Add controls.
+CGI-0087,/cgi-bin/status.cgi,GET,200,,Medium,Cgi,Status CGI Script,Server status.,Restrict access.
+CGI-0088,/cgi-bin/monitor.cgi,GET,200,,Medium,Cgi,Monitor CGI Script,Monitoring CGI.,Secure interfaces.
+CGI-0089,/cgi-bin/health.cgi,GET,200,,Medium,Cgi,Health CGI Script,Health check.,Limit exposure.
+CGI-0090,/cgi-bin/log.cgi,GET,200,log,High,Cgi,Log CGI Script,Log viewer.,Add authentication.
+CGI-0091,/cgi-bin/logger.cgi,GET,200,,Medium,Cgi,Logger CGI Script,Logging interface.,Secure endpoints.
+CGI-0092,/cgi-bin/logging.cgi,GET,200,,Medium,Cgi,Logging CGI Script,Log management.,Add controls.
+CGI-0093,/cgi-bin/track.cgi,GET,200,,Medium,Cgi,Tracking CGI Script,Analytics CGI.,Review privacy.
+CGI-0094,/cgi-bin/redirect.cgi,GET,200,,Medium,Cgi,Redirect CGI Script,Redirect CGI.,Validate URLs.
+CGI-0095,/cgi-bin/gateway.cgi,GET,200,,High,Cgi,Gateway CGI Script,Gateway CGI.,Prevent SSRF.
+CGI-0096,/cgi-bin/proxy.cgi,GET,200,,Critical,Cgi,Proxy CGI Script,Proxy CGI allows forwarding.,Remove proxy.
+CGI-0097,/cgi-bin/jump.cgi,GET,200,,Medium,Cgi,Jump CGI Script,URL jump CGI.,Validate destinations.
+CGI-0098,/cgi-bin/counter.cgi,GET,200,,Low,Cgi,Hit Counter CGI,Counter CGI.,Remove counters.
+CGI-0099,/cgi-bin/hit.cgi,GET,200,,Low,Cgi,Hit Tracker CGI,Hit tracker.,Review tracking.
+CGI-0100,/cgi-bin/count.cgi,GET,200,,Low,Cgi,Count CGI Script,Page counter.,Remove counters.

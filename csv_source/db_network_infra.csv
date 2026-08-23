@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - NETWORK INFRASTRUCTURE SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+NET-0001,/vpn,GET,200,vpn,Critical,Network,VPN Interface,VPN interface.,Secure VPN access.,false
+NET-0002,/openvpn,GET,200,openvpn,Critical,Network,OpenVPN,OpenVPN interface.,Secure OpenVPN.,false
+NET-0003,/openvpn-admin,GET,200,admin,Critical,Network,OpenVPN Admin,OpenVPN admin.,Secure OpenVPN admin.,false
+NET-0004,/pptp,GET,200,pptp,Critical,Network,PPTP,PPTP interface.,Disable PPTP.,false
+NET-0005,/l2tp,GET,200,l2tp,Critical,Network,L2TP,L2TP interface.,Secure L2TP.,false
+NET-0006,/ipsec,GET,200,ipsec,Critical,Network,IPsec,IPsec interface.,Secure IPsec.,false
+NET-0007,/ikev2,GET,200,ikev2,Critical,Network,IKEv2,IKEv2 interface.,Secure IKEv2.,false
+NET-0008,/sslvpn,GET,200,sslvpn,Critical,Network,SSL VPN,SSL VPN interface.,Secure SSL VPN.,false
+NET-0009,/sstp,GET,200,sstp,Critical,Network,SSTP,SSTP interface.,Secure SSTP.,false
+NET-0010,/wireguard,GET,200,wireguard,Critical,Network,WireGuard,WireGuard interface.,Secure WireGuard.,false
+NET-0011,/wg,GET,200,wireguard,Critical,Network,WireGuard Short,WireGuard short.,Secure WireGuard short.,false
+NET-0012,/anyconnect,GET,200,anyconnect,Critical,Network,AnyConnect,Cisco AnyConnect.,Secure AnyConnect.,false
+NET-0013,/fortissl,GET,200,fortinet,Critical,Network,Fortinet SSL,Fortinet SSL VPN.,Secure Fortinet.,false
+NET-0014,/sslvpn/login,GET,200,login,Critical,Network,SSL VPN Login,SSL VPN login.,Secure login.,false
+NET-0015,/remote,GET,200,remote,Critical,Network,Remote Access,Remote access interface.,Secure remote access.,false
+NET-0016,/rdp,GET,200,rdp,Critical,Network,RDP,RDP interface.,Secure RDP.,false
+NET-0017,/rdweb,GET,200,rdweb,Critical,Network,RD Web,Remote Desktop Web.,Secure RD Web.,false
+NET-0018,/ts,GET,200,terminal,Critical,Network,Terminal Server,Terminal server.,Secure terminal server.,false
+NET-0019,/remote-desktop,GET,200,remote,Critical,Network,Remote Desktop,Remote desktop interface.,Secure remote desktop.,false
+NET-0020,/guacamole,GET,200,guacamole,Critical,Network,Guacamole,Apache Guacamole.,Secure Guacamole.,false
+NET-0021,/guac,GET,200,guac,Critical,Network,Guac Short,Guacamole short.,Secure guac.,false
+NET-0022,/gateway,GET,200,gateway,Critical,Network,Gateway,Gateway interface.,Secure gateway.,false
+NET-0023,/proxy,GET,200,proxy,Critical,Network,Proxy,Proxy interface.,Secure proxy.,false
+NET-0024,/squid,GET,200,squid,Critical,Network,Squid,Squid proxy.,Secure Squid.,false
+NET-0025,/squidguard,GET,200,squidguard,Critical,Network,SquidGuard,SquidGuard proxy.,Secure SquidGuard.,false
+NET-0026,/privoxy,GET,200,privoxy,Critical,Network,Privoxy,Privoxy proxy.,Secure Privoxy.,false
+NET-0027,/tinyproxy,GET,200,tinyproxy,Critical,Network,TinyProxy,TinyProxy.,Secure TinyProxy.,false
+NET-0028,/3proxy,GET,200,3proxy,Critical,Network,3Proxy,3Proxy.,Secure 3Proxy.,false
+NET-0029,/polipo,GET,200,polipo,Critical,Network,Polipo,Polipo proxy.,Secure Polipo.,false
+NET-0030,/nginx-proxy,GET,200,nginx,Critical,Network,Nginx Proxy,Nginx proxy.,Secure nginx proxy.,false
+NET-0031,/traefik,GET,200,traefik,Critical,Network,Traefik,Traefik proxy.,Secure Traefik.,false
+NET-0032,/caddy,GET,200,caddy,Critical,Network,Caddy,Caddy server.,Secure Caddy.,false
+NET-0033,/haproxy,GET,200,haproxy,Critical,Network,HAProxy,HAProxy load balancer.,Secure HAProxy.,false
+NET-0034,/haproxy-stats,GET,200,statistics,Critical,Network,HAProxy Stats,HAProxy statistics.,Secure stats access.,false
+NET-0035,/stats,GET,200,haproxy,Critical,Network,Stats Short,HAProxy stats short.,Secure stats short.,false
+NET-0036,/balancer-manager,GET,200,LoadBalancer,Critical,Network,Apache Balancer,Apache load balancer manager.,Secure balancer.,false
+NET-0037,/nginx-status,GET,200,Active connections,Critical,Network,Nginx Status,Nginx status page.,Secure status page.,false
+NET-0038,/nginx_status,GET,200,Active connections,Critical,Network,Nginx Status Alt,Nginx status alt.,Secure status alt.,false
+NET-0039,/stub_status,GET,200,Active connections,Critical,Network,Nginx Stub Status,Nginx stub status.,Secure stub status.,false
+NET-0040,/status,GET,200,nginx,Critical,Network,Status Generic,Generic status page.,Secure generic status.,false
+NET-0041,/server-status,GET,200,Apache Server Status,Critical,Network,Apache Status,Apache status page.,Secure Apache status.,false
+NET-0042,/server-info,GET,200,Server Information,Critical,Network,Apache Info,Apache server info.,Secure Apache info.,false
+NET-0043,/usage,GET,200,usage,Critical,Network,Apache Usage,Apache usage stats.,Secure usage stats.,false
+NET-0044,/mod_status,GET,200,mod_status,Critical,Network,Mod Status,Apache mod_status.,Secure mod_status.,false
+NET-0045,/mod_info,GET,200,mod_info,Critical,Network,Mod Info,Apache mod_info.,Secure mod_info.,false
+NET-0046,/mod_perl-status,GET,200,mod_perl,Critical,Network,Mod Perl Status,Mod_perl status.,Secure mod_perl.,false
+NET-0047,/phppgadmin,GET,200,phpPgAdmin,Critical,Network,phpPgAdmin,PostgreSQL admin.,Secure phpPgAdmin.,false
+NET-0048,/phpmyadmin,GET,200,phpMyAdmin,Critical,Network,phpMyAdmin,MySQL admin.,Secure phpMyAdmin.,false
+NET-0049,/admin,GET,200,admin,Critical,Network,Admin Generic,Generic admin.,Secure admin.,false
+NET-0050,/control,GET,200,control,Critical,Network,Control Panel,Control panel.,Secure control panel.,false
+NET-0051,/management,GET,200,management,Critical,Network,Management,Management interface.,Secure management.,false
+NET-0052,/manager,GET,200,manager,Critical,Network,Manager,Manager interface.,Secure manager.,false
+NET-0053,/panel,GET,200,panel,Critical,Network,Panel,Panel interface.,Secure panel.,false
+NET-0054,/console,GET,200,console,Critical,Network,Console,Console interface.,Secure console.,false
+NET-0055,/shell,GET,200,shell,Critical,Network,Shell,Shell access.,Secure shell access.,false
+NET-0056,/ssh,GET,200,ssh,Critical,Network,SSH,SSH interface.,Secure SSH.,false
+NET-0057,/telnet,GET,200,telnet,Critical,Network,Telnet,Telnet interface.,Disable telnet.,false
+NET-0058,/ftp,GET,200,ftp,Critical,Network,FTP,FTP interface.,Secure FTP.,false
+NET-0059,/sftp,GET,200,sftp,Critical,Network,SFTP,SFTP interface.,Secure SFTP.,false
+NET-0060,/tftp,GET,200,tftp,Critical,Network,TFTP,TFTP interface.,Secure TFTP.,false
+NET-0061,/nfs,GET,200,nfs,Critical,Network,NFS,NFS interface.,Secure NFS.,false
+NET-0062,/cifs,GET,200,cifs,Critical,Network,CIFS,CIFS interface.,Secure CIFS.,false
+NET-0063,/smb,GET,200,smb,Critical,Network,SMB,SMB interface.,Secure SMB.,false
+NET-0064,/afp,GET,200,afp,Critical,Network,AFP,AFP interface.,Secure AFP.,false
+NET-0065,/iscsi,GET,200,iscsi,Critical,Network,iSCSI,iSCSI interface.,Secure iSCSI.,false
+NET-0066,/fc,GET,200,fibre,Critical,Network,Fibre Channel,Fibre Channel.,Secure FC.,false
+NET-0067,/scsi,GET,200,scsi,Critical,Network,SCSI,SCSI interface.,Secure SCSI.,false
+NET-0068,/raid,GET,200,raid,Critical,Network,RAID,RAID interface.,Secure RAID.,false
+NET-0069,/storage,GET,200,storage,Critical,Network,Storage,Storage interface.,Secure storage.,false
+NET-0070,/san,GET,200,san,Critical,Network,SAN,SAN interface.,Secure SAN.,false
+NET-0071,/nas,GET,200,nas,Critical,Network,NAS,NAS interface.,Secure NAS.,false
+NET-0072,/das,GET,200,das,Critical,Network,DAS,DAS interface.,Secure DAS.,false
+NET-0073,/backup,GET,200,backup,Critical,Network,Backup,Backup interface.,Secure backup.,false
+NET-0074,/restore,GET,200,restore,Critical,Network,Restore,Restore interface.,Secure restore.,false
+NET-0075,/sync,GET,200,sync,Critical,Network,Sync,Sync interface.,Secure sync.,false
+NET-0076,/replicate,GET,200,replicate,Critical,Network,Replicate,Replication interface.,Secure replication.,false
+NET-0077,/mirror,GET,200,mirror,Critical,Network,Mirror,Mirror interface.,Secure mirror.,false
+NET-0078,/cluster,GET,200,cluster,Critical,Network,Cluster,Cluster interface.,Secure cluster.,false
+NET-0079,/ha,GET,200,ha,Critical,Network,HA,High availability interface.,Secure HA.,false
+NET-0080,/failover,GET,200,failover,Critical,Network,Failover,Failover interface.,Secure failover.,false
+NET-0081,/loadbalance,GET,200,loadbalance,Critical,Network,Load Balance,Load balance interface.,Secure load balance.,false
+NET-0082,/cache,GET,200,cache,Critical,Network,Cache,Cache interface.,Secure cache.,false
+NET-0083,/cdn,GET,200,cdn,Critical,Network,CDN,CDN interface.,Secure CDN.,false
+NET-0084,/dns,GET,200,dns,Critical,Network,DNS,DNS interface.,Secure DNS.,false
+NET-0085,/dhcp,GET,200,dhcp,Critical,Network,DHCP,DHCP interface.,Secure DHCP.,false
+NET-0086,/ntp,GET,200,ntp,Critical,Network,NTP,NTP interface.,Secure NTP.,false
+NET-0087,/ldap,GET,200,ldap,Critical,Network,LDAP,LDAP interface.,Secure LDAP.,false
+NET-0088,/ad,GET,200,ad,Critical,Network,Active Directory,AD interface.,Secure AD.,false
+NET-0089,/domain,GET,200,domain,Critical,Network,Domain,Domain interface.,Secure domain.,false
+NET-0090,/kerberos,GET,200,kerberos,Critical,Network,Kerberos,Kerberos interface.,Secure Kerberos.,false
+NET-0091,/radius,GET,200,radius,Critical,Network,RADIUS,RADIUS interface.,Secure RADIUS.,false
+NET-0092,/tacacs,GET,200,tacacs,Critical,Network,TACACS+,TACACS+ interface.,Secure TACACS+.,false
+NET-0093,/saml,GET,200,saml,Critical,Network,SAML,SAML interface.,Secure SAML.,false
+NET-0094,/oauth,GET,200,oauth,Critical,Network,OAuth,OAuth interface.,Secure OAuth.,false
+NET-0095,/openid,GET,200,openid,Critical,Network,OpenID,OpenID interface.,Secure OpenID.,false
+NET-0096,/sso,GET,200,sso,Critical,Network,SSO,Single sign-on interface.,Secure SSO.,false
+NET-0097,/cas,GET,200,cas,Critical,Network,CAS,Central auth service.,Secure CAS.,false
+NET-0098,/shibboleth,GET,200,shibboleth,Critical,Network,Shibboleth,Shibboleth interface.,Secure Shibboleth.,false
+NET-0099,/casbin,GET,200,casbin,Critical,Network,Casbin,Casbin interface.,Secure Casbin.,false
+NET-0100,/opa,GET,200,opa,Critical,Network,OPA,Open Policy Agent.,Secure OPA.,false

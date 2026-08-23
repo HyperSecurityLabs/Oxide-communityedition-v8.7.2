@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - MONITORING & OBSERVABILITY SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+MON-0001,/prometheus,GET,200,prometheus,Critical,Monitoring,Prometheus,Prometheus server.,Secure Prometheus.,false
+MON-0002,/prometheus/graph,GET,200,expression,Critical,Monitoring,Prometheus Graph,Prometheus graph UI.,Secure graph.,false
+MON-0003,/prometheus/alerts,GET,200,alerts,Critical,Monitoring,Prometheus Alerts,Prometheus alerts.,Secure alerts.,false
+MON-0004,/prometheus/status,GET,200,status,Critical,Monitoring,Prometheus Status,Prometheus status.,Secure status.,false
+MON-0005,/prometheus/targets,GET,200,targets,Critical,Monitoring,Prometheus Targets,Prometheus targets.,Secure targets.,false
+MON-0006,/prometheus/config,GET,200,config,Critical,Monitoring,Prometheus Config,Prometheus configuration.,Secure config.,false
+MON-0007,/alertmanager,GET,200,alertmanager,Critical,Monitoring,Alertmanager,Prometheus Alertmanager.,Secure Alertmanager.,false
+MON-0008,/alertmanager/alerts,GET,200,alerts,Critical,Monitoring,Alertmanager Alerts,Alertmanager alerts.,Secure alerts.,false
+MON-0009,/alertmanager/silences,GET,200,silences,Critical,Monitoring,Alertmanager Silences,Alertmanager silences.,Secure silences.,false
+MON-0010,/alertmanager/status,GET,200,status,Critical,Monitoring,Alertmanager Status,Alertmanager status.,Secure status.,false
+MON-0011,/grafana,GET,200,grafana,Critical,Monitoring,Grafana,Grafana dashboard.,Secure Grafana.,false
+MON-0012,/grafana/login,GET,200,login,Critical,Monitoring,Grafana Login,Grafana login page.,Change defaults.,false
+MON-0013,/grafana/api,GET,200,api,Critical,Monitoring,Grafana API,Grafana API endpoint.,Secure API.,false
+MON-0014,/grafana/datasources,GET,200,datasources,Critical,Monitoring,Grafana Datasources,Grafana datasources.,Secure datasources.,false
+MON-0015,/grafana/dashboards,GET,200,dashboards,Critical,Monitoring,Grafana Dashboards,Grafana dashboards.,Secure dashboards.,false
+MON-0016,/grafana/admin,GET,200,admin,Critical,Monitoring,Grafana Admin,Grafana admin.,Secure admin.,false
+MON-0017,/api/v1/status/buildinfo,GET,200,buildinfo,Critical,Monitoring,Prometheus Build Info,Prometheus build info.,Secure API.,false
+MON-0018,/api/v1/query,POST,200,result,Critical,Monitoring,Prometheus Query,Prometheus query API.,Secure query API.,false
+MON-0019,/api/v1/series,POST,200,data,Critical,Monitoring,Prometheus Series,Prometheus series API.,Secure series API.,false
+MON-0020,/api/v1/labels,POST,200,data,Critical,Monitoring,Prometheus Labels,Prometheus labels API.,Secure labels API.,false
+MON-0021,/api/v1/targets,GET,200,targets,Critical,Monitoring,Prometheus Targets API,Prometheus targets API.,Secure targets API.,false
+MON-0022,/api/v1/rules,GET,200,rules,Critical,Monitoring,Prometheus Rules,Prometheus rules API.,Secure rules API.,false
+MON-0023,/api/v1/alerts,GET,200,alerts,Critical,Monitoring,Prometheus Alerts API,Prometheus alerts API.,Secure alerts API.,false
+MON-0024,/api/v1/status/config,GET,200,config,Critical,Monitoring,Prometheus Status Config,Prometheus status config.,Secure config API.,false
+MON-0025,/api/v1/status/flags,GET,200,flags,Critical,Monitoring,Prometheus Status Flags,Prometheus flags.,Secure flags API.,false
+MON-0026,/api/v1/status/runtimeinfo,GET,200,runtimeInfo,Critical,Monitoring,Prometheus Runtime Info,Prometheus runtime info.,Secure runtime info.,false
+MON-0027,/api/v1/status/buildinfo,GET,200,buildInfo,Critical,Monitoring,Prometheus Build Info API,Prometheus build info.,Secure build info.,false
+MON-0028,/api/v1/status/tsdb,GET,200,tsdb,Critical,Monitoring,Prometheus TSDB Status,Prometheus TSDB status.,Secure TSDB status.,false
+MON-0029,/api/v1/status/walreplay,GET,200,walreplay,Critical,Monitoring,Prometheus WAL Replay,Prometheus WAL replay.,Secure WAL info.,false
+MON-0030,/api/v1/query_exemplars,POST,200,data,Critical,Monitoring,Prometheus Exemplars,Prometheus exemplars API.,Secure exemplars API.,false
+MON-0031,/api/v1/metadata,POST,200,data,Critical,Monitoring,Prometheus Metadata,Prometheus metadata API.,Secure metadata API.,false
+MON-0032,/api/v1/snapshot,POST,200,data,Critical,Monitoring,Prometheus Snapshot,Prometheus snapshot API.,Secure snapshot API.,false
+MON-0033,/api/v1/admin/tsdb/delete_series,POST,204,,Critical,Monitoring,Prometheus Delete Series,Prometheus delete API.,Critical: Secure delete API.,false
+MON-0034,/api/v1/admin/tsdb/clean_tombstones,POST,204,,Critical,Monitoring,Prometheus Clean Tombstones,Clean tombstones API.,Critical: Secure admin API.,false
+MON-0035,/thanos,GET,200,thanos,Critical,Monitoring,Thanos,Thanos interface.,Secure Thanos.,false
+MON-0036,/thanos/query,GET,200,query,Critical,Monitoring,Thanos Query,Thanos query.,Secure Thanos query.,false
+MON-0037,/thanos/store,GET,200,store,Critical,Monitoring,Thanos Store,Thanos store.,Secure Thanos store.,false
+MON-0038,/thanos/compact,GET,200,compact,Critical,Monitoring,Thanos Compact,Thanos compact.,Secure Thanos compact.,false
+MON-0039,/thanos/rule,GET,200,rule,Critical,Monitoring,Thanos Rule,Thanos rule.,Secure Thanos rule.,false
+MON-0040,/thanos/sidecar,GET,200,sidecar,Critical,Monitoring,Thanos Sidecar,Thanos sidecar.,Secure Thanos sidecar.,false
+MON-0041,/victoriametrics,GET,200,victoria,Critical,Monitoring,VictoriaMetrics,VictoriaMetrics UI.,Secure VictoriaMetrics.,false
+MON-0042,/vmui,GET,200,vmui,Critical,Monitoring,VM UI,VictoriaMetrics UI.,Secure VM UI.,false
+MON-0043,/vmalert,GET,200,vmalert,Critical,Monitoring,VMAlert,VictoriaMetrics alert.,Secure VMAlert.,false
+MON-0044,/vmagent,GET,200,vmagent,Critical,Monitoring,VMAgent,VictoriaMetrics agent.,Secure VMAgent.,false
+MON-0045,/vminsert,GET,200,vminsert,Critical,Monitoring,VMInsert,VictoriaMetrics insert.,Secure VMInsert.,false
+MON-0046,/vmselect,GET,200,vmselect,Critical,Monitoring,VMSelect,VictoriaMetrics select.,Secure VMSelect.,false
+MON-0047,/vmstorage,GET,200,vmstorage,Critical,Monitoring,VMStorage,VictoriaMetrics storage.,Secure VMStorage.,false
+MON-0048,/influxdb,GET,200,influxdb,Critical,Monitoring,InfluxDB,InfluxDB admin.,Secure InfluxDB.,false
+MON-0049,/influxdb/query,POST,200,results,Critical,Monitoring,InfluxDB Query,InfluxDB query.,Secure query endpoint.,false
+MON-0050,/influxdb/write,POST,204,,Critical,Monitoring,InfluxDB Write,InfluxDB write.,Secure write endpoint.,false
+MON-0051,/influxdb/admin,GET,200,admin,Critical,Monitoring,InfluxDB Admin,InfluxDB admin.,Secure admin.,false
+MON-0052,/chronograf,GET,200,chronograf,Critical,Monitoring,Chronograf,Chronograf UI.,Secure Chronograf.,false
+MON-0053,/kapacitor,GET,200,kapacitor,Critical,Monitoring,Kapacitor,Kapacitor UI.,Secure Kapacitor.,false
+MON-0054,/kapacitor/tasks,GET,200,tasks,Critical,Monitoring,Kapacitor Tasks,Kapacitor tasks.,Secure tasks.,false
+MON-0055,/telegraf,GET,200,telegraf,Critical,Monitoring,Telegraf,Telegraf config.,Secure Telegraf.,false
+MON-0056,/statsd,GET,200,statsd,Critical,Monitoring,StatsD,StatsD interface.,Secure StatsD.,false
+MON-0057,/collectd,GET,200,collectd,Critical,Monitoring,CollectD,CollectD interface.,Secure CollectD.,false
+MON-0058,/graphite,GET,200,graphite,Critical,Monitoring,Graphite,Graphite dashboard.,Secure Graphite.,false
+MON-0059,/graphite/composer,GET,200,composer,Critical,Monitoring,Graphite Composer,Graphite composer.,Secure composer.,false
+MON-0060,/graphite/metrics,GET,200,metrics,Critical,Monitoring,Graphite Metrics,Graphite metrics.,Secure metrics.,false
+MON-0061,/graphite/browser,GET,200,browser,Critical,Monitoring,Graphite Browser,Graphite browser.,Secure browser.,false
+MON-0062,/graphite/dashboard,GET,200,dashboard,Critical,Monitoring,Graphite Dashboard,Graphite dashboard.,Secure dashboard.,false
+MON-0063,/render,GET,200,png,Critical,Monitoring,Graphite Render,Graphite render.,Secure render.,false
+MON-0064,/metrics/find,GET,200,metrics,Critical,Monitoring,Graphite Find Metrics,Graphite find metrics.,Secure find.,false
+MON-0065,/cerebro,GET,200,cerebro,Critical,Monitoring,Cerebro,Cerebro UI.,Secure Cerebro.,false
+MON-0066,/kopf,GET,200,kopf,Critical,Monitoring,Kopf,Kopf UI.,Secure Kopf.,false
+MON-0067,/elasticsearch-hq,GET,200,elasticsearch-hq,Critical,Monitoring,Elasticsearch HQ,ES HQ.,Secure ES HQ.,false
+MON-0068,/dejavu,GET,200,dejavu,Critical,Monitoring,Dejavu,ES Dejavu.,Secure Dejavu.,false
+MON-0069,/elastichd,GET,200,elastichd,Critical,Monitoring,ElasticHD,ElasticHD.,Secure ElasticHD.,false
+MON-0070,/es-hadoop,GET,200,es-hadoop,Critical,Monitoring,ES Hadoop,ES Hadoop.,Secure ES Hadoop.,false
+MON-0071,/graylog,GET,200,graylog,Critical,Monitoring,Graylog,Graylog dashboard.,Secure Graylog.,false
+MON-0072,/graylog/search,GET,200,search,Critical,Monitoring,Graylog Search,Graylog search.,Secure search.,false
+MON-0073,/graylog/streams,GET,200,streams,Critical,Monitoring,Graylog Streams,Graylog streams.,Secure streams.,false
+MON-0074,/graylog/dashboards,GET,200,dashboards,Critical,Monitoring,Graylog Dashboards,Graylog dashboards.,Secure dashboards.,false
+MON-0075,/graylog/system,GET,200,system,Critical,Monitoring,Graylog System,Graylog system.,Secure system.,false
+MON-0076,/graylog/api,GET,200,api,Critical,Monitoring,Graylog API,Graylog API.,Secure API.,false
+MON-0077,/logstash,GET,200,logstash,Critical,Monitoring,Logstash,Logstash pipeline.,Secure Logstash.,false
+MON-0078,/logstash/pipeline,GET,200,pipeline,Critical,Monitoring,Logstash Pipeline,Logstash pipeline UI.,Secure pipeline.,false
+MON-0079,/beats,GET,200,beats,Critical,Monitoring,Beats,Beats interface.,Secure Beats.,false
+MON-0080,/filebeat,GET,200,filebeat,Critical,Monitoring,Filebeat,Filebeat info.,Secure Filebeat.,false
+MON-0081,/metricbeat,GET,200,metricbeat,Critical,Monitoring,Metricbeat,Metricbeat info.,Secure Metricbeat.,false
+MON-0082,/packetbeat,GET,200,packetbeat,Critical,Monitoring,Packetbeat,Packetbeat info.,Secure Packetbeat.,false
+MON-0083,/heartbeat,GET,200,heartbeat,Critical,Monitoring,Heartbeat,Heartbeat info.,Secure Heartbeat.,false
+MON-0084,/auditbeat,GET,200,auditbeat,Critical,Monitoring,Auditbeat,Auditbeat info.,Secure Auditbeat.,false
+MON-0085,/functionbeat,GET,200,functionbeat,Critical,Monitoring,Functionbeat,Functionbeat info.,Secure Functionbeat.,false
+MON-0086,/journalbeat,GET,200,journalbeat,Critical,Monitoring,Journalbeat,Journalbeat info.,Secure Journalbeat.,false
+MON-0087,/winlogbeat,GET,200,winlogbeat,Critical,Monitoring,Winlogbeat,Winlogbeat info.,Secure Winlogbeat.,false
+MON-0088,/apm,GET,200,apm,Critical,Monitoring,APM,APM server.,Secure APM.,false
+MON-0089,/apm-server,GET,200,apm-server,Critical,Monitoring,APM Server,APM server UI.,Secure APM server.,false
+MON-0090,/app-search,GET,200,app-search,Critical,Monitoring,App Search,Enterprise Search.,Secure App Search.,false
+MON-0091,/workplace-search,GET,200,workplace-search,Critical,Monitoring,Workplace Search,Workplace Search.,Secure Workplace Search.,false
+MON-0092,/enterprise-search,GET,200,enterprise-search,Critical,Monitoring,Enterprise Search,Enterprise Search.,Secure Enterprise Search.,false
+MON-0093,/jaeger,GET,200,jaeger,Critical,Monitoring,Jaeger,Jaeger tracing.,Secure Jaeger.,false
+MON-0094,/jaeger/search,GET,200,search,Critical,Monitoring,Jaeger Search,Jaeger search.,Secure search.,false
+MON-0095,/jaeger/trace,GET,200,trace,Critical,Monitoring,Jaeger Trace,Jaeger trace.,Secure trace.,false
+MON-0096,/zipkin,GET,200,zipkin,Critical,Monitoring,Zipkin,Zipkin tracing.,Secure Zipkin.,false
+MON-0097,/zipkin/traces,GET,200,traces,Critical,Monitoring,Zipkin Traces,Zipkin traces.,Secure traces.,false
+MON-0098,/zipkin/dependency,GET,200,dependency,Critical,Monitoring,Zipkin Dependency,Zipkin dependency.,Secure dependency.,false
+MON-0099,/skywalking,GET,200,skywalking,Critical,Monitoring,SkyWalking,SkyWalking APM.,Secure SkyWalking.,false
+MON-0100,/skywalking/graphql,POST,200,data,Critical,Monitoring,SkyWalking GraphQL,SkyWalking GraphQL.,Secure GraphQL.,false

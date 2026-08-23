@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - DEVOPS & CI/CD SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+CI-0001,/jenkins,GET,200,Jenkins,Critical,CiCd,Jenkins Panel,Jenkins CI/CD panel.,Secure Jenkins immediately.,false
+CI-0002,/jenkins/login,GET,200,login,Critical,CiCd,Jenkins Login,Jenkins login page.,Implement strong auth.,false
+CI-0003,/jenkins/script,POST,200,Script,Critical,CiCd,Jenkins Script Console,Script console allows RCE.,Remove script console.,false
+CI-0004,/jenkins/configure,GET,200,configure,Critical,CiCd,Jenkins Configure,Jenkins configuration.,Secure config access.,false
+CI-0005,/jenkins/credentials,GET,200,credentials,Critical,CiCd,Jenkins Credentials,Jenkins credentials store.,Secure credentials.,true
+CI-0006,/jenkins/job,GET,200,job,Critical,CiCd,Jenkins Jobs,Jenkins job listings.,Secure job access.,false
+CI-0007,/jenkins/build,GET,200,build,Critical,CiCd,Jenkins Builds,Build information.,Secure build data.,false
+CI-0008,/jenkins/console,GET,200,console,Critical,CiCd,Jenkins Console,Build console output.,Secure console logs.,true
+CI-0009,/jenkins/api/json,GET,200,jobs,Critical,CiCd,Jenkins API JSON,Jenkins JSON API.,Secure Jenkins API.,false
+CI-0010,/jenkins/api/xml,GET,200,jobs,Critical,CiCd,Jenkins API XML,Jenkins XML API.,Restrict API access.,false
+CI-0011,/gitbucket,GET,200,GitBucket,Critical,CiCd,GitBucket Panel,GitBucket interface.,Secure GitBucket.,false
+CI-0012,/gitlab,GET,200,GitLab,Critical,CiCd,GitLab Panel,GitLab interface.,Secure GitLab.,false
+CI-0013,/gitlab/admin,GET,200,admin,Critical,CiCd,GitLab Admin,GitLab admin panel.,Implement MFA.,false
+CI-0014,/gitlab/api/v4,GET,200,api_v4,Critical,CiCd,GitLab API,GitLab API endpoint.,Secure API access.,false
+CI-0015,/gitlab/oauth/token,POST,200,access_token,Critical,CiCd,GitLab Token,OAuth token endpoint.,Secure token endpoint.,false
+CI-0016,/gitlab/-/junit,GET,200,tests,Critical,CiCd,GitLab JUnit,Test results exposure.,Secure test data.,false
+CI-0017,/gitlab/-/cobertura,GET,200,coverage,Critical,CiCd,GitLab Coverage,Coverage reports.,Secure coverage data.,false
+CI-0018,/github,GET,200,GitHub,High,CiCd,GitHub Enterprise,GitHub Enterprise.,Secure GHE access.,false
+CI-0019,/github/login,GET,200,login,High,CiCd,GitHub Login,GitHub login page.,Implement SSO.,false
+CI-0020,/api/v3,GET,200,v3,High,CiCd,GitHub API,GitHub API v3.,Secure API access.,false
+CI-0021,/setup,GET,200,setup,Critical,CiCd,GitHub Setup,GitHub setup page.,Complete setup.,false
+CI-0022,/gogs,GET,200,Gogs,Critical,CiCd,Gogs Panel,Gogs git service.,Secure Gogs.,false
+CI-0023,/gitea,GET,200,Gitea,Critical,CiCd,Gitea Panel,Gitea git service.,Secure Gitea.,false
+CI-0024,/bitbucket,GET,200,Bitbucket,Critical,CiCd,Bitbucket Panel,Bitbucket interface.,Secure Bitbucket.,false
+CI-0025,/bamboo,GET,200,Bamboo,Critical,CiCd,Bamboo Panel,Atlassian Bamboo.,Secure Bamboo.,false
+CI-0026,/teamcity,GET,200,TeamCity,Critical,CiCd,TeamCity Panel,JetBrains TeamCity.,Secure TeamCity.,false
+CI-0027,/teamcity/admin,GET,200,administration,Critical,CiCd,TeamCity Admin,TeamCity admin.,Implement auth.,false
+CI-0028,/app/drone,GET,200,Drone,Critical,CiCd,Drone CI,Drone CI panel.,Secure Drone.,false
+CI-0029,/concourse,GET,200,Concourse,Critical,CiCd,Concourse CI,Concourse CI.,Secure Concourse.,false
+CI-0030,/travis,GET,200,Travis,High,CiCd,Travis CI,Travis CI interface.,Secure Travis.,false
+CI-0031,/circleci,GET,200,CircleCI,High,CiCd,CircleCI,CircleCI interface.,Secure CircleCI.,false
+CI-0032,/codecov,GET,200,Codecov,High,CiCd,Codecov,Coverage reports.,Secure Codecov.,false
+CI-0033,/sonarqube,GET,200,SonarQube,Critical,CiCd,SonarQube,SonarQube panel.,Secure SonarQube.,false
+CI-0034,/sonar,GET,200,Sonar,Critical,CiCd,Sonar Alt,SonarQube alternate.,Secure Sonar.,false
+CI-0035,/nexus,GET,200,Nexus,Critical,CiCd,Nexus Repository,Nexus repository manager.,Secure Nexus.,false
+CI-0036,/nexus/service/rest,GET,200,rest,Critical,CiCd,Nexus REST API,Nexus REST API.,Secure Nexus API.,false
+CI-0037,/artifactory,GET,200,Artifactory,Critical,CiCd,Artifactory,Artifactory repo.,Secure Artifactory.,false
+CI-0038,/artifactory/api,GET,200,api,Critical,CiCd,Artifactory API,Artifactory API.,Secure API.,false
+CI-0039,/jfrog,GET,200,JFrog,Critical,CiCd,JFrog Platform,JFrog platform.,Secure JFrog.,false
+CI-0040,/harbor,GET,200,Harbor,Critical,CiCd,Harbor Registry,Harbor registry.,Secure Harbor.,false
+CI-0041,/quay,GET,200,Quay,Critical,CiCd,Quay Registry,Quay registry.,Secure Quay.,false
+CI-0042,/registry,GET,200,registry,Critical,CiCd,Docker Registry,Docker registry v2.,Secure registry.,false
+CI-0043,/v2/_catalog,GET,200,repositories,Critical,CiCd,Registry Catalog,Docker registry catalog.,Critical: Secure catalog.,false
+CI-0044,/v2,GET,200,registry,Critical,CiCd,Registry V2,Docker registry v2 root.,Secure registry.,false
+CI-0045,/swagger.json,GET,200,swagger,Critical,CiCd,Swagger JSON,API specification.,Remove from production.,true
+CI-0046,/swagger.yaml,GET,200,swagger,Critical,CiCd,Swagger YAML,API spec YAML.,Remove from production.,true
+CI-0047,/openapi.json,GET,200,openapi,Critical,CiCd,OpenAPI JSON,OpenAPI spec.,Secure OpenAPI.,true
+CI-0048,/openapi.yaml,GET,200,openapi,Critical,CiCd,OpenAPI YAML,OpenAPI YAML.,Remove from production.,true
+CI-0049,/redoc,GET,200,redoc,Critical,CiCd,ReDoc,API documentation UI.,Remove from production.,false
+CI-0050,/api-docs,GET,200,api-docs,Critical,CiCd,API Documentation,API docs endpoint.,Secure docs.,false
+CI-0051,/.travis.yml,GET,200,travis,Medium,CiCd,Travis Config,Travis CI configuration.,Remove from web.,true
+CI-0052,/.github/workflows,GET,200,workflow,Medium,CiCd,GitHub Workflows,GitHub Actions workflows.,Secure workflows.,false
+CI-0053,/.github/workflows/ci.yml,GET,200,on:,Medium,CiCd,CI Workflow,CI workflow file.,Secure CI files.,true
+CI-0054,/.github/workflows/deploy.yml,GET,200,deploy,High,CiCd,Deploy Workflow,Deployment workflow.,Secure deploy files.,true
+CI-0055,/Jenkinsfile,GET,200,pipeline,Critical,CiCd,Jenkinsfile,Jenkins pipeline.,Secure Jenkinsfile.,true
+CI-0056,/jenkinsfile,GET,200,pipeline,Critical,CiCd,Jenkinsfile Lower,Jenkinsfile lowercase.,Secure pipeline.,true
+CI-0057,/Dockerfile,GET,200,FROM,Medium,CiCd,Dockerfile,Docker build file.,Remove from web.,true
+CI-0058,/docker-compose.yml,GET,200,services,Critical,CiCd,Docker Compose,Docker compose file.,Secure compose.,true
+CI-0059,/docker-compose.yaml,GET,200,services,Critical,CiCd,Docker Compose YAML,Docker compose alt.,Remove from web.,true
+CI-0060,/compose.yml,GET,200,services,Critical,CiCd,Compose File,Compose file.,Secure compose.,true
+CI-0061,/.dockerignore,GET,200,dockerignore,Low,CiCd,Dockerignore,Docker ignore file.,Low risk.,false
+CI-0062,/Makefile,GET,200,all:,Medium,CiCd,Makefile,Build makefile.,Remove from production.,true
+CI-0063,/makefile,GET,200,all:,Medium,CiCd,Makefile Lower,Makefile lowercase.,Secure makefile.,true
+CI-0064,/CMakeLists.txt,GET,200,cmake,Medium,CiCd,CMake Config,CMake configuration.,Remove from web.,true
+CI-0065,/pom.xml,GET,200,project,Critical,CiCd,Maven POM,Maven configuration.,Secure POM files.,true
+CI-0066,/build.gradle,GET,200,dependencies,Critical,CiCd,Gradle Build,Gradle build file.,Secure gradle.,true
+CI-0067,/gradle.properties,GET,200,gradle,Critical,CiCd,Gradle Properties,Gradle properties.,Remove secrets.,true
+CI-0068,/settings.gradle,GET,200,settings,Critical,CiCd,Gradle Settings,Gradle settings.,Secure settings.,true
+CI-0069,/package.json,GET,200,dependencies,Low,CiCd,Package JSON,NPM package file.,Review dependencies.,true
+CI-0070,/package-lock.json,GET,200,lockfile,Low,CiCd,Package Lock,NPM lock file.,Check lockfile.,true
+CI-0071,/yarn.lock,GET,200,yarn,Low,CiCd,Yarn Lock,Yarn lock file.,Review lockfile.,true
+CI-0072,/npm-shrinkwrap.json,GET,200,shrinkwrap,Low,CiCd,NPM Shrinkwrap,NPM shrinkwrap.,Review shrinkwrap.,true
+CI-0073,/requirements.txt,GET,200,==,Medium,CiCd,Requirements,Python requirements.,Review packages.,true
+CI-0074,/Pipfile,GET,200,packages,Medium,CiCd,Pipfile,Python Pipfile.,Secure Pipfile.,true
+CI-0075,/Pipfile.lock,GET,200,sha256,Medium,CiCd,Pipfile Lock,Pipfile lock.,Review lock.,true
+CI-0076,/setup.py,GET,200,setup,Medium,CiCd,Setup Python,Python setup file.,Review setup.,true
+CI-0077,/pyproject.toml,GET,200,tool,Medium,CiCd,PyProject,Python project config.,Secure config.,true
+CI-0078,/poetry.lock,GET,200,content-hash,Medium,CiCd,Poetry Lock,Poetry lock file.,Review lock.,true
+CI-0079,/Gemfile,GET,200,gem,Medium,CiCd,Gemfile,Ruby Gemfile.,Review gems.,true
+CI-0080,/Gemfile.lock,GET,200,specs,Medium,CiCd,Gemfile Lock,Ruby lock file.,Check lockfile.,true
+CI-0081,/composer.json,GET,200,require,Medium,CiCd,Composer JSON,PHP composer file.,Review packages.,true
+CI-0082,/composer.lock,GET,200,content-hash,Medium,CiCd,Composer Lock,Composer lock file.,Check lock.,true
+CI-0083,/vendor/autoload.php,GET,200,autoload,Critical,CiCd,Vendor Autoload,PHP vendor file.,Remove vendor.,true
+CI-0084,/node_modules,GET,200,index,Critical,CiCd,Node Modules,NPM modules directory.,Remove node_modules.,false
+CI-0085,/node_modules/package.json,GET,200,name,Critical,CiCd,NPM Package,Node modules package.,Critical: Remove.,true
+CI-0086,/bower_components,GET,200,bower,Critical,CiCd,Bower Components,Bower directory.,Remove bower.,false
+CI-0087,/bower.json,GET,200,dependencies,Medium,CiCd,Bower JSON,Bower config.,Remove bower.,true
+CI-0088,/.babelrc,GET,200,babel,Low,CiCd,Babel Config,Babel configuration.,Low risk.,true
+CI-0089,/webpack.config.js,GET,200,module,Medium,CiCd,Webpack Config,Webpack config.,Secure config.,true
+CI-0090,/rollup.config.js,GET,200,export,Medium,CiCd,Rollup Config,Rollup config.,Review config.,true
+CI-0091,/vite.config.js,GET,200,defineConfig,Medium,CiCd,Vite Config,Vite configuration.,Review config.,true
+CI-0092,/vue.config.js,GET,200,vue,Medium,CiCd,Vue Config,Vue configuration.,Secure config.,true
+CI-0093,/nuxt.config.js,GET,200,nuxt,Medium,CiCd,Nuxt Config,Nuxt configuration.,Review config.,true
+CI-0094,/next.config.js,GET,200,next,Medium,CiCd,Next Config,Next.js config.,Secure config.,true
+CI-0095,/angular.json,GET,200,projects,Medium,CiCd,Angular JSON,Angular configuration.,Remove from web.,true
+CI-0096,/tsconfig.json,GET,200,compilerOptions,Low,CiCd,TS Config,TypeScript config.,Low risk.,true
+CI-0097,/jsconfig.json,GET,200,compilerOptions,Low,CiCd,JS Config,JavaScript config.,Low risk.,true
+CI-0098,/tailwind.config.js,GET,200,tailwind,Low,CiCd,Tailwind Config,Tailwind config.,Low risk.,true
+CI-0099,/postcss.config.js,GET,200,postcss,Low,CiCd,PostCSS Config,PostCSS config.,Low risk.,true
+CI-0100,/gulpfile.js,GET,200,gulp,Medium,CiCd,Gulpfile,Gulp configuration.,Remove from web.,true

@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - MODERN WEB & SPA SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+WEB-0001,/app,GET,200,app,Critical,ModernWeb,App Root,SPA application root.,Secure app access.,false
+WEB-0002,/app/index.html,GET,200,html,Critical,ModernWeb,App Index,SPA index file.,Secure static files.,false
+WEB-0003,/app/static,GET,200,static,Critical,ModernWeb,App Static,Static assets directory.,Secure static.,false
+WEB-0004,/app/assets,GET,200,assets,Critical,ModernWeb,App Assets,Assets directory.,Secure assets.,false
+WEB-0005,/app/js,GET,200,js,Critical,ModernWeb,App JS,JavaScript directory.,Secure JS files.,false
+WEB-0006,/app/css,GET,200,css,Critical,ModernWeb,App CSS,CSS directory.,Secure CSS.,false
+WEB-0007,/app/img,GET,200,img,Low,ModernWeb,App Images,Images directory.,Low risk.,false
+WEB-0008,/app/images,GET,200,images,Low,ModernWeb,App Images Alt,Images alt.,Low risk.,false
+WEB-0009,/app/fonts,GET,200,fonts,Low,ModernWeb,App Fonts,Fonts directory.,Low risk.,false
+WEB-0010,/app/locales,GET,200,locales,Medium,ModernWeb,App Locales,Localization files.,Secure locales.,false
+WEB-0011,/app/i18n,GET,200,i18n,Medium,ModernWeb,App i18n,Internationalization.,Secure i18n.,false
+WEB-0012,/app/translations,GET,200,translations,Medium,ModernWeb,App Translations,Translation files.,Secure translations.,false
+WEB-0013,/app/config.json,GET,200,config,Critical,ModernWeb,App Config JSON,App configuration JSON.,Remove from production.,true
+WEB-0014,/app/config.js,GET,200,config,Critical,ModernWeb,App Config JS,App configuration JS.,Remove config.,true
+WEB-0015,/app/settings.json,GET,200,settings,Critical,ModernWeb,App Settings,App settings JSON.,Secure settings.,true
+WEB-0016,/app/env.js,GET,200,env,Critical,ModernWeb,App Env JS,Environment JS.,Remove env files.,true
+WEB-0017,/app/environment.js,GET,200,environment,Critical,ModernWeb,App Environment,Environment config.,Remove from web.,true
+WEB-0018,/app/constants.js,GET,200,constants,Critical,ModernWeb,App Constants,Constants file.,Secure constants.,true
+WEB-0019,/app/api.config.js,GET,200,api,Critical,ModernWeb,App API Config,API configuration.,Secure API config.,true
+WEB-0020,/app/main.js,GET,200,main,Critical,ModernWeb,App Main JS,Main JavaScript.,Review for secrets.,true
+WEB-0021,/app/app.js,GET,200,app,Critical,ModernWeb,App App JS,App JavaScript.,Review JS.,true
+WEB-0022,/app/vendor.js,GET,200,vendor,Critical,ModernWeb,App Vendor,Vendor JavaScript.,Secure vendor JS.,true
+WEB-0023,/app/runtime.js,GET,200,runtime,Critical,ModernWeb,App Runtime,Runtime JS.,Review runtime.,true
+WEB-0024,/app/polyfills.js,GET,200,polyfills,Critical,ModernWeb,App Polyfills,Polyfills JS.,Review polyfills.,true
+WEB-0025,/app/styles.js,GET,200,styles,Critical,ModernWeb,App Styles,Styles JS.,Review styles.,true
+WEB-0026,/app/scripts.js,GET,200,scripts,Critical,ModernWeb,App Scripts,Scripts bundle.,Review scripts.,true
+WEB-0027,/app/chunk.js,GET,200,chunk,Critical,ModernWeb,App Chunk,Code chunk.,Review chunks.,true
+WEB-0028,/app/lazy.js,GET,200,lazy,Critical,ModernWeb,App Lazy,Lazy loaded code.,Review lazy code.,true
+WEB-0029,/app/worker.js,GET,200,worker,Critical,ModernWeb,App Worker,Web Worker.,Review worker.,true
+WEB-0030,/app/sw.js,GET,200,service-worker,Critical,ModernWeb,App Service Worker,Service worker.,Review SW.,true
+WEB-0031,/app/manifest.json,GET,200,manifest,Critical,ModernWeb,App Manifest,PWA manifest.,Review manifest.,true
+WEB-0032,/app/robots.txt,GET,200,robots,Low,ModernWeb,App Robots,Robots file.,Low risk.,false
+WEB-0033,/app/sitemap.xml,GET,200,sitemap,Low,ModernWeb,App Sitemap,Sitemap XML.,Low risk.,false
+WEB-0034,/app/browserconfig.xml,GET,200,browserconfig,Low,ModernWeb,App Browserconfig,Browser config.,Low risk.,false
+WEB-0035,/app/.well-known,GET,200,well-known,Critical,ModernWeb,App Well-Known,Well-known directory.,Secure well-known.,false
+WEB-0036,/app/api,GET,200,api,Critical,ModernWeb,App API,API endpoint.,Secure API.,false
+WEB-0037,/app/api/v1,GET,200,v1,Critical,ModernWeb,App API V1,API v1 endpoint.,Secure API v1.,false
+WEB-0038,/app/api/v2,GET,200,v2,Critical,ModernWeb,App API V2,API v2 endpoint.,Secure API v2.,false
+WEB-0039,/app/graphql,POST,200,graphql,Critical,ModernWeb,App GraphQL,GraphQL endpoint.,Secure GraphQL.,false
+WEB-0040,/app/rest,GET,200,rest,Critical,ModernWeb,App REST,REST endpoint.,Secure REST.,false
+WEB-0041,/app/auth,GET,200,auth,Critical,ModernWeb,App Auth,Auth endpoint.,Secure auth.,false
+WEB-0042,/app/login,GET,200,login,Critical,ModernWeb,App Login,Login endpoint.,Secure login.,false
+WEB-0043,/app/logout,GET,200,logout,Medium,ModernWeb,App Logout,Logout endpoint.,Secure logout.,false
+WEB-0044,/app/register,POST,200,register,Critical,ModernWeb,App Register,Register endpoint.,Secure register.,false
+WEB-0045,/app/user,GET,200,user,Critical,ModernWeb,App User,User endpoint.,Secure user.,false
+WEB-0046,/app/users,GET,200,users,Critical,ModernWeb,App Users,Users endpoint.,Secure users.,false
+WEB-0047,/app/profile,GET,200,profile,Critical,ModernWeb,App Profile,Profile endpoint.,Secure profile.,false
+WEB-0048,/app/account,GET,200,account,Critical,ModernWeb,App Account,Account endpoint.,Secure account.,false
+WEB-0049,/app/dashboard,GET,200,dashboard,Critical,ModernWeb,App Dashboard,Dashboard endpoint.,Secure dashboard.,false
+WEB-0050,/app/admin,GET,200,admin,Critical,ModernWeb,App Admin,Admin endpoint.,Secure admin.,false
+WEB-0051,/app/settings,GET,200,settings,Critical,ModernWeb,App Settings,Settings endpoint.,Secure settings.,false
+WEB-0052,/app/preferences,GET,200,preferences,Critical,ModernWeb,App Preferences,Preferences endpoint.,Secure preferences.,false
+WEB-0053,/app/notifications,GET,200,notifications,Critical,ModernWeb,App Notifications,Notifications endpoint.,Secure notifications.,false
+WEB-0054,/app/messages,GET,200,messages,Critical,ModernWeb,App Messages,Messages endpoint.,Secure messages.,false
+WEB-0055,/app/inbox,GET,200,inbox,Critical,ModernWeb,App Inbox,Inbox endpoint.,Secure inbox.,false
+WEB-0056,/app/search,GET,200,search,Critical,ModernWeb,App Search,Search endpoint.,Secure search.,false
+WEB-0057,/app/upload,POST,200,upload,Critical,ModernWeb,App Upload,Upload endpoint.,Secure upload.,false
+WEB-0058,/app/download,GET,200,download,Critical,ModernWeb,App Download,Download endpoint.,Secure download.,true
+WEB-0059,/app/export,GET,200,export,Critical,ModernWeb,App Export,Export endpoint.,Secure export.,true
+WEB-0060,/app/import,POST,200,import,Critical,ModernWeb,App Import,Import endpoint.,Secure import.,false
+WEB-0061,/app/backup,GET,200,backup,Critical,ModernWeb,App Backup,Backup endpoint.,Secure backup.,true
+WEB-0062,/app/restore,POST,200,restore,Critical,ModernWeb,App Restore,Restore endpoint.,Secure restore.,false
+WEB-0063,/app/report,GET,200,report,Critical,ModernWeb,App Report,Report endpoint.,Secure report.,true
+WEB-0064,/app/analytics,GET,200,analytics,Critical,ModernWeb,App Analytics,Analytics endpoint.,Secure analytics.,false
+WEB-0065,/app/stats,GET,200,stats,Critical,ModernWeb,App Stats,Stats endpoint.,Secure stats.,false
+WEB-0066,/app/metrics,GET,200,metrics,Critical,ModernWeb,App Metrics,Metrics endpoint.,Secure metrics.,false
+WEB-0067,/app/health,GET,200,health,Medium,ModernWeb,App Health,Health check.,Secure health.,false
+WEB-0068,/app/status,GET,200,status,Medium,ModernWeb,App Status,Status check.,Secure status.,false
+WEB-0069,/app/ping,GET,200,pong,Low,ModernWeb,App Ping,Ping endpoint.,Low risk.,false
+WEB-0070,/app/version,GET,200,version,Medium,ModernWeb,App Version,Version endpoint.,Limit version info.,false
+WEB-0071,/app/info,GET,200,info,Medium,ModernWeb,App Info,Info endpoint.,Secure info.,false
+WEB-0072,/app/debug,GET,200,debug,Critical,ModernWeb,App Debug,Debug endpoint.,Remove debug.,false
+WEB-0073,/app/test,GET,200,test,Medium,ModernWeb,App Test,Test endpoint.,Remove test.,false
+WEB-0074,/app/demo,GET,200,demo,High,ModernWeb,App Demo,Demo endpoint.,Remove demo.,false
+WEB-0075,/app/staging,GET,200,staging,High,ModernWeb,App Staging,Staging endpoint.,Remove staging.,false
+WEB-0076,/app/dev,GET,200,dev,Critical,ModernWeb,App Dev,Dev endpoint.,Remove dev.,false
+WEB-0077,/app/development,GET,200,development,Critical,ModernWeb,App Development,Development endpoint.,Remove dev.,false
+WEB-0078,/app/local,GET,200,local,Critical,ModernWeb,App Local,Local endpoint.,Remove local.,false
+WEB-0079,/app/beta,GET,200,beta,High,ModernWeb,App Beta,Beta endpoint.,Secure beta.,false
+WEB-0080,/app/alpha,GET,200,alpha,High,ModernWeb,App Alpha,Alpha endpoint.,Secure alpha.,false
+WEB-0081,/app/preview,GET,200,preview,High,ModernWeb,App Preview,Preview endpoint.,Secure preview.,false
+WEB-0082,/app/internal,GET,200,internal,Critical,ModernWeb,App Internal,Internal endpoint.,Secure internal.,false
+WEB-0083,/app/private,GET,200,private,Critical,ModernWeb,App Private,Private endpoint.,Secure private.,false
+WEB-0084,/app/secure,GET,200,secure,Critical,ModernWeb,App Secure,Secure endpoint.,Secure secure.,false
+WEB-0085,/app/superadmin,GET,200,superadmin,Critical,ModernWeb,App Superadmin,Superadmin endpoint.,Secure superadmin.,false
+WEB-0086,/app/root,GET,200,root,Critical,ModernWeb,App Root,Root endpoint.,Secure root.,false
+WEB-0087,/app/system,GET,200,system,Critical,ModernWeb,App System,System endpoint.,Secure system.,false
+WEB-0088,/app/config,GET,200,config,Critical,ModernWeb,App Config,Config endpoint.,Remove config.,false
+WEB-0089,/app/configuration,GET,200,configuration,Critical,ModernWeb,App Configuration,Configuration endpoint.,Remove configuration.,false
+WEB-0090,/app/setup,GET,200,setup,Critical,ModernWeb,App Setup,Setup endpoint.,Remove setup.,false
+WEB-0091,/app/install,GET,200,install,Critical,ModernWeb,App Install,Install endpoint.,Remove install.,false
+WEB-0092,/app/maintenance,GET,200,maintenance,High,ModernWeb,App Maintenance,Maintenance endpoint.,Limit access.,false
+WEB-0093,/app/offline,GET,200,offline,Medium,ModernWeb,App Offline,Offline page.,Limit access.,false
+WEB-0094,/app/error,GET,200,error,Medium,ModernWeb,App Error,Error page.,Secure errors.,false
+WEB-0095,/app/404,GET,200,404,Medium,ModernWeb,App 404,404 page.,Secure 404.,false
+WEB-0096,/app/500,GET,200,500,Medium,ModernWeb,App 500,500 page.,Secure 500.,false
+WEB-0097,/app/503,GET,200,503,Medium,ModernWeb,App 503,503 page.,Secure 503.,false
+WEB-0098,/app/main,GET,200,main,Critical,ModernWeb,App Main,Main chunk.,Review main.,true
+WEB-0099,/app/vendor,GET,200,vendor,Critical,ModernWeb,App Vendor,Vendor chunk.,Review vendor.,true
+WEB-0100,/app/runtime,GET,200,runtime,Critical,ModernWeb,App Runtime,Runtime chunk.,Review runtime.,true

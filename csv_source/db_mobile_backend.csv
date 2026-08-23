@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - MOBILE & BACKEND SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+MOB-0001,/mobile,GET,200,mobile,Critical,Mobile,Mobile API,Mobile API endpoint.,Secure mobile API.,false
+MOB-0002,/mobile/api,GET,200,api,Critical,Mobile,Mobile API Root,Mobile API root.,Secure mobile API root.,false
+MOB-0003,/mobile/v1,GET,200,v1,Critical,Mobile,Mobile API V1,Mobile API v1.,Secure mobile v1.,false
+MOB-0004,/mobile/v2,GET,200,v2,Critical,Mobile,Mobile API V2,Mobile API v2.,Secure mobile v2.,false
+MOB-0005,/mobile/auth,POST,200,token,Critical,Mobile,Mobile Auth,Mobile authentication.,Secure mobile auth.,false
+MOB-0006,/mobile/login,POST,200,token,Critical,Mobile,Mobile Login,Mobile login.,Secure mobile login.,false
+MOB-0007,/mobile/register,POST,200,user,Critical,Mobile,Mobile Register,Mobile registration.,Secure mobile register.,false
+MOB-0008,/mobile/logout,POST,200,status,Critical,Mobile,Mobile Logout,Mobile logout.,Secure mobile logout.,false
+MOB-0009,/mobile/refresh,POST,200,token,Critical,Mobile,Mobile Refresh,Mobile token refresh.,Secure mobile refresh.,false
+MOB-0010,/mobile/user,GET,200,user,Critical,Mobile,Mobile User,Mobile user endpoint.,Secure mobile user.,false
+MOB-0011,/mobile/users,GET,200,users,Critical,Mobile,Mobile Users,Mobile users endpoint.,Secure mobile users.,false
+MOB-0012,/mobile/profile,GET,200,profile,Critical,Mobile,Mobile Profile,Mobile profile.,Secure mobile profile.,false
+MOB-0013,/mobile/account,GET,200,account,Critical,Mobile,Mobile Account,Mobile account.,Secure mobile account.,false
+MOB-0014,/mobile/settings,GET,200,settings,Critical,Mobile,Mobile Settings,Mobile settings.,Secure mobile settings.,false
+MOB-0015,/mobile/preferences,GET,200,preferences,Critical,Mobile,Mobile Preferences,Mobile preferences.,Secure mobile preferences.,false
+MOB-0016,/mobile/notifications,GET,200,notifications,Critical,Mobile,Mobile Notifications,Mobile notifications.,Secure mobile notifications.,false
+MOB-0017,/mobile/push,POST,200,status,Critical,Mobile,Mobile Push,Mobile push notifications.,Secure mobile push.,false
+MOB-0018,/mobile/fcm,POST,200,fcm,Critical,Mobile,Mobile FCM,Firebase Cloud Messaging.,Secure FCM.,false
+MOB-0019,/mobile/apns,POST,200,apns,Critical,Mobile,Mobile APNS,Apple Push Notification.,Secure APNS.,false
+MOB-0020,/mobile/gcm,POST,200,gcm,Critical,Mobile,Mobile GCM,Google Cloud Messaging.,Secure GCM.,false
+MOB-0021,/mobile/device,POST,200,device,Critical,Mobile,Mobile Device,Mobile device registration.,Secure device reg.,false
+MOB-0022,/mobile/devices,GET,200,devices,Critical,Mobile,Mobile Devices,Mobile devices list.,Secure devices list.,false
+MOB-0023,/mobile/token,POST,200,token,Critical,Mobile,Mobile Token,Mobile device token.,Secure device token.,false
+MOB-0024,/mobile/sync,POST,200,sync,Critical,Mobile,Mobile Sync,Mobile data sync.,Secure mobile sync.,false
+MOB-0025,/mobile/backup,POST,200,backup,Critical,Mobile,Mobile Backup,Mobile backup.,Secure mobile backup.,false
+MOB-0026,/mobile/restore,POST,200,restore,Critical,Mobile,Mobile Restore,Mobile restore.,Secure mobile restore.,false
+MOB-0027,/mobile/upload,POST,200,upload,Critical,Mobile,Mobile Upload,Mobile file upload.,Secure mobile upload.,false
+MOB-0028,/mobile/download,GET,200,download,Critical,Mobile,Mobile Download,Mobile file download.,Secure mobile download.,true
+MOB-0029,/mobile/content,GET,200,content,Critical,Mobile,Mobile Content,Mobile content.,Secure mobile content.,false
+MOB-0030,/mobile/media,GET,200,media,Critical,Mobile,Mobile Media,Mobile media.,Secure mobile media.,false
+MOB-0031,/mobile/stream,GET,200,stream,Critical,Mobile,Mobile Stream,Mobile streaming.,Secure mobile stream.,false
+MOB-0032,/mobile/chat,POST,200,message,Critical,Mobile,Mobile Chat,Mobile chat.,Secure mobile chat.,false
+MOB-0033,/mobile/messages,GET,200,messages,Critical,Mobile,Mobile Messages,Mobile messages.,Secure mobile messages.,false
+MOB-0034,/mobile/inbox,GET,200,inbox,Critical,Mobile,Mobile Inbox,Mobile inbox.,Secure mobile inbox.,false
+MOB-0035,/mobile/friends,GET,200,friends,Critical,Mobile,Mobile Friends,Mobile friends.,Secure mobile friends.,false
+MOB-0036,/mobile/contacts,GET,200,contacts,Critical,Mobile,Mobile Contacts,Mobile contacts.,Secure mobile contacts.,false
+MOB-0037,/mobile/groups,GET,200,groups,Critical,Mobile,Mobile Groups,Mobile groups.,Secure mobile groups.,false
+MOB-0038,/mobile/feed,GET,200,feed,Critical,Mobile,Mobile Feed,Mobile feed.,Secure mobile feed.,false
+MOB-0039,/mobile/timeline,GET,200,timeline,Critical,Mobile,Mobile Timeline,Mobile timeline.,Secure mobile timeline.,false
+MOB-0040,/mobile/posts,GET,200,posts,Critical,Mobile,Mobile Posts,Mobile posts.,Secure mobile posts.,false
+MOB-0041,/mobile/comments,GET,200,comments,Critical,Mobile,Mobile Comments,Mobile comments.,Secure mobile comments.,false
+MOB-0042,/mobile/likes,POST,200,likes,Critical,Mobile,Mobile Likes,Mobile likes.,Secure mobile likes.,false
+MOB-0043,/mobile/follow,POST,200,follow,Critical,Mobile,Mobile Follow,Mobile follow.,Secure mobile follow.,false
+MOB-0044,/mobile/unfollow,POST,200,unfollow,Critical,Mobile,Mobile Unfollow,Mobile unfollow.,Secure mobile unfollow.,false
+MOB-0045,/mobile/search,GET,200,search,Critical,Mobile,Mobile Search,Mobile search.,Secure mobile search.,false
+MOB-0046,/mobile/discover,GET,200,discover,Critical,Mobile,Mobile Discover,Mobile discover.,Secure mobile discover.,false
+MOB-0047,/mobile/explore,GET,200,explore,Critical,Mobile,Mobile Explore,Mobile explore.,Secure mobile explore.,false
+MOB-0048,/mobile/trending,GET,200,trending,Critical,Mobile,Mobile Trending,Mobile trending.,Secure mobile trending.,false
+MOB-0049,/mobile/popular,GET,200,popular,Critical,Mobile,Mobile Popular,Mobile popular.,Secure mobile popular.,false
+MOB-0050,/mobile/recommended,GET,200,recommended,Critical,Mobile,Mobile Recommended,Mobile recommended.,Secure mobile recommended.,false
+MOB-0051,/mobile/suggested,GET,200,suggested,Critical,Mobile,Mobile Suggested,Mobile suggested.,Secure mobile suggested.,false
+MOB-0052,/mobile/nearby,GET,200,nearby,Critical,Mobile,Mobile Nearby,Mobile nearby.,Secure mobile nearby.,false
+MOB-0053,/mobile/location,POST,200,location,Critical,Mobile,Mobile Location,Mobile location.,Secure mobile location.,false
+MOB-0054,/mobile/geo,POST,200,geo,Critical,Mobile,Mobile Geo,Mobile geo.,Secure mobile geo.,false
+MOB-0055,/mobile/checkin,POST,200,checkin,Critical,Mobile,Mobile Checkin,Mobile checkin.,Secure mobile checkin.,false
+MOB-0056,/mobile/checkout,POST,200,checkout,Critical,Mobile,Mobile Checkout,Mobile checkout.,Secure mobile checkout.,false
+MOB-0057,/mobile/payment,POST,200,payment,Critical,Mobile,Mobile Payment,Mobile payment.,Secure mobile payment.,false
+MOB-0058,/mobile/purchase,POST,200,purchase,Critical,Mobile,Mobile Purchase,Mobile purchase.,Secure mobile purchase.,false
+MOB-0059,/mobile/cart,GET,200,cart,Critical,Mobile,Mobile Cart,Mobile cart.,Secure mobile cart.,false
+MOB-0060,/mobile/order,POST,200,order,Critical,Mobile,Mobile Order,Mobile order.,Secure mobile order.,false
+MOB-0061,/mobile/orders,GET,200,orders,Critical,Mobile,Mobile Orders,Mobile orders.,Secure mobile orders.,false
+MOB-0062,/mobile/history,GET,200,history,Critical,Mobile,Mobile History,Mobile history.,Secure mobile history.,false
+MOB-0063,/mobile/favorites,GET,200,favorites,Critical,Mobile,Mobile Favorites,Mobile favorites.,Secure mobile favorites.,false
+MOB-0064,/mobile/bookmarks,GET,200,bookmarks,Critical,Mobile,Mobile Bookmarks,Mobile bookmarks.,Secure mobile bookmarks.,false
+MOB-0065,/mobile/saved,GET,200,saved,Critical,Mobile,Mobile Saved,Mobile saved.,Secure mobile saved.,false
+MOB-0066,/mobile/wishlist,GET,200,wishlist,Critical,Mobile,Mobile Wishlist,Mobile wishlist.,Secure mobile wishlist.,false
+MOB-0067,/mobile/subscriptions,GET,200,subscriptions,Critical,Mobile,Mobile Subscriptions,Mobile subscriptions.,Secure mobile subscriptions.,false
+MOB-0068,/mobile/plans,GET,200,plans,Critical,Mobile,Mobile Plans,Mobile plans.,Secure mobile plans.,false
+MOB-0069,/mobile/pricing,GET,200,pricing,Critical,Mobile,Mobile Pricing,Mobile pricing.,Secure mobile pricing.,false
+MOB-0070,/mobile/billing,GET,200,billing,Critical,Mobile,Mobile Billing,Mobile billing.,Secure mobile billing.,false
+MOB-0071,/mobile/invoices,GET,200,invoices,Critical,Mobile,Mobile Invoices,Mobile invoices.,Secure mobile invoices.,true
+MOB-0072,/mobile/receipts,GET,200,receipts,Critical,Mobile,Mobile Receipts,Mobile receipts.,Secure mobile receipts.,true
+MOB-0073,/mobile/transactions,GET,200,transactions,Critical,Mobile,Mobile Transactions,Mobile transactions.,Secure mobile transactions.,false
+MOB-0074,/mobile/wallet,GET,200,wallet,Critical,Mobile,Mobile Wallet,Mobile wallet.,Secure mobile wallet.,false
+MOB-0075,/mobile/cards,GET,200,cards,Critical,Mobile,Mobile Cards,Mobile cards.,Secure mobile cards.,false
+MOB-0076,/mobile/banks,GET,200,banks,Critical,Mobile,Mobile Banks,Mobile banks.,Secure mobile banks.,false
+MOB-0077,/mobile/crypto,GET,200,crypto,Critical,Mobile,Mobile Crypto,Mobile crypto.,Secure mobile crypto.,false
+MOB-0078,/mobile/nft,GET,200,nft,Critical,Mobile,Mobile NFT,Mobile NFT.,Secure mobile NFT.,false
+MOB-0079,/mobile/tokens,GET,200,tokens,Critical,Mobile,Mobile Tokens,Mobile tokens.,Secure mobile tokens.,false
+MOB-0080,/mobile/rewards,GET,200,rewards,Critical,Mobile,Mobile Rewards,Mobile rewards.,Secure mobile rewards.,false
+MOB-0081,/mobile/points,GET,200,points,Critical,Mobile,Mobile Points,Mobile points.,Secure mobile points.,false
+MOB-0082,/mobile/coupons,GET,200,coupons,Critical,Mobile,Mobile Coupons,Mobile coupons.,Secure mobile coupons.,false
+MOB-0083,/mobile/vouchers,GET,200,vouchers,Critical,Mobile,Mobile Vouchers,Mobile vouchers.,Secure mobile vouchers.,false
+MOB-0084,/mobile/giftcards,GET,200,giftcards,Critical,Mobile,Mobile Gift Cards,Mobile gift cards.,Secure mobile gift cards.,false
+MOB-0085,/mobile/promos,GET,200,promos,Critical,Mobile,Mobile Promos,Mobile promos.,Secure mobile promos.,false
+MOB-0086,/mobile/deals,GET,200,deals,Critical,Mobile,Mobile Deals,Mobile deals.,Secure mobile deals.,false
+MOB-0087,/mobile/offers,GET,200,offers,Critical,Mobile,Mobile Offers,Mobile offers.,Secure mobile offers.,false
+MOB-0088,/mobile/discounts,GET,200,discounts,Critical,Mobile,Mobile Discounts,Mobile discounts.,Secure mobile discounts.,false
+MOB-0089,/mobile/sales,GET,200,sales,Critical,Mobile,Mobile Sales,Mobile sales.,Secure mobile sales.,false
+MOB-0090,/mobile/events,GET,200,events,Critical,Mobile,Mobile Events,Mobile events.,Secure mobile events.,false
+MOB-0091,/mobile/tickets,GET,200,tickets,Critical,Mobile,Mobile Tickets,Mobile tickets.,Secure mobile tickets.,false
+MOB-0092,/mobile/bookings,GET,200,bookings,Critical,Mobile,Mobile Bookings,Mobile bookings.,Secure mobile bookings.,false
+MOB-0093,/mobile/reservations,GET,200,reservations,Critical,Mobile,Mobile Reservations,Mobile reservations.,Secure mobile reservations.,false
+MOB-0094,/mobile/appointments,GET,200,appointments,Critical,Mobile,Mobile Appointments,Mobile appointments.,Secure mobile appointments.,false
+MOB-0095,/mobile/schedules,GET,200,schedules,Critical,Mobile,Mobile Schedules,Mobile schedules.,Secure mobile schedules.,false
+MOB-0096,/mobile/calendar,GET,200,calendar,Critical,Mobile,Mobile Calendar,Mobile calendar.,Secure mobile calendar.,false
+MOB-0097,/mobile/reminders,GET,200,reminders,Critical,Mobile,Mobile Reminders,Mobile reminders.,Secure mobile reminders.,false
+MOB-0098,/mobile/alarms,GET,200,alarms,Critical,Mobile,Mobile Alarms,Mobile alarms.,Secure mobile alarms.,false
+MOB-0099,/mobile/tasks,GET,200,tasks,Critical,Mobile,Mobile Tasks,Mobile tasks.,Secure mobile tasks.,false
+MOB-0100,/mobile/notes,GET,200,notes,Critical,Mobile,Mobile Notes,Mobile notes.,Secure mobile notes.,false

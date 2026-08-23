@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - LEGACY ADMIN PANELS SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+ADM-0001,/admin,GET,200,login,Critical,LegacyAdmin,Admin Panel,Generic admin panel.,Implement strong authentication.,false
+ADM-0002,/administrator,GET,200,admin,Critical,LegacyAdmin,Administrator,Administrator panel.,Implement MFA.,false
+ADM-0003,/admin/index.php,GET,200,admin,Critical,LegacyAdmin,PHP Admin,PHP admin panel.,Secure admin panel.,false
+ADM-0004,/admin/login.php,GET,200,login,Critical,LegacyAdmin,PHP Login,PHP admin login.,Secure login page.,false
+ADM-0005,/admin/login.html,GET,200,login,Critical,LegacyAdmin,HTML Login,HTML admin login.,Secure login.,false
+ADM-0006,/admin/login.asp,GET,200,login,Critical,LegacyAdmin,ASP Login,ASP admin login.,Secure ASP login.,false
+ADM-0007,/admin/login.aspx,GET,200,login,Critical,LegacyAdmin,ASPX Login,ASPX admin login.,Secure ASPX login.,false
+ADM-0008,/admin/login.jsp,GET,200,login,Critical,LegacyAdmin,JSP Login,JSP admin login.,Secure JSP login.,false
+ADM-0009,/admin/login.cgi,GET,200,login,Critical,LegacyAdmin,CGI Login,CGI admin login.,Secure CGI login.,false
+ADM-0010,/admin/login.pl,GET,200,login,Critical,LegacyAdmin,Perl Login,Perl admin login.,Secure Perl login.,false
+ADM-0011,/admin/login.py,GET,200,login,Critical,LegacyAdmin,Python Login,Python admin login.,Secure Python login.,false
+ADM-0012,/admin/login.rb,GET,200,login,Critical,LegacyAdmin,Ruby Login,Ruby admin login.,Secure Ruby login.,false
+ADM-0013,/admin.php,GET,200,admin,Critical,LegacyAdmin,Admin PHP,Admin PHP file.,Secure admin.php.,false
+ADM-0014,/admin.asp,GET,200,admin,Critical,LegacyAdmin,Admin ASP,Admin ASP file.,Secure admin.asp.,false
+ADM-0015,/admin.aspx,GET,200,admin,Critical,LegacyAdmin,Admin ASPX,Admin ASPX file.,Secure admin.aspx.,false
+ADM-0016,/admin.jsp,GET,200,admin,Critical,LegacyAdmin,Admin JSP,Admin JSP file.,Secure admin.jsp.,false
+ADM-0017,/admin.cgi,GET,200,admin,Critical,LegacyAdmin,Admin CGI,Admin CGI file.,Secure admin.cgi.,false
+ADM-0018,/admin.pl,GET,200,admin,Critical,LegacyAdmin,Admin Perl,Admin Perl file.,Secure admin.pl.,false
+ADM-0019,/admin.py,GET,200,admin,Critical,LegacyAdmin,Admin Python,Admin Python file.,Secure admin.py.,false
+ADM-0020,/admin.rb,GET,200,admin,Critical,LegacyAdmin,Admin Ruby,Admin Ruby file.,Secure admin.rb.,false
+ADM-0021,/admin.html,GET,200,admin,Critical,LegacyAdmin,Admin HTML,Admin HTML file.,Secure admin.html.,false
+ADM-0022,/admin.htm,GET,200,admin,Critical,LegacyAdmin,Admin HTM,Admin HTM file.,Secure admin.htm.,false
+ADM-0023,/admin/index.html,GET,200,admin,Critical,LegacyAdmin,Admin Index HTML,Admin index HTML.,Secure index.,false
+ADM-0024,/admin/index.htm,GET,200,admin,Critical,LegacyAdmin,Admin Index HTM,Admin index HTM.,Secure index HTM.,false
+ADM-0025,/admin/index.php,GET,200,admin,Critical,LegacyAdmin,Admin Index PHP,Admin index PHP.,Secure index PHP.,false
+ADM-0026,/admin/index.asp,GET,200,admin,Critical,LegacyAdmin,Admin Index ASP,Admin index ASP.,Secure index ASP.,false
+ADM-0027,/admin/index.aspx,GET,200,admin,Critical,LegacyAdmin,Admin Index ASPX,Admin index ASPX.,Secure index ASPX.,false
+ADM-0028,/admin/index.jsp,GET,200,admin,Critical,LegacyAdmin,Admin Index JSP,Admin index JSP.,Secure index JSP.,false
+ADM-0029,/admin/index.cgi,GET,200,admin,Critical,LegacyAdmin,Admin Index CGI,Admin index CGI.,Secure index CGI.,false
+ADM-0030,/admin/index.pl,GET,200,admin,Critical,LegacyAdmin,Admin Index Perl,Admin index Perl.,Secure index Perl.,false
+ADM-0031,/admin/index.py,GET,200,admin,Critical,LegacyAdmin,Admin Index Python,Admin index Python.,Secure index Python.,false
+ADM-0032,/admin/index.rb,GET,200,admin,Critical,LegacyAdmin,Admin Index Ruby,Admin index Ruby.,Secure index Ruby.,false
+ADM-0033,/admin/home.php,GET,200,admin,Critical,LegacyAdmin,Admin Home PHP,Admin home PHP.,Secure home PHP.,false
+ADM-0034,/admin/home.asp,GET,200,admin,Critical,LegacyAdmin,Admin Home ASP,Admin home ASP.,Secure home ASP.,false
+ADM-0035,/admin/home.aspx,GET,200,admin,Critical,LegacyAdmin,Admin Home ASPX,Admin home ASPX.,Secure home ASPX.,false
+ADM-0036,/admin/home.jsp,GET,200,admin,Critical,LegacyAdmin,Admin Home JSP,Admin home JSP.,Secure home JSP.,false
+ADM-0037,/admin/home.html,GET,200,admin,Critical,LegacyAdmin,Admin Home HTML,Admin home HTML.,Secure home HTML.,false
+ADM-0038,/admin/dashboard.php,GET,200,dashboard,Critical,LegacyAdmin,Admin Dashboard PHP,Admin dashboard PHP.,Secure dashboard PHP.,false
+ADM-0039,/admin/dashboard.asp,GET,200,dashboard,Critical,LegacyAdmin,Admin Dashboard ASP,Admin dashboard ASP.,Secure dashboard ASP.,false
+ADM-0040,/admin/dashboard.aspx,GET,200,dashboard,Critical,LegacyAdmin,Admin Dashboard ASPX,Admin dashboard ASPX.,Secure dashboard ASPX.,false
+ADM-0041,/admin/dashboard.jsp,GET,200,dashboard,Critical,LegacyAdmin,Admin Dashboard JSP,Admin dashboard JSP.,Secure dashboard JSP.,false
+ADM-0042,/admin/dashboard.html,GET,200,dashboard,Critical,LegacyAdmin,Admin Dashboard HTML,Admin dashboard HTML.,Secure dashboard HTML.,false
+ADM-0043,/admin/main.php,GET,200,admin,Critical,LegacyAdmin,Admin Main PHP,Admin main PHP.,Secure main PHP.,false
+ADM-0044,/admin/main.asp,GET,200,admin,Critical,LegacyAdmin,Admin Main ASP,Admin main ASP.,Secure main ASP.,false
+ADM-0045,/admin/main.aspx,GET,200,admin,Critical,LegacyAdmin,Admin Main ASPX,Admin main ASPX.,Secure main ASPX.,false
+ADM-0046,/admin/main.jsp,GET,200,admin,Critical,LegacyAdmin,Admin Main JSP,Admin main JSP.,Secure main JSP.,false
+ADM-0047,/admin/main.html,GET,200,admin,Critical,LegacyAdmin,Admin Main HTML,Admin main HTML.,Secure main HTML.,false
+ADM-0048,/admin/control.php,GET,200,control,Critical,LegacyAdmin,Admin Control PHP,Admin control PHP.,Secure control PHP.,false
+ADM-0049,/admin/control.asp,GET,200,control,Critical,LegacyAdmin,Admin Control ASP,Admin control ASP.,Secure control ASP.,false
+ADM-0050,/admin/control.aspx,GET,200,control,Critical,LegacyAdmin,Admin Control ASPX,Admin control ASPX.,Secure control ASPX.,false
+ADM-0051,/admin/control.jsp,GET,200,control,Critical,LegacyAdmin,Admin Control JSP,Admin control JSP.,Secure control JSP.,false
+ADM-0052,/admin/control.html,GET,200,control,Critical,LegacyAdmin,Admin Control HTML,Admin control HTML.,Secure control HTML.,false
+ADM-0053,/admin/manage.php,GET,200,manage,Critical,LegacyAdmin,Admin Manage PHP,Admin manage PHP.,Secure manage PHP.,false
+ADM-0054,/admin/manage.asp,GET,200,manage,Critical,LegacyAdmin,Admin Manage ASP,Admin manage ASP.,Secure manage ASP.,false
+ADM-0055,/admin/manage.aspx,GET,200,manage,Critical,LegacyAdmin,Admin Manage ASPX,Admin manage ASPX.,Secure manage ASPX.,false
+ADM-0056,/admin/manage.jsp,GET,200,manage,Critical,LegacyAdmin,Admin Manage JSP,Admin manage JSP.,Secure manage JSP.,false
+ADM-0057,/admin/manage.html,GET,200,manage,Critical,LegacyAdmin,Admin Manage HTML,Admin manage HTML.,Secure manage HTML.,false
+ADM-0058,/admin/manager.php,GET,200,manager,Critical,LegacyAdmin,Admin Manager PHP,Admin manager PHP.,Secure manager PHP.,false
+ADM-0059,/admin/manager.asp,GET,200,manager,Critical,LegacyAdmin,Admin Manager ASP,Admin manager ASP.,Secure manager ASP.,false
+ADM-0060,/admin/manager.aspx,GET,200,manager,Critical,LegacyAdmin,Admin Manager ASPX,Admin manager ASPX.,Secure manager ASPX.,false
+ADM-0061,/admin/manager.jsp,GET,200,manager,Critical,LegacyAdmin,Admin Manager JSP,Admin manager JSP.,Secure manager JSP.,false
+ADM-0062,/admin/manager.html,GET,200,manager,Critical,LegacyAdmin,Admin Manager HTML,Admin manager HTML.,Secure manager HTML.,false
+ADM-0063,/admin/config.php,GET,200,config,Critical,LegacyAdmin,Admin Config PHP,Admin config PHP.,Remove config.php.,true
+ADM-0064,/admin/config.asp,GET,200,config,Critical,LegacyAdmin,Admin Config ASP,Admin config ASP.,Remove config.asp.,true
+ADM-0065,/admin/config.aspx,GET,200,config,Critical,LegacyAdmin,Admin Config ASPX,Admin config ASPX.,Remove config.aspx.,true
+ADM-0066,/admin/config.jsp,GET,200,config,Critical,LegacyAdmin,Admin Config JSP,Admin config JSP.,Remove config.jsp.,true
+ADM-0067,/admin/config.html,GET,200,config,Critical,LegacyAdmin,Admin Config HTML,Admin config HTML.,Remove config.html.,true
+ADM-0068,/admin/settings.php,GET,200,settings,Critical,LegacyAdmin,Admin Settings PHP,Admin settings PHP.,Remove settings.php.,true
+ADM-0069,/admin/settings.asp,GET,200,settings,Critical,LegacyAdmin,Admin Settings ASP,Admin settings ASP.,Remove settings.asp.,true
+ADM-0070,/admin/settings.aspx,GET,200,settings,Critical,LegacyAdmin,Admin Settings ASPX,Admin settings ASPX.,Remove settings.aspx.,true
+ADM-0071,/admin/settings.jsp,GET,200,settings,Critical,LegacyAdmin,Admin Settings JSP,Admin settings JSP.,Remove settings.jsp.,true
+ADM-0072,/admin/settings.html,GET,200,settings,Critical,LegacyAdmin,Admin Settings HTML,Admin settings HTML.,Remove settings.html.,true
+ADM-0073,/admin/setup.php,GET,200,setup,Critical,LegacyAdmin,Admin Setup PHP,Admin setup PHP.,Remove setup.php.,true
+ADM-0074,/admin/setup.asp,GET,200,setup,Critical,LegacyAdmin,Admin Setup ASP,Admin setup ASP.,Remove setup.asp.,true
+ADM-0075,/admin/setup.aspx,GET,200,setup,Critical,LegacyAdmin,Admin Setup ASPX,Admin setup ASPX.,Remove setup.aspx.,true
+ADM-0076,/admin/setup.jsp,GET,200,setup,Critical,LegacyAdmin,Admin Setup JSP,Admin setup JSP.,Remove setup.jsp.,true
+ADM-0077,/admin/setup.html,GET,200,setup,Critical,LegacyAdmin,Admin Setup HTML,Admin setup HTML.,Remove setup.html.,true
+ADM-0078,/admin/install.php,GET,200,install,Critical,LegacyAdmin,Admin Install PHP,Admin install PHP.,Remove install.php.,true
+ADM-0079,/admin/install.asp,GET,200,install,Critical,LegacyAdmin,Admin Install ASP,Admin install ASP.,Remove install.asp.,true
+ADM-0080,/admin/install.aspx,GET,200,install,Critical,LegacyAdmin,Admin Install ASPX,Admin install ASPX.,Remove install.aspx.,true
+ADM-0081,/admin/install.jsp,GET,200,install,Critical,LegacyAdmin,Admin Install JSP,Admin install JSP.,Remove install.jsp.,true
+ADM-0082,/admin/install.html,GET,200,install,Critical,LegacyAdmin,Admin Install HTML,Admin install HTML.,Remove install.html.,true
+ADM-0083,/admin/backup.php,GET,200,backup,Critical,LegacyAdmin,Admin Backup PHP,Admin backup PHP.,Secure backup.php.,true
+ADM-0084,/admin/backup.asp,GET,200,backup,Critical,LegacyAdmin,Admin Backup ASP,Admin backup ASP.,Secure backup.asp.,true
+ADM-0085,/admin/backup.aspx,GET,200,backup,Critical,LegacyAdmin,Admin Backup ASPX,Admin backup ASPX.,Secure backup.aspx.,true
+ADM-0086,/admin/backup.jsp,GET,200,backup,Critical,LegacyAdmin,Admin Backup JSP,Admin backup JSP.,Secure backup.jsp.,true
+ADM-0087,/admin/backup.html,GET,200,backup,Critical,LegacyAdmin,Admin Backup HTML,Admin backup HTML.,Secure backup.html.,true
+ADM-0088,/admin/restore.php,GET,200,restore,Critical,LegacyAdmin,Admin Restore PHP,Admin restore PHP.,Secure restore.php.,true
+ADM-0089,/admin/restore.asp,GET,200,restore,Critical,LegacyAdmin,Admin Restore ASP,Admin restore ASP.,Secure restore.asp.,true
+ADM-0090,/admin/restore.aspx,GET,200,restore,Critical,LegacyAdmin,Admin Restore ASPX,Admin restore ASPX.,Secure restore.aspx.,true
+ADM-0091,/admin/restore.jsp,GET,200,restore,Critical,LegacyAdmin,Admin Restore JSP,Admin restore JSP.,Secure restore.jsp.,true
+ADM-0092,/admin/restore.html,GET,200,restore,Critical,LegacyAdmin,Admin Restore HTML,Admin restore HTML.,Secure restore.html.,true
+ADM-0093,/admin/export.php,GET,200,export,Critical,LegacyAdmin,Admin Export PHP,Admin export PHP.,Secure export.php.,true
+ADM-0094,/admin/export.asp,GET,200,export,Critical,LegacyAdmin,Admin Export ASP,Admin export ASP.,Secure export.asp.,true
+ADM-0095,/admin/export.aspx,GET,200,export,Critical,LegacyAdmin,Admin Export ASPX,Admin export ASPX.,Secure export.aspx.,true
+ADM-0096,/admin/export.jsp,GET,200,export,Critical,LegacyAdmin,Admin Export JSP,Admin export JSP.,Secure export.jsp.,true
+ADM-0097,/admin/export.html,GET,200,export,Critical,LegacyAdmin,Admin Export HTML,Admin export HTML.,Secure export.html.,true
+ADM-0098,/admin/import.php,GET,200,import,Critical,LegacyAdmin,Admin Import PHP,Admin import PHP.,Secure import.php.,true
+ADM-0099,/admin/import.asp,GET,200,import,Critical,LegacyAdmin,Admin Import ASP,Admin import ASP.,Secure import.asp.,true
+ADM-0100,/admin/import.aspx,GET,200,import,Critical,LegacyAdmin,Admin Import ASPX,Admin import ASPX.,Secure import.aspx.,true

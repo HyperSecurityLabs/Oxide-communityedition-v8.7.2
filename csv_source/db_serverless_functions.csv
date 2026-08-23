@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - SERVERLESS & FUNCTIONS SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+SLS-0001,/.aws/lambda,GET,200,lambda,Critical,Serverless,AWS Lambda,AWS Lambda function.,Secure Lambda.,false
+SLS-0002,/lambda,POST,200,result,Critical,Serverless,Lambda Invoke,Lambda invoke endpoint.,Secure invoke.,false
+SLS-0003,/2015-03-31/functions,GET,200,Functions,Critical,Serverless,Lambda Functions,List Lambda functions.,Secure functions list.,false
+SLS-0004,/2015-03-31/functions/function-name,GET,200,FunctionName,Critical,Serverless,Lambda Function,Lambda function details.,Secure function details.,false
+SLS-0005,/2015-03-31/functions/function-name/invocations,POST,200,Payload,Critical,Serverless,Lambda Invoke API,Lambda invoke API.,Secure invoke API.,false
+SLS-0006,/functions,GET,200,functions,Critical,Serverless,Functions Alt,Functions alt endpoint.,Secure functions.,false
+SLS-0007,/functions/list,GET,200,functions,Critical,Serverless,Functions List,Functions list alt.,Secure functions list.,false
+SLS-0008,/invoke,POST,200,result,Critical,Serverless,Invoke Alt,Invoke alt endpoint.,Secure invoke.,false
+SLS-0009,/async-invoke,POST,202,StatusCode,Critical,Serverless,Async Invoke,Async invoke endpoint.,Secure async invoke.,false
+SLS-0010,/2015-03-31/functions/function-name/versions,GET,200,Versions,Critical,Serverless,Lambda Versions,Lambda versions.,Secure versions.,false
+SLS-0011,/2015-03-31/functions/function-name/aliases,GET,200,Aliases,Critical,Serverless,Lambda Aliases,Lambda aliases.,Secure aliases.,false
+SLS-0012,/2015-03-31/functions/function-name/policy,GET,200,Policy,Critical,Serverless,Lambda Policy,Lambda resource policy.,Secure policy.,false
+SLS-0013,/2015-03-31/functions/function-name/concurrency,GET,200,ReservedConcurrentExecutions,Critical,Serverless,Lambda Concurrency,Lambda concurrency.,Secure concurrency.,false
+SLS-0014,/2015-03-31/functions/function-name/provisioned-concurrency,GET,200,AllocatedProvisionedConcurrentExecutions,Critical,Serverless,Lambda Provisioned,Lambda provisioned concurrency.,Secure provisioned.,false
+SLS-0015,/2015-03-31/functions/function-name/tags,GET,200,Tags,Critical,Serverless,Lambda Tags,Lambda tags.,Secure tags.,false
+SLS-0016,/2015-03-31/functions/function-name/url,GET,200,FunctionUrl,Critical,Serverless,Lambda URL,Lambda function URL.,Secure function URL.,false
+SLS-0017,/2015-03-31/tags,GET,200,Tags,Critical,Serverless,Lambda List Tags,List Lambda tags.,Secure list tags.,false
+SLS-0018,/2015-03-31/event-source-mappings,GET,200,EventSourceMappings,Critical,Serverless,Lambda Event Sources,Lambda event sources.,Secure event sources.,false
+SLS-0019,/2015-03-31/layers,GET,200,Layers,Critical,Serverless,Lambda Layers,Lambda layers.,Secure layers.,false
+SLS-0020,/2015-03-31/layers/layer-name/versions,GET,200,LayerVersions,Critical,Serverless,Layer Versions,Layer versions.,Secure layer versions.,false
+SLS-0021,/2015-03-31/code-signing-configs,GET,200,CodeSigningConfigs,Critical,Serverless,Code Signing,Code signing configs.,Secure code signing.,false
+SLS-0022,/2015-03-31/account-settings,GET,200,AccountLimit,Critical,Serverless,Lambda Account,Lambda account settings.,Secure account settings.,false
+SLS-0023,/functions/list-functions,POST,200,Functions,Critical,Serverless,List Functions,List functions alt.,Secure list functions.,false
+SLS-0024,/functions/get-function,POST,200,Configuration,Critical,Serverless,Get Function,Get function alt.,Secure get function.,false
+SLS-0025,/functions/invoke-function,POST,200,StatusCode,Critical,Serverless,Invoke Function,Invoke function alt.,Secure invoke function.,false
+SLS-0026,/functions/update-function-code,POST,200,FunctionArn,Critical,Serverless,Update Function Code,Update function code.,Secure update code.,false
+SLS-0027,/functions/update-function-configuration,POST,200,FunctionArn,Critical,Serverless,Update Function Config,Update function config.,Secure update config.,false
+SLS-0028,/functions/create-function,POST,200,FunctionArn,Critical,Serverless,Create Function,Create function.,Secure create function.,false
+SLS-0029,/functions/delete-function,POST,204,,Critical,Serverless,Delete Function,Delete function.,Secure delete function.,false
+SLS-0030,/functions/publish-version,POST,200,Version,Critical,Serverless,Publish Version,Publish version.,Secure publish version.,false
+SLS-0031,/functions/create-alias,POST,200,AliasArn,Critical,Serverless,Create Alias,Create alias.,Secure create alias.,false
+SLS-0032,/functions/update-alias,POST,200,AliasArn,Critical,Serverless,Update Alias,Update alias.,Secure update alias.,false
+SLS-0033,/functions/delete-alias,POST,204,,Critical,Serverless,Delete Alias,Delete alias.,Secure delete alias.,false
+SLS-0034,/functions/get-alias,POST,200,AliasArn,Critical,Serverless,Get Alias,Get alias.,Secure get alias.,false
+SLS-0035,/functions/list-versions-by-function,POST,200,Versions,Critical,Serverless,List Versions,List versions.,Secure list versions.,false
+SLS-0036,/functions/add-permission,POST,200,Statement,Critical,Serverless,Add Permission,Add permission.,Secure add permission.,false
+SLS-0037,/functions/remove-permission,POST,204,,Critical,Serverless,Remove Permission,Remove permission.,Secure remove permission.,false
+SLS-0038,/functions/get-policy,POST,200,Policy,Critical,Serverless,Get Policy,Get policy.,Secure get policy.,false
+SLS-0039,/functions/get-function-url-config,POST,200,FunctionUrl,Critical,Serverless,Get URL Config,Get URL config.,Secure get URL config.,false
+SLS-0040,/functions/create-function-url-config,POST,200,FunctionUrl,Critical,Serverless,Create URL Config,Create URL config.,Secure create URL config.,false
+SLS-0041,/functions/update-function-url-config,POST,200,FunctionUrl,Critical,Serverless,Update URL Config,Update URL config.,Secure update URL config.,false
+SLS-0042,/functions/delete-function-url-config,POST,204,,Critical,Serverless,Delete URL Config,Delete URL config.,Secure delete URL config.,false
+SLS-0043,/functions/put-concurrency,POST,200,ReservedConcurrentExecutions,Critical,Serverless,Put Concurrency,Put concurrency.,Secure put concurrency.,false
+SLS-0044,/functions/delete-concurrency,POST,204,,Critical,Serverless,Delete Concurrency,Delete concurrency.,Secure delete concurrency.,false
+SLS-0045,/functions/put-provisioned-concurrency-config,POST,200,RequestedProvisionedConcurrentExecutions,Critical,Serverless,Put Provisioned,Put provisioned.,Secure put provisioned.,false
+SLS-0046,/functions/delete-provisioned-concurrency-config,POST,204,,Critical,Serverless,Delete Provisioned,Delete provisioned.,Secure delete provisioned.,false
+SLS-0047,/functions/list-provisioned-concurrency-configs,POST,200,ProvisionedConcurrencyConfigs,Critical,Serverless,List Provisioned,List provisioned configs.,Secure list provisioned.,false
+SLS-0048,/functions/invoke-async,POST,202,Status,Critical,Serverless,Invoke Async,Invoke async alt.,Secure invoke async.,false
+SLS-0049,/functions/invoke-with-response-stream,POST,200,PayloadChunk,Critical,Serverless,Invoke Stream,Invoke with response stream.,Secure invoke stream.,false
+SLS-0050,/layers/list-layers,POST,200,Layers,Critical,Serverless,List Layers,List layers alt.,Secure list layers.,false
+SLS-0051,/layers/get-layer-version,POST,200,Content,Critical,Serverless,Get Layer Version,Get layer version.,Secure get layer version.,false
+SLS-0052,/layers/list-layer-versions,POST,200,LayerVersions,Critical,Serverless,List Layer Versions,List layer versions.,Secure list layer versions.,false
+SLS-0053,/layers/delete-layer-version,POST,204,,Critical,Serverless,Delete Layer Version,Delete layer version.,Secure delete layer version.,false
+SLS-0054,/layers/publish-layer-version,POST,200,LayerVersionArn,Critical,Serverless,Publish Layer,Publish layer version.,Secure publish layer.,false
+SLS-0055,/layers/add-layer-version-permission,POST,200,Statement,Critical,Serverless,Add Layer Permission,Add layer permission.,Secure add layer permission.,false
+SLS-0056,/layers/remove-layer-version-permission,POST,204,,Critical,Serverless,Remove Layer Permission,Remove layer permission.,Secure remove layer permission.,false
+SLS-0057,/layers/get-layer-version-policy,POST,200,Policy,Critical,Serverless,Get Layer Policy,Get layer policy.,Secure get layer policy.,false
+SLS-0058,/event-source-mappings/list-event-source-mappings,POST,200,EventSourceMappings,Critical,Serverless,List Event Sources,List event sources alt.,Secure list event sources.,false
+SLS-0059,/event-source-mappings/create-event-source-mapping,POST,200,UUID,Critical,Serverless,Create Event Source,Create event source mapping.,Secure create event source.,false
+SLS-0060,/event-source-mappings/update-event-source-mapping,POST,200,UUID,Critical,Serverless,Update Event Source,Update event source mapping.,Secure update event source.,false
+SLS-0061,/event-source-mappings/delete-event-source-mapping,POST,204,,Critical,Serverless,Delete Event Source,Delete event source mapping.,Secure delete event source.,false
+SLS-0062,/event-source-mappings/get-event-source-mapping,POST,200,UUID,Critical,Serverless,Get Event Source,Get event source mapping.,Secure get event source.,false
+SLS-0063,/code-signing/list-code-signing-configs,POST,200,CodeSigningConfigs,Critical,Serverless,List Code Signing,List code signing alt.,Secure list code signing.,false
+SLS-0064,/code-signing/create-code-signing-config,POST,200,CodeSigningConfigArn,Critical,Serverless,Create Code Signing,Create code signing config.,Secure create code signing.,false
+SLS-0065,/code-signing/update-code-signing-config,POST,200,CodeSigningConfigArn,Critical,Serverless,Update Code Signing,Update code signing config.,Secure update code signing.,false
+SLS-0066,/code-signing/delete-code-signing-config,POST,204,,Critical,Serverless,Delete Code Signing,Delete code signing config.,Secure delete code signing.,false
+SLS-0067,/code-signing/get-code-signing-config,POST,200,CodeSigningConfig,Critical,Serverless,Get Code Signing,Get code signing config.,Secure get code signing.,false
+SLS-0068,/code-signing/put-code-signing-config,POST,200,CodeSigningConfigArn,Critical,Serverless,Put Code Signing,Put code signing config.,Secure put code signing.,false
+SLS-0069,/snapshots/list-snapshots,POST,200,Snapshots,Critical,Serverless,List Snapshots,List snapshots.,Secure list snapshots.,false
+SLS-0070,/snapshots/get-snapshot,POST,200,Snapshot,Critical,Serverless,Get Snapshot,Get snapshot.,Secure get snapshot.,false
+SLS-0071,/snapshots/delete-snapshot,POST,204,,Critical,Serverless,Delete Snapshot,Delete snapshot.,Secure delete snapshot.,false
+SLS-0072,/snapshots/create-snapshot,POST,200,SnapshotArn,Critical,Serverless,Create Snapshot,Create snapshot.,Secure create snapshot.,false
+SLS-0073,/snapshots/restore-snapshot,POST,200,FunctionArn,Critical,Serverless,Restore Snapshot,Restore snapshot.,Secure restore snapshot.,false
+SLS-0074,/functions/get-runtime-management-config,POST,200,UpdateRuntimeOn,Critical,Serverless,Runtime Config,Get runtime management config.,Secure runtime config.,false
+SLS-0075,/functions/put-runtime-management-config,POST,200,UpdateRuntimeOn,Critical,Serverless,Put Runtime Config,Put runtime management config.,Secure put runtime config.,false
+SLS-0076,/functions/get-function-recursion-config,POST,200,RecursiveLoop,Critical,Serverless,Recursion Config,Get function recursion config.,Secure recursion config.,false
+SLS-0077,/functions/put-function-recursion-config,POST,200,RecursiveLoop,Critical,Serverless,Put Recursion Config,Put function recursion config.,Secure put recursion config.,false
+SLS-0078,/functions/get-function-event-invoke-config,POST,200,DestinationConfig,Critical,Serverless,Event Invoke Config,Get function event invoke config.,Secure event invoke config.,false
+SLS-0079,/functions/put-function-event-invoke-config,POST,200,DestinationConfig,Critical,Serverless,Put Event Invoke Config,Put function event invoke config.,Secure put event invoke config.,false
+SLS-0080,/functions/get-function-code-signing-config,POST,200,CodeSigningConfigArn,Critical,Serverless,Code Signing Config,Get function code signing config.,Secure code signing config.,false
+SLS-0081,/functions/put-function-code-signing-config,POST,200,CodeSigningConfigArn,Critical,Serverless,Put Code Signing Config,Put function code signing config.,Secure put code signing config.,false
+SLS-0082,/functions/delete-function-code-signing-config,POST,204,,Critical,Serverless,Delete Code Signing Config,Delete function code signing config.,Secure delete code signing config.,false
+SLS-0083,/functions/list-function-url-configs,POST,200,FunctionUrlConfigs,Critical,Serverless,List URL Configs,List function URL configs.,Secure list URL configs.,false
+SLS-0084,/functions/get-function-recursion-config,POST,200,RecursiveLoop,Critical,Serverless,Recursion Config Alt,Get recursion config alt.,Secure recursion config alt.,false
+SLS-0085,/functions/get-function-concurrency,POST,200,ReservedConcurrentExecutions,Critical,Serverless,Function Concurrency,Get function concurrency.,Secure function concurrency.,false
+SLS-0086,/functions/list-functions-by-code-signing-config,POST,200,Functions,Critical,Serverless,List By Code Signing,List functions by code signing config.,Secure list by code signing.,false
+SLS-0087,/functions/list-functions-by-layer,POST,200,Functions,Critical,Serverless,List By Layer,List functions by layer.,Secure list by layer.,false
+SLS-0088,/functions/list-function-event-invoke-configs,POST,200,FunctionEventInvokeConfigs,Critical,Serverless,List Event Invoke,List function event invoke configs.,Secure list event invoke.,false
+SLS-0089,/account-settings/get-account-settings,POST,200,AccountLimit,Critical,Serverless,Account Settings,Get account settings alt.,Secure account settings.,false
+SLS-0090,/account-settings/put-account-settings,POST,200,AccountLimit,Critical,Serverless,Put Account Settings,Put account settings.,Secure put account settings.,false
+SLS-0091,/functions/get-scaling-config,POST,200,ScalingConfig,Critical,Serverless,Scaling Config,Get scaling config.,Secure scaling config.,false
+SLS-0092,/functions/put-scaling-config,POST,200,ScalingConfig,Critical,Serverless,Put Scaling Config,Put scaling config.,Secure put scaling config.,false
+SLS-0093,/functions/delete-scaling-config,POST,204,,Critical,Serverless,Delete Scaling Config,Delete scaling config.,Secure delete scaling config.,false
+SLS-0094,/functions/list-scaling-configs,POST,200,ScalingConfigs,Critical,Serverless,List Scaling Configs,List scaling configs.,Secure list scaling configs.,false
+SLS-0095,/reserved-concurrency/list-reserved-concurrency-configs,POST,200,ReservedConcurrentExecutions,Critical,Serverless,List Reserved Concurrency,List reserved concurrency configs.,Secure list reserved concurrency.,false
+SLS-0096,/provisioned-concurrency/list-provisioned-concurrency-configs,POST,200,ProvisionedConcurrencyConfigs,Critical,Serverless,List Provisioned Concurrency,List provisioned concurrency configs.,Secure list provisioned concurrency.,false
+SLS-0097,/functions/get-function-snap-start,POST,200,SnapStart,Critical,Serverless,SnapStart Config,Get SnapStart config.,Secure SnapStart config.,false
+SLS-0098,/functions/put-function-snap-start,POST,200,SnapStart,Critical,Serverless,Put SnapStart Config,Put SnapStart config.,Secure put SnapStart config.,false
+SLS-0099,/functions/delete-function-snap-start,POST,204,,Critical,Serverless,Delete SnapStart Config,Delete SnapStart config.,Secure delete SnapStart config.,false
+SLS-0100,/functions/list-function-snap-starts,POST,200,FunctionSnapStarts,Critical,Serverless,List SnapStarts,List function SnapStarts.,Secure list SnapStarts.,false

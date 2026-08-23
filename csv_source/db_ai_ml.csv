@@ -1,0 +1,106 @@
+# HyperSecurity_offensivelabs - AI & ML SYSTEMS SECURITY TEST DATABASE
+# RESTRICTED ACCESS - AUTHORIZED PERSONNEL ONLY
+# Copyright (c) HyperSecurity_offensivelabs - All Rights Reserved
+# Format: id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+#
+id,path,method,expected_status,content_indicators,severity,category,title,description,remediation,download_flag
+AI-0001,/jupyter,GET,200,jupyter,Critical,AiMl,Jupyter Notebook,Jupyter notebook server.,Secure Jupyter immediately.,false
+AI-0002,/jupyter/tree,GET,200,tree,Critical,AiMl,Jupyter Tree,Jupyter file tree.,Secure Jupyter tree.,false
+AI-0003,/jupyter/notebooks,GET,200,notebooks,Critical,AiMl,Jupyter Notebooks,Notebook list.,Secure notebooks.,false
+AI-0004,/jupyter/api/contents,GET,200,contents,Critical,AiMl,Jupyter API Contents,Jupyter contents API.,Secure API.,false
+AI-0005,/jupyter/api/sessions,GET,200,sessions,Critical,AiMl,Jupyter API Sessions,Jupyter sessions API.,Secure sessions.,false
+AI-0006,/jupyter/api/kernels,GET,200,kernels,Critical,AiMl,Jupyter API Kernels,Jupyter kernels API.,Secure kernels.,false
+AI-0007,/jupyter/api/terminals,GET,200,terminals,Critical,AiMl,Jupyter API Terminals,Jupyter terminals API.,Critical: Secure terminals.,false
+AI-0008,/jupyter/terminals,GET,200,terminals,Critical,AiMl,Jupyter Terminals,Terminal access.,Remove terminals.,false
+AI-0009,/jupyter/lab,GET,200,jupyterlab,Critical,AiMl,JupyterLab,JupyterLab interface.,Secure JupyterLab.,false
+AI-0010,/jupyter/hub,GET,200,hub,Critical,AiMl,JupyterHub,JupyterHub interface.,Secure JupyterHub.,false
+AI-0011,/jupyter/hub/admin,GET,200,admin,Critical,AiMl,JupyterHub Admin,JupyterHub admin.,Implement auth.,false
+AI-0012,/jupyter/nbextensions,GET,200,nbextensions,Critical,AiMl,Jupyter Extensions,Jupyter extensions.,Secure extensions.,false
+AI-0013,/mlflow,GET,200,mlflow,Critical,AiMl,MLflow,MLflow tracking server.,Secure MLflow.,false
+AI-0014,/mlflow/#/experiments,GET,200,experiments,Critical,AiMl,MLflow Experiments,MLflow experiments.,Secure experiments.,false
+AI-0015,/mlflow/api/2.0/mlflow/experiments/list,GET,200,experiments,Critical,AiMl,MLflow API Experiments,MLflow experiments API.,Secure API.,false
+AI-0016,/mlflow/api/2.0/mlflow/runs/search,POST,200,runs,Critical,AiMl,MLflow API Runs,MLflow runs API.,Secure runs API.,false
+AI-0017,/mlflow/api/2.0/mlflow/registered-models/list,GET,200,registered_models,Critical,AiMl,MLflow Models,MLflow models API.,Secure models.,false
+AI-0018,/mlflow/api/2.0/mlflow/model-versions/search,POST,200,model_versions,Critical,AiMl,MLflow Model Versions,MLflow versions API.,Secure versions.,false
+AI-0019,/tensorboard,GET,200,tensorboard,Critical,AiMl,TensorBoard,TensorBoard dashboard.,Secure TensorBoard.,false
+AI-0020,/tensorboard/data/plugins_listing,GET,200,plugins,Critical,AiMl,TensorBoard Plugins,TensorBoard plugins.,Secure plugins.,false
+AI-0021,/tensorboard/data/runs,GET,200,runs,Critical,AiMl,TensorBoard Runs,TensorBoard runs.,Secure runs.,false
+AI-0022,/tensorboard/data/scalars,GET,200,scalars,Critical,AiMl,TensorBoard Scalars,TensorBoard scalars.,Secure scalars.,false
+AI-0023,/tensorboard/data/graph,GET,200,graph,Critical,AiMl,TensorBoard Graph,TensorBoard graph.,Secure graph.,false
+AI-0024,/tensorboard/data/histograms,GET,200,histograms,Critical,AiMl,TensorBoard Histograms,TensorBoard histograms.,Secure histograms.,false
+AI-0025,/tensorboard/data/distributions,GET,200,distributions,Critical,AiMl,TensorBoard Distributions,TensorBoard distributions.,Secure distributions.,false
+AI-0026,/tensorboard/data/images,GET,200,images,Critical,AiMl,TensorBoard Images,TensorBoard images.,Secure images.,false
+AI-0027,/tensorboard/data/audio,GET,200,audio,Critical,AiMl,TensorBoard Audio,TensorBoard audio.,Secure audio.,false
+AI-0028,/tensorboard/data/projector,GET,200,projector,Critical,AiMl,TensorBoard Projector,TensorBoard projector.,Secure projector.,false
+AI-0029,/tensorboard/data/npmi,GET,200,npmi,Critical,AiMl,TensorBoard NPMI,TensorBoard NPMI.,Secure NPMI.,false
+AI-0030,/tensorboard/data/text,GET,200,text,Critical,AiMl,TensorBoard Text,TensorBoard text.,Secure text.,false
+AI-0031,/tensorboard/data/hparams,GET,200,hparams,Critical,AiMl,TensorBoard HParams,TensorBoard hparams.,Secure hparams.,false
+AI-0032,/tensorboard/data/mesh,GET,200,mesh,Critical,AiMl,TensorBoard Mesh,TensorBoard mesh.,Secure mesh.,false
+AI-0033,/tensorboard/data/custom_scalars,GET,200,custom_scalars,Critical,AiMl,TensorBoard Custom Scalars,TensorBoard custom scalars.,Secure scalars.,false
+AI-0034,/tensorboard/data/pr_curves,GET,200,pr_curves,Critical,AiMl,TensorBoard PR Curves,TensorBoard PR curves.,Secure curves.,false
+AI-0035,/tensorboard/data/whatif,GET,200,whatif,Critical,AiMl,TensorBoard What-If,TensorBoard what-if.,Secure what-if.,false
+AI-0036,/tensorboard/data/npmi_PLUGIN_DATA,GET,200,npmi_plugin_data,Critical,AiMl,TensorBoard NPMI Data,TensorBoard NPMI data.,Secure data.,false
+AI-0037,/wandb,GET,200,wandb,Critical,AiMl,Weights & Biases,WandB dashboard.,Secure WandB.,false
+AI-0038,/wandb/local,GET,200,local,Critical,AiMl,WandB Local,WandB local server.,Secure WandB local.,false
+AI-0039,/comet,GET,200,comet,Critical,AiMl,Comet ML,Comet ML dashboard.,Secure Comet.,false
+AI-0040,/neptune,GET,200,neptune,Critical,AiMl,Neptune.ai,Neptune.ai dashboard.,Secure Neptune.,false
+AI-0041,/sacred,GET,200,sacred,Critical,AiMl,Sacred,Sacred dashboard.,Secure Sacred.,false
+AI-0042,/polyaxon,GET,200,polyaxon,Critical,AiMl,Polyaxon,Polyaxon dashboard.,Secure Polyaxon.,false
+AI-0043,/kubeflow,GET,200,kubeflow,Critical,AiMl,Kubeflow,Kubeflow dashboard.,Secure Kubeflow.,false
+AI-0044,/kubeflow/pipeline,GET,200,pipeline,Critical,AiMl,Kubeflow Pipeline,Kubeflow pipelines.,Secure pipelines.,false
+AI-0045,/katib,GET,200,katib,Critical,AiMl,Katib,Kubeflow Katib.,Secure Katib.,false
+AI-0046,/pipeline,GET,200,pipeline,Critical,AiMl,Kubeflow Pipeline Alt,Pipeline alt.,Secure pipeline.,false
+AI-0047,/models,GET,200,models,Critical,AiMl,Models,Model serving endpoint.,Secure models.,false
+AI-0048,/model,GET,200,model,Critical,AiMl,Model,Model endpoint.,Secure model.,false
+AI-0049,/predict,POST,200,prediction,Critical,AiMl,Predict,Prediction endpoint.,Secure predict.,false
+AI-0050,/inference,POST,200,inference,Critical,AiMl,Inference,Inference endpoint.,Secure inference.,false
+AI-0051,/serve,POST,200,serve,Critical,AiMl,Serve,Serving endpoint.,Secure serve.,false
+AI-0052,/serving,POST,200,serving,Critical,AiMl,Serving Alt,Serving alt.,Secure serving.,false
+AI-0053,/v1/models,GET,200,models,Critical,AiMl,TF Serving Models,TensorFlow serving models.,Secure TF serving.,false
+AI-0054,/v1/models/model_name,GET,200,model_version,Critical,AiMl,TF Serving Model,TensorFlow serving model.,Secure model.,false
+AI-0055,/v1/models/model_name/versions,GET,200,versions,Critical,AiMl,TF Serving Versions,TensorFlow serving versions.,Secure versions.,false
+AI-0056,/v1/models/model_name/versions/version,GET,200,version,Critical,AiMl,TF Serving Version,TensorFlow serving version.,Secure version.,false
+AI-0057,/v1/models/model_name/versions/version/metadata,GET,200,metadata,Critical,AiMl,TF Serving Metadata,TensorFlow serving metadata.,Secure metadata.,false
+AI-0058,/v1/models/model_name/predict,POST,200,predictions,Critical,AiMl,TF Serving Predict,TensorFlow serving predict.,Secure predict.,false
+AI-0059,/v1/models/model_name/classify,POST,200,classifications,Critical,AiMl,TF Serving Classify,TensorFlow serving classify.,Secure classify.,false
+AI-0060,/v1/models/model_name/regress,POST,200,regressions,Critical,AiMl,TF Serving Regress,TensorFlow serving regress.,Secure regress.,false
+AI-0061,/v2/models,GET,200,models,Critical,AiMl,TF Serving V2 Models,TensorFlow serving v2 models.,Secure v2.,false
+AI-0062,/v2/models/model_name,GET,200,model,Critical,AiMl,TF Serving V2 Model,TensorFlow serving v2 model.,Secure model v2.,false
+AI-0063,/v2/models/model_name/infer,POST,200,model_output,Critical,AiMl,TF Serving V2 Infer,TensorFlow serving v2 infer.,Secure infer.,false
+AI-0064,/torchserve,GET,200,torchserve,Critical,AiMl,TorchServe,TorchServe dashboard.,Secure TorchServe.,false
+AI-0065,/predictions,POST,200,prediction,Critical,AiMl,TorchServe Predictions,TorchServe predictions.,Secure predictions.,false
+AI-0066,/api-description,GET,200,api-description,Critical,AiMl,TorchServe API Desc,TorchServe API description.,Secure API desc.,false
+AI-0067,/ping,GET,200,Healthy,Critical,AiMl,TorchServe Health,TorchServe health.,Secure health.,false
+AI-0068,/models,GET,200,models,Critical,AiMl,TorchServe Models,TorchServe models.,Secure models.,false
+AI-0069,/models/model_name,GET,200,model,Critical,AiMl,TorchServe Model,TorchServe model.,Secure model.,false
+AI-0070,/triton,GET,200,triton,Critical,AiMl,Triton Inference,Triton inference server.,Secure Triton.,false
+AI-0071,/v2/health/ready,GET,200,ready,Critical,AiMl,Triton Ready,Triton ready.,Secure ready.,false
+AI-0072,/v2/health/live,GET,200,live,Critical,AiMl,Triton Live,Triton live.,Secure live.,false
+AI-0073,/v2/models,GET,200,models,Critical,AiMl,Triton Models,Triton models.,Secure models.,false
+AI-0074,/v2/models/model_name,GET,200,model,Critical,AiMl,Triton Model,Triton model.,Secure model.,false
+AI-0075,/v2/models/model_name/config,GET,200,config,Critical,AiMl,Triton Config,Triton config.,Secure config.,false
+AI-0076,/v2/models/model_name/stats,GET,200,stats,Critical,AiMl,Triton Stats,Triton stats.,Secure stats.,false
+AI-0077,/v2/models/model_name/infer,POST,200,model_output,Critical,AiMl,Triton Infer,Triton infer.,Secure infer.,false
+AI-0078,/onnx,GET,200,onnx,Critical,AiMl,ONNX Runtime,ONNX runtime.,Secure ONNX.,false
+AI-0079,/onnx/model,POST,200,output,Critical,AiMl,ONNX Model,ONNX model run.,Secure model run.,false
+AI-0080,/openai,GET,200,openai,Critical,AiMl,OpenAI API,OpenAI-compatible API.,Secure OpenAI API.,false
+AI-0081,/v1/chat/completions,POST,200,choices,Critical,AiMl,OpenAI Chat,Chat completions.,Secure chat API.,false
+AI-0082,/v1/completions,POST,200,choices,Critical,AiMl,OpenAI Completions,Text completions.,Secure completions.,false
+AI-0083,/v1/embeddings,POST,200,embeddings,Critical,AiMl,OpenAI Embeddings,Text embeddings.,Secure embeddings.,false
+AI-0084,/v1/models,GET,200,models,Critical,AiMl,OpenAI Models,List models.,Secure models list.,false
+AI-0085,/v1/fine-tunes,POST,200,fine_tunes,Critical,AiMl,OpenAI Fine-tunes,Fine-tuning endpoint.,Secure fine-tuning.,false
+AI-0086,/v1/files,GET,200,files,Critical,AiMl,OpenAI Files,Files endpoint.,Secure files.,false
+AI-0087,/v1/assistants,GET,200,assistants,Critical,AiMl,OpenAI Assistants,Assistants endpoint.,Secure assistants.,false
+AI-0088,/v1/threads,POST,200,threads,Critical,AiMl,OpenAI Threads,Threads endpoint.,Secure threads.,false
+AI-0089,/v1/images/generations,POST,200,images,Critical,AiMl,OpenAI Images,Image generation.,Secure images.,false
+AI-0090,/v1/audio/transcriptions,POST,200,text,Critical,AiMl,OpenAI Audio,Audio transcription.,Secure audio.,false
+AI-0091,/ollama,GET,200,ollama,Critical,AiMl,Ollama,Ollama server.,Secure Ollama.,false
+AI-0092,/api/tags,GET,200,models,Critical,AiMl,Ollama Tags,Ollama models list.,Secure tags.,false
+AI-0093,/api/generate,POST,200,response,Critical,AiMl,Ollama Generate,Ollama generation.,Secure generate.,false
+AI-0094,/api/chat,POST,200,message,Critical,AiMl,Ollama Chat,Ollama chat.,Secure chat.,false
+AI-0095,/api/create,POST,200,status,Critical,AiMl,Ollama Create,Ollama model create.,Secure create.,false
+AI-0096,/api/delete,DELETE,200,status,Critical,AiMl,Ollama Delete,Ollama model delete.,Secure delete.,false
+AI-0097,/api/pull,POST,200,status,Critical,AiMl,Ollama Pull,Ollama model pull.,Secure pull.,false
+AI-0098,/api/push,POST,200,status,Critical,AiMl,Ollama Push,Ollama model push.,Secure push.,false
+AI-0099,/api/copy,POST,200,status,Critical,AiMl,Ollama Copy,Ollama model copy.,Secure copy.,false
+AI-0100,/api/show,POST,200,modelfile,Critical,AiMl,Ollama Show,Ollama model show.,Secure show.,true
