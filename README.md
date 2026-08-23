@@ -230,15 +230,21 @@ Auto-saved to `reports/oxide_<timestamp>.*`
 - JSON/XML/Multipart wrapper bypass with CDATA sections
 - 12-vendor WAF fingerprinting: CloudFlare, AWS WAF, ModSecurity, F5 BIG-IP ASM, Imperva, Akamai, Sucuri, Radware, Palo Alto, Fortinet, Barracuda, Citrix
 
-## AI/ML Zero-Day Engine
-- Random Forest + SVM ensemble classifier via `smartcore` with 5-fold cross-validation ***Already Proved***
-- 30-dimensional HTTP response feature vectors: entropy, timing, content structure, security headers, character distribution, SHA256 content hashing
-- Online learning: `add_normal_pattern()` for adaptive baseline profiling
-- `ExploitAnalyzer`: AI-driven response pattern learning, next-payload recommendation, WAF-specific bypass generation
-- `PayloadMutator`: 8 AI mutation strategies (case variation, encoding, obfuscation, comment injection, whitespace, character substitution, concatenation, null byte)
-- Polyglot payload generation: 7 multi-context injection vectors
-- Auto-exploitation on >55% ML confidence with targeted payload delivery
-- Model persistence via bincode serialization with export/import validation
+## AI/ML Vulnerability Research Engine
+
+OXIDE 8.7.2 integrates a Rust-native machine-learning pipeline for HTTP behavioral analysis, adaptive anomaly detection, intelligent mutation, and vulnerability research.
+
+- Random Forest + SVM ensemble powered by "smartcore", with 5-fold cross-validation for model evaluation
+- 30-dimensional HTTP response feature vectors covering entropy, timing, content structure, security headers, character distributions, and SHA-256 content fingerprints
+- Adaptive baseline profiling through online pattern updates with "add_normal_pattern()"
+- ExploitAnalyzer for response-pattern learning, mutation prioritization, and context-aware payload selection
+- PayloadMutator with 8 mutation strategies including case variation, encoding, obfuscation, comment insertion, whitespace manipulation, character substitution, concatenation, and null-byte variation
+- Polyglot payload generation supporting 7 multi-context injection strategies
+- Confidence-driven testing that prioritizes higher-confidence anomaly candidates for controlled validation
+- Model persistence with serialized model export/import and validation
+- Evidence-aware analysis linking model predictions to HTTP request/response behavior instead of treating ML predictions alone as confirmed vulnerabilities
+
+«Important: ML confidence represents a model prediction, not proof of exploitability. OXIDE separates anomaly detection, candidate identification, and vulnerability validation to reduce false positives.»
 
 ## Bayesian Confidence Scoring ***Advanced***
 - `bayesian_confidence()`: sequential Bayesian update across all detection modules
