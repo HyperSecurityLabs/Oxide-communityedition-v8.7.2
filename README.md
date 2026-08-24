@@ -1,4 +1,4 @@
-#🚨 OXIDE COMMUNITY EDITION — PROJECT TRANSITION NOTICE
+# 🚨 OXIDE COMMUNITY EDITION — PROJECT TRANSITION NOTICE
 A New Chapter Begins.
 
 To everyone who has followed, tested, starred, contributed to, or supported OXIDE Community Edition — thank you.
